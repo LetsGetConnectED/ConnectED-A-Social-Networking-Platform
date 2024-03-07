@@ -21,11 +21,11 @@
 }
 .login_info{
 
-    width: 60%;
+    width: 70%;
     height: 100%;
 }
 .login_pic{
-    width: 40%;
+    width: 30%;
     height: 100%;
     
 
@@ -45,6 +45,6 @@ button{
 img{
     display: block; /* Ensure the image behaves like a block element */
     width: 100%; /* Ensure the image spans the full width of its container */
-    height: auto; /* Allow the browser to calculate the height while maintaining aspect ratio */
+    height: 100%; /* Allow the browser to calculate the height while maintaining aspect ratio */
 
 }
