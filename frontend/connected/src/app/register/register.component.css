@@ -1,49 +1,50 @@
-/* registration.component.css */
-.main_context{
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  
-
+.main_context {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.info_context{
-    width:80%;
-    height: 60vh;
-    background-color: white;
-    border-radius: 20px;
-    display: flex;
-    overflow: hidden;
+.info_context {
+  width: 80%;
+  height: 75vh;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  overflow: hidden;
 }
-.navBarLogin{
-    display: flex;
-    justify-content: space-between;
+
+.navBarLogin {
+  display: flex;
+  justify-content: space-between;
 }
-form {
-  max-width: 300px;
-  margin: 20px auto;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+
+.registration_info {
+  width: 70%;
+  height: 100%;
 }
- 
-label {
-  display: block;
-  margin-bottom: 5px;
+
+.registration_pic {
+  width: 50%;
+  height: 100%;
 }
- 
-input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
+
+.rounded_field {
+  border-radius: 20px;
 }
- 
-/* //button {
-  background-color: #4caf50;
+
+button {
+  background-color: #25371B;
   color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-} */
+}
+
+.link {
+  color: blue;
+  text-decoration: none;
+}
+
+img {
+  display: block; /* Ensure the image behaves like a block element */
+  width: 100%; /* Ensure the image spans the full width of its container */
+  height: 100%; /* Allow the browser to calculate the height while maintaining aspect ratio */
+
+}

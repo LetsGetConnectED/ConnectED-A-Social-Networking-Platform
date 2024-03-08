@@ -2,7 +2,8 @@
   <div class="navBarLogin">
       <div class="ms-5 mt-3 heading_btn">logo</div>
       <div class="me-5 mt-3">
-          <button class="heading_btn px-2">Sign Up</button>
+          <button class="heading_btn px-2" routerLink="/register">Sign Up</button>
+
       </div>
   </div>
   <div class="main_context mt-5">
@@ -30,7 +31,7 @@
                 </div>
                 <button type="submit" class="form-control rounded_field" [disabled]="loginForm.invalid">Submit</button>
             </form>
-            <p>Don’t have an account? <a class="link">Sign Up</a></p>
+            <p>Don’t have an account? <a class="link"  routerLink="/register">Sign Up</a></p>
             <a class="link">Forgotten password?</a>
           </div>
           <div class="login_pic">
