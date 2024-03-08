@@ -1,0 +1,49 @@
+/* registration.component.css */
+.main_context{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+
+}
+
+.info_context{
+    width:80%;
+    height: 60vh;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+}
+.navBarLogin{
+    display: flex;
+    justify-content: space-between;
+}
+form {
+  max-width: 300px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+ 
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+ 
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+ 
+/* //button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+} */
