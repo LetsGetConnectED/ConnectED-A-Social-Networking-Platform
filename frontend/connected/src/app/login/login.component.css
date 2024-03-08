@@ -1,0 +1,50 @@
+.main_context{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+
+}
+
+.info_context{
+    width:80%;
+    height: 60vh;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+}
+.navBarLogin{
+    display: flex;
+    justify-content: space-between;
+}
+.login_info{
+
+    width: 70%;
+    height: 100%;
+}
+.login_pic{
+    width: 30%;
+    height: 100%;
+    
+
+}
+.rounded_field{
+    border-radius: 20px;
+}
+button{
+    background-color: #25371B;
+    color: white
+    ;
+}
+.link{
+    color: blue;
+    text-decoration: none;
+}
+img{
+    display: block; /* Ensure the image behaves like a block element */
+    width: 100%; /* Ensure the image spans the full width of its container */
+    height: 100%; /* Allow the browser to calculate the height while maintaining aspect ratio */
+
+}

@@ -1,0 +1,41 @@
+<div class="container-fluid main_background">
+  <div class="navBarLogin">
+      <div class="ms-5 mt-3 heading_btn">logo</div>
+      <div class="me-5 mt-3">
+          <button class="heading_btn px-2">Sign Up</button>
+      </div>
+  </div>
+  <div class="main_context mt-5">
+      <div class="info_context">
+          <div class="login_info p-3">
+              <h1 class="">Login</h1>
+              <form class="mb-5" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label fw-semibold">Email</label>
+                    <input type="email" class="form-control rounded_field" id="exampleInputEmail1" aria-describedby="emailHelp" required email ngModel name="email">
+                    <!-- Add 'name' attribute to the input field -->
+                    <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                        <p class="text-danger" *ngIf="email.errors?.['required']">Email is required</p>
+                        <p class="text-danger" *ngIf="email.errors?.['email']">Invalid email format</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="exampleInputPassword1" class="form-label fw-semibold">Password</label>
+                    <input type="password" class="form-control rounded_field" id="exampleInputPassword1" name="password" ngModel required minlength="8">
+                    <!-- Add 'name' attribute to the input field -->
+                    <div *ngIf="password.invalid && (password.dirty || password.touched)">
+                        <p class="text-danger" *ngIf="password.errors?.['required']">Password is required</p>
+                        <p class="text-danger" *ngIf="password.errors?.['minlength']">Password must be at least 8 characters long</p>
+                    </div>
+                </div>
+                <button type="submit" class="form-control rounded_field" [disabled]="loginForm.invalid">Submit</button>
+            </form>
+            <p>Don’t have an account? <a class="link">Sign Up</a></p>
+            <a class="link">Forgotten password?</a>
+          </div>
+          <div class="login_pic">
+              <img src="assets/grp-2.jpeg" alt="">
+          </div>
+      </div>
+  </div>
+</div>
