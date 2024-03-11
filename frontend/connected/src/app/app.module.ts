@@ -19,6 +19,7 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule
     

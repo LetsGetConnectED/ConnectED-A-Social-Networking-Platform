@@ -1,10 +1,10 @@
-.main_context {
+.main_context{
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.info_context {
+.info_context{
   width: 80%;
   height: 75vh;
   background-color: white;
@@ -13,38 +13,37 @@
   overflow: hidden;
 }
 
-.navBarLogin {
+.navBarRegister{
   display: flex;
   justify-content: space-between;
 }
 
-.registration_info {
+.register_info{
   width: 70%;
   height: 100%;
 }
 
-.registration_pic {
-  width: 50%;
+.register_pic{
+  width: 30%;
   height: 100%;
 }
 
-.rounded_field {
+.rounded_field{
   border-radius: 20px;
 }
 
-button {
+button{
   background-color: #25371B;
   color: white;
 }
 
-.link {
+.link{
   color: blue;
   text-decoration: none;
 }
 
-img {
-  display: block; /* Ensure the image behaves like a block element */
-  width: 100%; /* Ensure the image spans the full width of its container */
-  height: 100%; /* Allow the browser to calculate the height while maintaining aspect ratio */
-
+img{
+  display: block;
+  width: 100%;
+  height: 100%;
 }
