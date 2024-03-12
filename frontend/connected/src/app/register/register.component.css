@@ -12,7 +12,10 @@
   display: flex;
   overflow: hidden;
 }
-
+.navBarLogin{
+  display: flex;
+  justify-content: space-between;
+}
 .navBarRegister{
   display: flex;
   justify-content: space-between;
@@ -29,7 +32,7 @@
 }
 
 .rounded_field{
-  border-radius: 20px;
+  border-radius: 30px;
 }
 
 button{
@@ -47,3 +50,4 @@ img{
   width: 100%;
   height: 100%;
 }
+

@@ -1,56 +1,80 @@
 <div class="container-fluid main_background">
-  <div class="navBarRegister">
-      <div class="ms-5 mt-3 heading_btn">logo</div>
-      <div class="me-5 mt-3">
-          <button class="heading_btn px-2" routerLink="/login">Login</button>
-      </div>
-  </div>
-  <div class="main_context mt-5">
-      <div class="info_context">
-          <div class="register_info p-3">
-              <h1 class="">Create your account</h1>
-              <form class="mb-5" formGroupName="registerForm">
+    <div class="navBarLogin">
+        <div class="ms-5 mt-3 heading_btn">logo</div>
+        <div class="me-5 mt-3">
+            <button class="heading_btn px-2" routerLink="/login">Login</button>
+        </div>
+    </div>
+    <div class="main_context mt-5">
+        <div class="info_context">
+            <div class="register_info p-3">
+                <h1 class="">Create your account</h1>
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                  <br>
+                    <!-- Username Input -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold">Username</label>
+                        <input type="text" class="form-control rounded_field" id="username" formControlName="username">
+                        <div *ngIf="registerForm.get('username')?.errors as usernameErrors">
+                            <div
+                                *ngIf="usernameErrors && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)">
+                                <p class="text-danger" *ngIf="usernameErrors['required']">Username is required</p>
+                            </div>
+                        </div>
+                    </div>
+  
+                    <!-- Email Input -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold">Email</label>
+                        <input type="email" class="form-control rounded_field" id="email" formControlName="email">
+                        <div *ngIf="registerForm.get('email')?.errors as emailErrors">
+                            <div
+                                *ngIf="emailErrors && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
+                                <p class="text-danger" *ngIf="emailErrors['required']">Email is required</p>
+                                <p class="text-danger" *ngIf="emailErrors['email']">Invalid email format</p>
+                            </div>
+                        </div>
+                    </div>
+  
+                    <!-- Password Input -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <input type="password" class="form-control rounded_field" id="password" formControlName="password">
+                        <div *ngIf="registerForm.get('password')?.errors as passwordErrors">
+                            <div *ngIf="passwordErrors && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
+                                <p class="text-danger" *ngIf="passwordErrors['required']">Password is required</p>
+                                <p class="text-danger" *ngIf="passwordErrors['minlength']">Password must be at least 8 characters long</p>
+                            </div>
+                        </div>
+                    </div>
+  
+                    <!-- Confirm Password Input -->
+                    <div class="mb-4">
+                        <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                        <input type="password" class="form-control rounded_field" id="confirmPassword"
+                            formControlName="confirmPassword">
+                        <div *ngIf="registerForm.get('confirmPassword')?.errors as confirmPasswordErrors">
+                            <div *ngIf="confirmPasswordErrors && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)">
+                                <p class="text-danger" *ngIf="confirmPasswordErrors['required']">Confirm Password is required</p>
+                                <p class="text-danger" *ngIf="confirmPasswordErrors['minlength']">Confirm Password must be at least 8 characters long</p>
+                                <p class="text-danger" *ngIf="confirmPasswordErrors['passwordMismatch']">Passwords do not match</p>
+                                <p class="text-danger" *ngIf="confirmPasswordErrors['passwordMismatch']">Passwords do not match</p>
+                            </div>
+                        </div>
+                    </div>
+  
+                    <!-- Submit Button -->
+                    <button type="submit" class="form-control rounded_field" (click)="onSubmit()" [disabled]="registerForm.invalid">Submit</button>
+                </form>
+  
                 <br>
-                <div class="mb-3">
-                    <label for="exampleInputUsername" class="form-label fw-semibold">Username</label>
-                    <input type="text" class="form-control rounded_field" id="exampleInputUsername" aria-describedby="usernameHelp" required formControlName="username">
-                    <div *ngIf="registerForm.controls.username.invalid && (username.dirty || username.touched)">
-                        <p class="text-danger" *ngIf="registerForm.controls ['username'].hasError('required')">Username is required</p>
-                        <p class="text-danger" *ngIf="registerForm.controls"> Invalid Username format</p>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputEmail" class="form-label fw-semibold">Email</label>
-                    <input type="email" class="form-control rounded_field" id="exampleInputEmail" aria-describedby="emailHelp" required   formControlName="email">
-                    <div *ngIf="registerForm.controls.email.invalid && (email.dirty || email.touched)">
-                        <p class="text-danger" *ngIf="registerForm.controls.required">Email is required</p>
-                        <p class="text-danger" *ngIf="registerForm.controls">Invalid email format</p>
-                    </div> 
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword" class="form-label fw-semibold">Password</label>
-                    <input type="password" class="form-control rounded_field" id="exampleInputPassword" formControlName="password"  required minlength="8">
-                    <div *ngIf="registerForm.controls.Password.invalid && (password.dirty || password.touched)">
-                        <p class="text-danger" *ngIf="registerForm.controls.required">Password is required</p>
-                        <p class="text-danger" *ngIf="registerForm.controls">Password must be at least 8 characters long</p>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label for="exampleInputConfirmPassword" class="form-label fw-semibold">Confirm Password</label>
-                    <input type="password" class="form-control rounded_field" id="exampleInputConfirmPassword" formControlName="confirmPassword"  required minlength="8" equalTo="#exampleInputPassword">
-                    <div *ngIf="registerForm.controls.confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)">
-                        <p class="text-danger" *ngIf="registerForm.controls.required">Confirm Password is required</p>
-                        <p class="text-danger" *ngIf="registerForm.controls.minlength">Confirm Password must be at least 8 characters long</p>
-                        <p class="text-danger" *ngIf="registerForm.controls.equalTo">Passwords do not match</p>
-                    </div> 
-                </div>
-                <button type="submit" class="form-control rounded_field" (click)="onSubmit()" [disabled]="registerForm.invalid">Submit</button>
-            </form>
-            <p>Already have an account? <a class="link"  routerLink="/login">Login</a></p>
-          </div>
-          <div class="register_pic">
-              <img src="assets/grp.jpeg" alt="">
-          </div>
-      </div>
+  
+                <p>Already have an account? <a class="link" routerLink="/login">Login</a></p>
+            </div>
+            <div class="register_pic">
+                <img src="assets/grp.jpeg" alt="">
+            </div>
+        </div>
+    </div>
   </div>
-</div>
+  
