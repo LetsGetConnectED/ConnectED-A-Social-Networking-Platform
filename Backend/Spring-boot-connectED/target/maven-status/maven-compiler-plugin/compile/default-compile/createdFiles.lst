@@ -1,0 +1,5 @@
+com\example\demo\Model\Post.class
+com\example\demo\Controller\PostController.class
+com\example\demo\Repository\PostRepository.class
+com\example\demo\Service\PostService.class
+com\example\demo\SpringBootLinkedinApplication.class
