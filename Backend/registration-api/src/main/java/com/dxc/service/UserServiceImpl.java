@@ -31,6 +31,8 @@ public class UserServiceImpl implements UserService {
 //		final Optional<User> optionalUser = this.userRepository.findByUsernameAndPassword(username, password);
 		final Optional<User> optionalUser = this.userRepository.findByUsername(username);
 		System.out.println(optionalUser.toString());
+		System.out.println("hello");
+		
 		if (optionalUser.isEmpty()) {
 			throw new UserNotFoundException("User Not Found");
 		}

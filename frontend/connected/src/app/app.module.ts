@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { HeaderAuthComponent } from './header-auth/header-auth.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ForgetPasswordComponent
+    ForgetPasswordComponent,
+    HeaderAuthComponent
   ],
   imports: [
     BrowserModule,

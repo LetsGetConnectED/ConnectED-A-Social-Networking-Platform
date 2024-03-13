@@ -20,8 +20,7 @@ public class User implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userid;
-    
+    private int userid; 
     private String username;
     private String useremail;
     private String userpassword;

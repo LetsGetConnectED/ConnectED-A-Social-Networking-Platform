@@ -1,8 +1,13 @@
 package com.dxc.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+//import lombok.Data;
+//
+//@Data
+@Getter
+@Setter
 public class SigninRequest {
 	
 	private String useremail;
@@ -10,13 +15,19 @@ public class SigninRequest {
 	private String userpassword;
 
 	public String getUseremail() {
-		// TODO Auto-generated method stub
-		return null;
+		return useremail;
 	}
 
-	public Object getUserpassword() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setUseremail(String useremail) {
+		this.useremail = useremail;
+	}
+
+	public String getUserpassword() {
+		return userpassword;
+	}
+
+	public void setUserpassword(String userpassword) {
+		this.userpassword = userpassword;
 	}
 
 
