@@ -1,20 +1,15 @@
 package com.dxc.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Map;
 
-public class JWTService {
+public interface JWTService {
 
-	public String extractUserName(String token) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    String extractUserName(String token);
 
-	public String generatetoken(UserDetails userDetails) {
-		return null;
-	}
-	
-	public boolean isTokenValid(String token, UserDetails userDetails) {
-		return true;
-	    
-	}
+    String generateToken(UserDetails userDetails);
+
+    boolean isTokenValid(String token, UserDetails userDetails);
+    
+    String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails);
 }
