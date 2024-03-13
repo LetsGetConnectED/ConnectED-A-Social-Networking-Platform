@@ -11,7 +11,7 @@ public interface UserService {
 	
 	User putUser(Long u_id);
 	
-	void DeleteUser(Long u_id);
+	void deleteUser(Long u_id);
 	
 	
 
