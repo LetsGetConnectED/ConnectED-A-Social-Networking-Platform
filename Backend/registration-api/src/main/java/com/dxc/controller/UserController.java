@@ -40,8 +40,11 @@ public class UserController {
 	public String authenticateUser(@RequestBody UserCred credentails) throws UserNotFoundException, IncorrectPinException{
 		try {
 			final User user = this.service.authenticateUser(credentails.getUsername(), credentails.getPassword());
+			System.out.println("hello");
 			return user.toString();		
+			
 		} catch (Exception UserNotFoundException) {
+			System.out.println("hello2");
 			return "User Not Found!!";
 		}
 	}

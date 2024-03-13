@@ -8,6 +8,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  mismatch:boolean=false
 
   constructor(private formBuilder: FormBuilder) {
     this.registerForm = this.formBuilder.group({
@@ -15,29 +16,28 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]]
-    }, {
-      validator: this.passwordMatchValidator
     });
   }
 
-  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const password = control.get('password')?.value;
-    const confirmPassword = control.get('confirmPassword')?.value;
+ 
 
+  confirmvalidation() {
+    const password =this.registerForm.get('password')?.value
+    const confirmPassword = this.registerForm.get('confirmPassword')?.value
+  
     if (password !== confirmPassword) {
-      console.log('Password do not match');
-      return { 'passwordMismatch' : true};
-
-      
+      this.mismatch=true
     }
-    return null;
+    else{
+      this.mismatch=false
+    }
+    
   }
 
   onSubmit(): void {
     if (this.registerForm.valid) {
       console.log('Form submitted successfully!');
       // Add your form submission logic here
-      
     }
   }
 }
