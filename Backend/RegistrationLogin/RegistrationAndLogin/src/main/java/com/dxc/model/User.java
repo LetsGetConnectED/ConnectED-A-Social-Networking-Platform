@@ -20,24 +20,25 @@ public class User implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userid;
-    
+    private int userid; 
     private String username;
     private String useremail;
     private String userpassword;
     private Role role;
-    
+    private String token;
     public User() {
         super();
     }
     
-    public User(int userid, String username, String useremail, String userpassword, Role role) {
+    public User(int userid, String username, String useremail, String userpassword, Role role,String token) {
         super();
         this.userid = userid;
         this.username = username;
         this.useremail = useremail;
         this.userpassword = userpassword;
         this.role = role;
+        this.token =token;
+        
     }
     
     public int getUserid() {
@@ -76,7 +77,15 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    @Override
+    public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
