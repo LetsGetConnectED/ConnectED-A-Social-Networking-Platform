@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { HeaderAuthComponent } from './header-auth/header-auth.component';
+import { AboutComponent } from './about/about.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { HeaderAuthComponent } from './header-auth/header-auth.component';
     LoginComponent,
     RegisterComponent,
     ForgetPasswordComponent,
-    HeaderAuthComponent
+    HeaderAuthComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
