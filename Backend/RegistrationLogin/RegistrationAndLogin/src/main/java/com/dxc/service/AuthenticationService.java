@@ -4,13 +4,18 @@ import com.dxc.dto.JwtAuthenticationResponse;
 import com.dxc.dto.RefreshTokenRequest;
 import com.dxc.dto.SignUpRequest;
 import com.dxc.dto.SigninRequest;
+import com.dxc.exception.InvalidCredentialsException;
+import com.dxc.exception.UserExistsException;
 import com.dxc.model.User;
 
 public interface AuthenticationService {
+    User signup(SignUpRequest signUpRequest) throws UserExistsException;
 
-    User signup(SignUpRequest signUpRequest);
+    JwtAuthenticationResponse signin(SigninRequest signinRequest) throws InvalidCredentialsException;
 
-    JwtAuthenticationResponse signin(SigninRequest signinRequest);
-    
     JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+
+    JwtAuthenticationResponse adminSignin(SigninRequest signinRequest);
+
+	JwtAuthenticationResponse generateToken(User user);
 }
