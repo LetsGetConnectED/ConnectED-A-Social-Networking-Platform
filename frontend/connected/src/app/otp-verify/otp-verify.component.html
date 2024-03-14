@@ -11,6 +11,7 @@
             <input type="text" maxlength="1" class="mx-2" (input)="onOtpInput($event, 3)">
            </div>
            <button type="submit" class="rounded_field submit form-control mt-3" [disabled]="!isOtpComplete()">Submit</button>
+           <button type="submit" class="rounded_field submit form-control mt-2" [disabled]="!isOtpCame"><i class="bi bi-arrow-repeat"></i></button>
         </div>
     </div>
 </div>
