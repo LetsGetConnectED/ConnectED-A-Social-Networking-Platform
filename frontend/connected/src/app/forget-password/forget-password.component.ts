@@ -19,7 +19,7 @@ export class ForgetPasswordComponent implements OnInit {
   onSubmit(): void {
     if (this.loginForm.valid) {
       console.log('Form submitted successfully!');
-      
+      this.router.navigate(['/otp']);
     }
   }
 
