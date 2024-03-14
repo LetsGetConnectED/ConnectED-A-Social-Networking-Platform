@@ -35,6 +35,7 @@ build/
 # Exclude Eclipse .metadata folder
 Backend/RegistrationLogin/.metadata/
 ConnectED-A-Social-Networking-Platform\Backend\RegistrationLogin\.metadata\.plugins\org.eclipse.core.resources\.history
+ConnectED-A-Social-Networking-Platform\Backend\registration-api\src\main\resources\application.properties
 
 # Exclude Eclipse .history folder
 Backend/RegistrationLogin/.metadata/.plugins/org.eclipse.core.resources/.history/

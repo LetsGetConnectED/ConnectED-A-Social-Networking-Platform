@@ -1,0 +1,10 @@
+.navbar{
+    background-color: #ffffff;
+    width: 100%;
+}
+img{
+    display: block; /* Ensure the image behaves like a block element */
+    width: 7rem; /* Ensure the image spans the full width of its container */
+    height: 3rem; /* Allow the browser to calculate the height while maintaining aspect ratio */
+    background-color: #25371b
+}

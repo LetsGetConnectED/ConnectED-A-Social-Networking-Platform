@@ -1,0 +1,94 @@
+
+    <div class="main_context container-fluid">
+      <div class="info_context">
+        <div class="about_info p-3">
+          <h1 class="">About Me</h1>
+          <br>
+          <form [formGroup]="aboutForm" (ngSubmit)="onSubmit()">
+
+                <!-- Name Input -->
+                <div class="mb-3">
+                  <label for="name" class="form-label fw-semibold">Name</label>
+                  <input type="text" class="form-control rounded_field" id="name" formControlName="name">
+                  <div *ngIf="aboutForm.get('name')?.errors as nameErrors">
+                    <div *ngIf="nameErrors && (aboutForm.get('name')?.dirty || aboutForm.get('name')?.touched)">
+                      <p class="text-danger" *ngIf="nameErrors['required']">Name is required</p>
+                    </div>
+                  </div>
+                </div>
+            
+                <!-- Address Input -->
+                <div class="mb-3">
+                  <label for="address" class="form-label fw-semibold">Address</label>
+                  <input type="text" class="form-control rounded_field" id="address" formControlName="address">
+                </div>
+            
+                <!-- Gender Input -->
+                <div class="mb-3">
+                  <label for="gender" class="form-label fw-semibold">Gender</label>
+                  <select class="form-select rounded_field" id="gender" formControlName="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <!-- Mobile Number Input -->
+                <div class="mb-3">
+                  <label for="mobile" class="form-label fw-semibold">Mobile Number</label>
+                  <input type="tel" class="form-control rounded_field" id="mobile" formControlName="mobile">
+                </div>
+            
+                <!-- Skill Input -->
+                <div class="mb-3">
+                  <label for="skill" class="form-label fw-semibold">Skill</label>
+                  <input type="text" class="form-control rounded_field" id="skill" formControlName="skill">
+                </div>
+            
+              <!-- Occupation Input -->
+                 <div class="mb-3">
+                  <label for="occupation" class="form-label fw-semibold">Occupation</label>
+                  <input type="text" class="form-control rounded_field" id="occupation" formControlName="occupation">
+                  <div *ngIf="aboutForm.get('occupation')?.errors as occupationErrors">
+                  <div *ngIf="occupationErrors && (aboutForm.get('occupation')?.dirty || aboutForm.get('occupation')?.touched)">
+                  <p class="text-danger" *ngIf="occupationErrors['required']">Occupation is required</p>
+                 </div>
+              </div>
+            </div>
+  
+              <!-- Education Input -->
+                 <div class="mb-3">
+                  <label for="education" class="form-label fw-semibold">Education</label>
+                  <input type="text" class="form-control rounded_field" id="education" formControlName="education">
+                  <div *ngIf="aboutForm.get('education')?.errors as educationErrors">
+                  <div *ngIf="educationErrors && (aboutForm.get('education')?.dirty || aboutForm.get('education')?.touched)">
+                  <p class="text-danger" *ngIf="educationErrors['required']">Education is required</p>
+                 </div>
+              </div>
+            </div>
+  
+              <!-- Experience Input -->
+                <div class="mb-3">
+                 <label for="experience" class="form-label fw-semibold">Experience</label>
+                 <textarea class="form-control rounded_field" id="experience" formControlName="experience"></textarea>
+               </div>
+  
+              <!-- Additional Information Input -->
+                <div class="mb-3">
+                 <label for="about" class="form-label fw-semibold">About</label>
+                <textarea class="form-control rounded_field" id="about" formControlName="about"></textarea>
+               </div>
+  
+              <!-- Submit Button -->
+                <button type="submit" class="form-control rounded_field" [disabled]="aboutForm.invalid">Submit</button>
+           </form>
+         </div>
+        
+        <!--<div class="about_pic">
+          <img src="assets/about-image.jpg" alt="">
+        </div>-->
+
+      </div>
+    </div>
+  
+  

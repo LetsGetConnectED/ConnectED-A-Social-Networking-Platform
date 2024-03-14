@@ -1,10 +1,5 @@
 <div class="container-fluid main_background">
-    <div class="navBarLogin">
-        <div class="ms-5 mt-3 heading_btn">logo</div>
-        <div class="me-5 mt-3">
-            <button class="heading_btn px-2" routerLink="/login">Login</button>
-        </div>
-    </div>
+    <app-header-auth></app-header-auth>
     <div class="main_context mt-5">
         <div class="info_context">
             <div class="register_info p-3">
@@ -52,16 +47,27 @@
                     <div class="mb-4">
                         <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
                         <input type="password" class="form-control rounded_field" id="confirmPassword"
-                            formControlName="confirmPassword">
+                        formControlName="confirmPassword" (input)="confirmvalidation()">
+                    
                         <div *ngIf="registerForm.get('confirmPassword')?.errors as confirmPasswordErrors">
                             <div *ngIf="confirmPasswordErrors && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)">
                                 <p class="text-danger" *ngIf="confirmPasswordErrors['required']">Confirm Password is required</p>
-                                <p class="text-danger" *ngIf="confirmPasswordErrors['minlength']">Confirm Password must be at least 8 characters long</p>
-                                <p class="text-danger" *ngIf="confirmPasswordErrors['passwordMismatch']">Passwords do not match</p>
+                                <p class="text-danger" *ngIf="!confirmPasswordErrors['minlength']">Confirm Password must be at least 8 characters long</p>
                                 <p class="text-danger" *ngIf="confirmPasswordErrors['passwordMismatch']">Passwords do not match</p>
                             </div>
+                            <p class="text-danger" *ngIf="mismatch">Password do not match</p>
                         </div>
                     </div>
+
+                    
+                <div class="mb-3">
+                    <label for="role" class="form-label fw-semibold">Role</label>
+                    <select class="form-select rounded_field" id="role" formControlName="role">
+                      <option value="male">User</option>
+                      <option value="female">Advertiser</option>
+                      <option value="other">Recruiter</option>
+                    </select>
+                  </div>
   
                     <!-- Submit Button -->
                     <button type="submit" class="form-control rounded_field" (click)="onSubmit()" [disabled]="registerForm.invalid">Submit</button>

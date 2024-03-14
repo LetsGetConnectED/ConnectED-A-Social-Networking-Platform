@@ -30,18 +30,28 @@ public class User implements UserDetails {
     
     @Enumerated(EnumType.STRING)
     private Role role;
+<<<<<<< HEAD
     
     
+=======
+    private String token;
+>>>>>>> 9803b956d5e3410726c9811648a72b8ca5376f2e
     public User() {
         super();
     }
     
+<<<<<<< HEAD
     public User(String username, String useremail, String userpassword, Role role) {
+=======
+    public User(int userid, String username, String useremail, String userpassword, Role role,String token) {
+>>>>>>> 9803b956d5e3410726c9811648a72b8ca5376f2e
         super();
         this.username = username;
         this.useremail = useremail;
         this.userpassword = userpassword;
         this.role = role;
+        this.token =token;
+        
     }
     
     public int getUserid() {
@@ -76,7 +86,15 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    @Override
+    public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
