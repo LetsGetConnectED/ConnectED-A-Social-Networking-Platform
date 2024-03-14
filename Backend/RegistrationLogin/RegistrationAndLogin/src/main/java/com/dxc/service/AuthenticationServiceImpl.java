@@ -81,9 +81,12 @@ package com.dxc.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dxc.config.JwtTokenProvider;
 import com.dxc.dto.JwtAuthenticationResponse;
 import com.dxc.dto.RefreshTokenRequest;
 import com.dxc.dto.SignUpRequest;
@@ -108,6 +111,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private JWTService jwtService;
+    @Autowired
+    private JwtTokenProvider tokenprovider;
     
     @Override
     public User signup(SignUpRequest signUpRequest) {
@@ -115,15 +120,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //        if (password == null || password.isEmpty()) {
 //            throw new IllegalArgumentException("Password cannot be null or empty");
 //        }
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        signUpRequest.getUseremail(),
+                        signUpRequest.getUserpassword()
+                )
+        );
 
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = tokenprovider.generateToken(authentication);
+
+        // Set the token in the User object or return it separately
+        
         User user = new User();
         user.setUseremail(signUpRequest.getUseremail());
         user.setUsername(signUpRequest.getUsername());
         user.setRole(Role.USER);
         user.setUserpassword(passwordEncoder.encode(password));
-
+        user.setToken(jwt);
+        
         return userRepository.save(user);
+   
+     
+     
     }
+
+  
     
     @Override
     public JwtAuthenticationResponse signin(SigninRequest signinRequest) {
