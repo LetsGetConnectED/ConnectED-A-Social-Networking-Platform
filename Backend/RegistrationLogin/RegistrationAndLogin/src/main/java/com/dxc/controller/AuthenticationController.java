@@ -1,16 +1,21 @@
 //package com.dxc.controller;
 //
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
 //import com.dxc.dto.JwtAuthenticationResponse;
 //import com.dxc.dto.RefreshTokenRequest;
 //import com.dxc.dto.SignUpRequest;
 //import com.dxc.dto.SigninRequest;
+//import com.dxc.exception.InvalidCredentialsException;
 //import com.dxc.exception.InvalidTokenException;
+//import com.dxc.exception.UserExistsException;
 //import com.dxc.exception.UserNotFoundException;
 //import com.dxc.service.AuthenticationService;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RestController;
 //
 //@RestController
 //@RequestMapping("/api/v1/auth")
@@ -18,6 +23,7 @@
 //
 //    private final AuthenticationService authenticationService;
 //
+//    @Autowired
 //    public AuthenticationController(AuthenticationService authenticationService) {
 //        this.authenticationService = authenticationService;
 //    }
@@ -26,6 +32,8 @@
 //    public ResponseEntity<?> signup(@RequestBody SignUpRequest signUpRequest) {
 //        try {
 //            return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.signup(signUpRequest));
+//        } catch (UserExistsException e) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 //        } catch (IllegalArgumentException e) {
 //            return ResponseEntity.badRequest().body(e.getMessage());
 //        }
@@ -36,15 +44,34 @@
 //        try {
 //            String email = signinRequest.getUseremail();
 //            String password = signinRequest.getUserpassword();
+//            
+//            System.out.println("Email: "+email);
+//            System.out.println("Password: "+password);
 //            if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
 //                return ResponseEntity.badRequest().body("Email and password are required");
 //            }
 //
-//            JwtAuthenticationResponse response = authenticationService.signin(signinRequest);
-//            return ResponseEntity.ok(response);
+//            // Check if the credentials are for admin
+//            if (isAdmin(email) && isAdminPassword(password)) {
+//                JwtAuthenticationResponse response = authenticationService.adminSignin(signinRequest);
+//                return ResponseEntity.ok(response);
+//            } else {
+//                JwtAuthenticationResponse response = authenticationService.signin(signinRequest);
+//                return ResponseEntity.ok(response);
+//            }
 //        } catch (UserNotFoundException e) {
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+//        } catch (InvalidCredentialsException e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
 //        }
+//    }
+//
+//    private boolean isAdmin(String email) {
+//        return "connected@gmail.com".equals(email);
+//    }
+//
+//    private boolean isAdminPassword(String password) {
+//        return "connected".equals(password);
 //    }
 //
 //    @PostMapping("/refresh")
@@ -68,7 +95,6 @@ import com.dxc.dto.RefreshTokenRequest;
 import com.dxc.dto.SignUpRequest;
 import com.dxc.dto.SigninRequest;
 import com.dxc.exception.InvalidCredentialsException;
-import com.dxc.exception.InvalidTokenException;
 import com.dxc.exception.UserExistsException;
 import com.dxc.exception.UserNotFoundException;
 import com.dxc.service.AuthenticationService;
@@ -105,23 +131,8 @@ public class AuthenticationController {
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest) {
         try {
-            String email = signinRequest.getUseremail();
-            String password = signinRequest.getUserpassword();
-            
-            System.out.println("Email: "+email);
-            System.out.println("Password: "+password);
-            if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-                return ResponseEntity.badRequest().body("Email and password are required");
-            }
-
-            // Check if the credentials are for admin
-            if (isAdmin(email) && isAdminPassword(password)) {
-                JwtAuthenticationResponse response = authenticationService.adminSignin(signinRequest);
-                return ResponseEntity.ok(response);
-            } else {
-                JwtAuthenticationResponse response = authenticationService.signin(signinRequest);
-                return ResponseEntity.ok(response);
-            }
+            JwtAuthenticationResponse response = authenticationService.signin(signinRequest);
+            return ResponseEntity.ok(response);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         } catch (InvalidCredentialsException e) {
@@ -129,23 +140,13 @@ public class AuthenticationController {
         }
     }
 
-    private boolean isAdmin(String email) {
-        return "connected@gmail.com".equals(email);
-    }
-
-    private boolean isAdminPassword(String password) {
-        return "connected".equals(password);
-    }
-
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        try {
-            JwtAuthenticationResponse response = authenticationService.refreshToken(refreshTokenRequest);
-            return ResponseEntity.ok(response);
-        } catch (InvalidTokenException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
-        }
-    }
+//    @PostMapping("/refresh")
+//    public ResponseEntity<?> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+//        try {
+//            JwtAuthenticationResponse response = authenticationService.refreshToken(refreshTokenRequest);
+//            return ResponseEntity.ok(response);
+//        } catch (UserNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+//        }
+//    }
 }

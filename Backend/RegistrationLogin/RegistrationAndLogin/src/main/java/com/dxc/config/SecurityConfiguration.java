@@ -102,6 +102,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.dxc.model.Role;
 import com.dxc.service.UserService;
+import com.dxc.service.UserServiceImpl;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -117,26 +119,33 @@ public class SecurityConfiguration {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     
     @Autowired
     private UserDetailsService userDetailsService;
     
     @Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(AbstractHttpConfigurer::disable)
-		.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
-				.permitAll()
-				.requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
-				.requestMatchers("/api/v1/user").hasAnyAuthority(Role.USER.name())
-				.requestMatchers("/api/v1/recruiter").hasAnyAuthority(Role.RECRUITER.name())
-				.requestMatchers("/api/v1/advertiser").hasAnyAuthority(Role.ADVERTISER.name())
-				.anyRequest().authenticated())
+//		http.csrf(AbstractHttpConfigurer::disable)
+//		.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
+//				.permitAll()
+//				.requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
+//				.requestMatchers("/api/v1/user").hasAnyAuthority(Role.USER.name())
+//				.requestMatchers("/api/v1/recruiter").hasAnyAuthority(Role.RECRUITER.name())
+//				.requestMatchers("/api/v1/advertiser").hasAnyAuthority(Role.ADVERTISER.name())
+//				.anyRequest().authenticated())
+//		
+//		.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//		.authenticationProvider(authenticationProvider()).addFilterBefore(
+//				jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
+//				);
+//		return http.build();
+    	http.authorizeRequests().requestMatchers("/api/v1/user")
+		.permitAll().anyRequest().authenticated().and().exceptionHandling().and().sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
-		.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-		.authenticationProvider(authenticationProvider()).addFilterBefore(
-				jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
-				);
+		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+	
 		return http.build();
 	}
 		
