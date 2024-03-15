@@ -8,11 +8,9 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { HeaderAuthComponent } from './header-auth/header-auth.component';
-<<<<<<< HEAD
 import { AboutComponent } from './about/about.component';
-=======
 import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
->>>>>>> a98a9563cc2a1f7b4425652b505f07b120dc230b
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -22,11 +20,9 @@ import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
     RegisterComponent,
     ForgetPasswordComponent,
     HeaderAuthComponent,
-<<<<<<< HEAD
-    AboutComponent
-=======
-    OtpVerifyComponent
->>>>>>> a98a9563cc2a1f7b4425652b505f07b120dc230b
+    AboutComponent,
+    OtpVerifyComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

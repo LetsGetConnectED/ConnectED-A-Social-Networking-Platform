@@ -1,6 +1,31 @@
-  body {
+  .main_background{
+    background-color: #B7C6B1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
+    position: fixed;
+  }
+
+  .heading_btn{
+    background-color: #25371B;
+    color: white;
+    border-radius: 15px;
+  }
+
+  .main_context{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color:#B7C6B1;
+  }
+  
+  body {
+    margin: 50px;
+    padding: 10px;
     font-family: 'Arial', sans-serif;
     background-color: #25371B; 
   }
@@ -27,17 +52,9 @@
     cursor: pointer;
   }
   
-  .main_context {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background-color:#25371B;
-  }
-  
   .info_context {
     width: 80%;
-    height: 125vh;
+    height: 120vh;
     background-color: white;
     border-radius: 20px;
     display: flex;
@@ -45,7 +62,7 @@
   }
   
   .about_info {
-    width: 70%;
+    width: 100%;
     height: 100%;
   }
   
@@ -54,10 +71,39 @@
     flex-direction: column;
     align-items: stretch;
   }
-  
-  .mb-3 {
-    margin-bottom: 20px;
+
+  .skill {
+    width: 50%;
+    height: 50%;
+    padding: 0px 12px;
   }
+
+  .skill {
+    width: 50%;
+    height: 50%;
+    padding: 0px 12px;
+  }
+  
+  .skill input[type="checkbox"] {
+    display: none; /* Hide the checkbox */
+  }
+  
+  .skill label {
+    display: block;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  
+  .skill input[type="checkbox"]:checked + label {
+    background-color: #25371B;
+    color: #fff;
+  }
+  
+  
   
   .form-label {
     font-weight: bold;
@@ -81,7 +127,7 @@
   button {
     background-color: #25371B;
     color: white;
-    border: none;
+    border: navajowhite;
     padding: 10px 20px;
     cursor: pointer;
   }
