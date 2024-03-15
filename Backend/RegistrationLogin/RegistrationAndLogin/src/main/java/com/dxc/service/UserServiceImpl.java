@@ -1,11 +1,14 @@
 package com.dxc.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.dxc.model.User;
 import com.dxc.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,21 +21,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private UserRepository userRepository;
 	
 
+	  @Override
+	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	        Optional<User> user = userRepository.findById((long) 1);
+	        System.out.println("user in database: "+user.toString());
+	              //  .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+
+	        return org.springframework.security.core.userdetails.User
+	                .withUsername(user.get().getUseremail())
+	                .password(user.get().getUserpassword())
+	                .roles(user.get().getRole().name())
+	                .accountExpired(false)
+	                .accountLocked(false)
+	                .credentialsExpired(false)
+	                .disabled(false)
+	                .build();
+	    }
+
+
 			
-			@Override
-			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-			    return userRepository.findByUseremail(username)
-			            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-			}
-
-
-
-			@Override
-			public UserDetailsService userDetailsService() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
 		}
 	
 
