@@ -9,11 +9,15 @@ import { Router } from '@angular/router';
 })
 export class OtpVerifyComponent implements OnInit {
   otp: string = '';
-  otpInputs: string[] = ['', '', '', '']; // Initialize with empty strings
+  otpInputs: string[] = ['', '', '', '']; // Initialize with empty strings\
+  isOtpCame:boolean=false;
   constructor(private formBuilder: FormBuilder , private router: Router) {
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.isOtpCame=true
+    }, 1500);
   }
 
   onOtpInput(event: any, index: number): void {

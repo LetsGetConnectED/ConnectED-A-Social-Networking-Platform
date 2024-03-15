@@ -10,10 +10,13 @@ public class SignUpRequest {
     private String useremail;
     private String userpassword;
     private String role;
+<<<<<<< HEAD
+=======
     private String token;
 	public long getUserid() {
 		return userid;
 	}
+>>>>>>> 9803b956d5e3410726c9811648a72b8ca5376f2e
 	public String getUsername() {
 		return username;
 	}
@@ -41,6 +44,16 @@ public class SignUpRequest {
 	public void setUserpassword(String userpassword) {
 		this.userpassword = userpassword;
 	}
+<<<<<<< HEAD
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
+    
+=======
 	public void setRole(String role) {
 		this.role = role;
 	}
@@ -48,6 +61,7 @@ public class SignUpRequest {
 		this.token = token;
 	}
 	
+>>>>>>> 9803b956d5e3410726c9811648a72b8ca5376f2e
 
 	}
 

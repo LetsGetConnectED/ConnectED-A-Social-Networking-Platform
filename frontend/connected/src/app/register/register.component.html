@@ -58,6 +58,16 @@
                             <p class="text-danger" *ngIf="mismatch">Password do not match</p>
                         </div>
                     </div>
+
+                    
+                <div class="mb-3">
+                    <label for="role" class="form-label fw-semibold">Role</label>
+                    <select class="form-select rounded_field" id="role" formControlName="role">
+                      <option value="male">User</option>
+                      <option value="female">Advertiser</option>
+                      <option value="other">Recruiter</option>
+                    </select>
+                  </div>
   
                     <!-- Submit Button -->
                     <button type="submit" class="form-control rounded_field" (click)="onSubmit()" [disabled]="registerForm.invalid">Submit</button>
