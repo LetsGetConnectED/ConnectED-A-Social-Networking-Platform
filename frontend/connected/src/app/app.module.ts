@@ -9,6 +9,8 @@ import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { HeaderAuthComponent } from './header-auth/header-auth.component';
 import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
+import { ProfileComponent } from './profile/profile.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -18,14 +20,16 @@ import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
     RegisterComponent,
     ForgetPasswordComponent,
     HeaderAuthComponent,
-    OtpVerifyComponent
+    OtpVerifyComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
     
   ],
   providers: [],
