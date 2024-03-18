@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
-@RequestMapping("/api/v1/user")
-public class UserController {
+@RequestMapping("/api/v1/recruiter")
+public class RecruiterController {
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_RECRUITER')")
     public ResponseEntity<String> sayHello() {
-        return ResponseEntity.ok("Hi User");
+        return ResponseEntity.ok("Hi Recruiter");
     }
 }
