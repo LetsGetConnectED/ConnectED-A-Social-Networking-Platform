@@ -17,22 +17,17 @@ public class RegistrationAndLoginApplication implements CommandLineRunner {
         SpringApplication.run(RegistrationAndLoginApplication.class, args);
     }
  
-//	@Override
-//	public void run(String... args) throws Exception {
-//		// TODO Auto-generated method stub
-//		
-//	}
- 
-    @Override
-    public void run(String... args) throws Exception {
-        User adminAccount = userRepository.findByRole(Role.ADMIN);
-        if (adminAccount == null) {
-            User user = new User();
-            user.setUseremail("connected@gmail.com");
-            user.setUsername("ConnectED");
-            user.setUserpassword("connected11");
-            user.setRole(Role.ADMIN);
-            userRepository.save(user);
-        }
-    }
+
+  @Override
+  public void run(String... args) throws Exception {
+     User adminAccount = userRepository.findByRole(Role.ADMIN);
+     if (adminAccount == null) {
+         User user = new User();
+        user.setUseremail("connected@gmail.com");
+        user.setUsername("ConnectED");
+         user.setUserpassword("connected11");
+         user.setRole(Role.ADMIN);
+           userRepository.save(user);
+     }
+  }
 }

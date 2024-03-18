@@ -126,28 +126,50 @@ public class SecurityConfiguration {
     
     @Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//		http.csrf(AbstractHttpConfigurer::disable)
-//		.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
-//				.permitAll()
+		http.csrf(AbstractHttpConfigurer::disable)
+		.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**", "/api/v1/auth/signin","/api/v1/admin", "/api/v1/user","/api/v1/recruiter","/api/v1/advertiser" )
+				.permitAll()
 //				.requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
 //				.requestMatchers("/api/v1/user").hasAnyAuthority(Role.USER.name())
 //				.requestMatchers("/api/v1/recruiter").hasAnyAuthority(Role.RECRUITER.name())
 //				.requestMatchers("/api/v1/advertiser").hasAnyAuthority(Role.ADVERTISER.name())
-//				.anyRequest().authenticated())
-//		
-//		.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//		.authenticationProvider(authenticationProvider()).addFilterBefore(
-//				jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
-//				);
-//		return http.build();
-    	http.authorizeRequests().requestMatchers("/api/v1/user")
-		.permitAll().anyRequest().authenticated().and().exceptionHandling().and().sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.anyRequest().authenticated())
 		
-		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-	
+		.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		.authenticationProvider(authenticationProvider()).addFilterBefore(
+				jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
+				);
 		return http.build();
-	}
+    }
+    
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.csrf(AbstractHttpConfigurer::disable)
+//            .authorizeRequests()
+//                .requestMatchers("/api/v1/auth/signup", "/api/v1/auth/signin").permitAll()
+//                .requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
+//                .requestMatchers("/api/v1/user").hasAnyAuthority(Role.USER.name())
+//                .requestMatchers("/api/v1/recruiter").hasAnyAuthority(Role.RECRUITER.name())
+//                .requestMatchers("/api/v1/advertiser").hasAnyAuthority(Role.ADVERTISER.name())
+//                .anyRequest().authenticated()
+//            .and()
+//            .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        http.authenticationProvider(authenticationProvider())
+//            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
+
+//    	http.authorizeRequests().requestMatchers("/api/v1/user","/api/v1/admin")
+//		.permitAll().anyRequest().authenticated().and().exceptionHandling().and().sessionManagement()
+//		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//		
+//		http.authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//	
+//		return http.build();
+//	}
 		
     
     @Bean
