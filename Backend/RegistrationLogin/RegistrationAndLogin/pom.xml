@@ -22,6 +22,10 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-mail</artifactId>
+</dependency>
+		<dependency>
     <groupId>org.projectlombok</groupId>
     <artifactId>lombok</artifactId>
     <version>1.18.22</version> <!-- Use the latest version -->
@@ -53,19 +57,14 @@
     <artifactId>spring-boot-starter-mail</artifactId>
 </dependency>
 
-<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
-<dependency>
-    <groupId>io.jsonwebtoken</groupId>
-    <artifactId>jjwt-api</artifactId>
-    <version>0.11.5</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
+
+
 <dependency>
     <groupId>io.jsonwebtoken</groupId>
     <artifactId>jjwt-impl</artifactId>
-    <version>0.11.5</version>
-    <scope>runtime</scope>
+    <version>0.11.5</version> <!-- Make sure the version matches your project -->
 </dependency>
+
 
 
 		<dependency>

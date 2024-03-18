@@ -1,74 +1,110 @@
+
+
+
+
 package com.dxc.config;
+/*
+ * import io.jsonwebtoken.*;
+ * 
+ * import org.springframework.beans.factory.annotation.Value; import
+ * org.springframework.security.core.Authentication; import
+ * org.springframework.stereotype.Component;
+ * 
+ * import java.util.Date;
+ * 
+ * @Component public class JwtTokenProvider {
+ * 
+ * @Value("${app.jwtSecret}") private String jwtSecret;
+ * 
+ * @Value("${app.jwtExpirationInMs}") private int jwtExpirationInMs;
+ * 
+ * @SuppressWarnings("deprecation") public String generateToken(String email) {
+ * Date now = new Date(); Date expiryDate = new Date(now.getTime() +
+ * jwtExpirationInMs);
+ * 
+ * return Jwts.builder() .setSubject(email) .setIssuedAt(new Date())
+ * .setExpiration(expiryDate) .signWith(SignatureAlgorithm.HS512, jwtSecret)
+ * .compact(); }
+ * 
+ * public String getEmailFromToken(String token) {
+ * 
+ * @SuppressWarnings("deprecation") Claims claims = Jwts.parser()
+ * .setSigningKey(jwtSecret) .parseClaimsJws(token) .getBody();
+ * 
+ * return claims.getSubject(); }
+ * 
+ * @SuppressWarnings("deprecation") public boolean validateToken(String
+ * authToken) { try {
+ * Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken); return
+ * true; } catch (SignatureException ex) {
+ * System.out.println("Invalid JWT signature"); } catch (MalformedJwtException
+ * ex) { System.out.println("Invalid JWT token"); } catch (ExpiredJwtException
+ * ex) { System.out.println("Expired JWT token"); } catch
+ * (UnsupportedJwtException ex) { System.out.println("Unsupported JWT token"); }
+ * catch (IllegalArgumentException ex) {
+ * System.out.println("JWT claims string is empty."); } return false; } }
+ * 
+ * 
+ */
+
+
+
 import io.jsonwebtoken.*;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.dxc.dto.SignUpRequest;
-import com.dxc.model.User;
-
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-	
-	@Autowired
-	private SignUpRequest signuprequest;
-
-
-    @Value("${app.jwtSecret}")
-    private String jwtSecret;
 
     @Value("${app.jwtExpirationInMs}")
     private int jwtExpirationInMs;
-    
 
-    public String generateToken(Authentication authentication) {
+    private final SecretKey secretKey;
 
-    	 SignUpRequest signuprequest  = ( SignUpRequest) authentication.getPrincipal();
+    public JwtTokenProvider(@Value("${app.jwtSecret}") String jwtSecret) {
+        // Generate a secure random key with sufficient size for HMAC-SHA algorithm
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    }
 
+    public String generateToken(String email) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         return Jwts.builder()
-                .setSubject(Long.toString(signuprequest.getUserid()))
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
-    public Long getUserIdFromJWT(String token) {
+    public String getEmailFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
+                .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(claims.getSubject());
+        return claims.getSubject();
     }
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException ex) {
-            // Invalid JWT signature
-            // Log the exception
+            System.out.println("Invalid JWT signature");
         } catch (MalformedJwtException ex) {
-            // Invalid JWT token
-            // Log the exception
+            System.out.println("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
-            // Expired JWT token
-            // Log the exception
+            System.out.println("Expired JWT token");
         } catch (UnsupportedJwtException ex) {
-            // Unsupported JWT token
-            // Log the exception
+            System.out.println("Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
-            // JWT claims string is empty
-            // Log the exception
+            System.out.println("JWT claims string is empty.");
         }
         return false;
     }

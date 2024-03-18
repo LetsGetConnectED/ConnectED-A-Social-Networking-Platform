@@ -1,8 +1,10 @@
 package com.dxc.dto;
 
+import org.springframework.stereotype.Component;
+
 import com.dxc.model.Role;
 
-
+@Component
 
 public class SignUpRequest {
 	private Long userid;
@@ -10,7 +12,7 @@ public class SignUpRequest {
     private String useremail;
     private String userpassword;
     private String role;
-    private String token;
+   
 	public long getUserid() {
 		return userid;
 	}
@@ -26,9 +28,7 @@ public class SignUpRequest {
 	public String getRole() {
 		return role;
 	}
-	public String getToken() {
-		return token;
-	}
+	
 	public void setUserid(Long userid) {
 		this.userid = userid;
 	}
@@ -44,9 +44,7 @@ public class SignUpRequest {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	public void setToken(String token) {
-		this.token = token;
-	}
+	
 	
 
 	}
