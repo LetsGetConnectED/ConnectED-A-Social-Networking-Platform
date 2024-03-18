@@ -3,6 +3,7 @@ package com.dxc.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Primary
 public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
@@ -23,7 +25,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	  @Override
 	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	        Optional<User> user = userRepository.findById((long) 1);
+	        Optional<User> user = userRepository.findByuseremail(username);
 	        System.out.println("user in database: "+user.toString());
 	              //  .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
 
