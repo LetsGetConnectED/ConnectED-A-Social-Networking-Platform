@@ -10,10 +10,9 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { HeaderAuthComponent } from './header-auth/header-auth.component';
 import { AboutComponent } from './about/about.component';
 import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
-<<<<<<< HEAD
 import { DashboardComponent } from './dashboard/dashboard.component';
-=======
->>>>>>> bc3d5ddf15faf7b588449b45e7f31da96c3e5669
+import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -24,19 +23,18 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ForgetPasswordComponent,
     HeaderAuthComponent,
     AboutComponent,
-<<<<<<< HEAD
     OtpVerifyComponent,
-    DashboardComponent
-=======
+    DashboardComponent,
+    DashNavAuthComponent,
     OtpVerifyComponent
->>>>>>> bc3d5ddf15faf7b588449b45e7f31da96c3e5669
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
     
   ],
   providers: [],
