@@ -33,10 +33,17 @@
 .rounded_field{
     border-radius: 20px;
 }
-button{
+button {
     background-color: #25371B;
     color: white
     ;
+}
+.toaster{
+color: white;
+width: 10rem;
+height: 3rem;
+position: absolute;
+background-color: rgb(38, 182, 72);
 }
 .link{
     color: blue;

@@ -11,6 +11,8 @@ import { HeaderAuthComponent } from './header-auth/header-auth.component';
 import { AboutComponent } from './about/about.component';
 import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AboutComponent,
     OtpVerifyComponent,
     DashboardComponent,
+    DashNavAuthComponent,
     OtpVerifyComponent
   ],
   imports: [
@@ -30,7 +33,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
     
   ],
   providers: [],

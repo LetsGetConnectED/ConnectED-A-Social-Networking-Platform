@@ -6,6 +6,8 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { AboutComponent } from './about/about.component';
 import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login page
@@ -14,6 +16,8 @@ const routes: Routes = [
   {path: 'forget-password',component:ForgetPasswordComponent},
   {path: 'about',component:AboutComponent},
   {path: 'dashboard',component:DashboardComponent},
+  {path:'otp',component:OtpVerifyComponent},
+  {path:'dash-nav-auth' , component: DashNavAuthComponent},
   {path:'otp',component:OtpVerifyComponent}
   // Add more routes here if needed
 ];
