@@ -6,11 +6,14 @@
     background-color:#B7C6B1;
     color: white;
     padding: 10px;
+    border-bottom: 1px solid #ddd;
   }
   
   .navbar-nav {
     display: flex;
     list-style-type: none;
+    background-color:white;
+    height: 100%;
     padding: 0;
     margin: 0;
   }
@@ -28,4 +31,5 @@
   .nav-link:hover {
     color: #ccc;
   }
-  
+
+ 

@@ -5,10 +5,8 @@ import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { AboutComponent } from './about/about.component';
 import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
-<<<<<<< HEAD
 import { DashboardComponent } from './dashboard/dashboard.component';
-=======
->>>>>>> bc3d5ddf15faf7b588449b45e7f31da96c3e5669
+import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login page
@@ -16,11 +14,9 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   {path: 'forget-password',component:ForgetPasswordComponent},
   {path: 'about',component:AboutComponent},
-<<<<<<< HEAD
   {path: 'dashboard',component:DashboardComponent},
-=======
->>>>>>> bc3d5ddf15faf7b588449b45e7f31da96c3e5669
-  {path:'otp',component:OtpVerifyComponent}
+  {path:'otp',component:OtpVerifyComponent},
+  {path:'dash-nav-auth' , component: DashNavAuthComponent}
   // Add more routes here if needed
 ];
 
