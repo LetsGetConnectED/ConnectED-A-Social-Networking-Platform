@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { SharedService } from '../service/shared.service';
 
 @Component({
@@ -10,14 +12,14 @@ import { SharedService } from '../service/shared.service';
 export class AboutComponent implements OnInit{
   aboutForm: FormGroup;
   experienceErrors: any;
-  skills = ['C', 'AngularJS', 'Java', 'UI', 'Presentation','c++','c#'];
+  skills = ['C', 'AngularJS', 'Java', 'UI', 'Presentation','C++','C#'];
 
   ngOnInit() {
     console.log("hitting")
     console.log(this.shared.getMessage())
   }
 
-  constructor(private formBuilder: FormBuilder,private shared:SharedService) {
+  constructor(private formBuilder: FormBuilder,private shared:SharedService,private http: HttpClient,private router: Router) {
     this.aboutForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
       lastName: [''],
@@ -56,9 +58,34 @@ filterSkills(searchTerm: string): void {
 onSubmit(): void {
 
     console.log('Form submitted successfully!');
-    console.log('Form Data:', this.aboutForm.value);
-    // Add your form submission logic here
-  
+
+    const reqBody={
+      firstName: this.aboutForm.value.firstName,
+      lastName:this.aboutForm.value.lastName,
+      gender: this.aboutForm.value.gender,
+      bio: this.aboutForm.value.about,
+      edu: this.aboutForm.value.education ,
+      skill: this.aboutForm.value.skills.join(','),
+      work_exp: this.aboutForm.value.experience,
+      city: this.aboutForm.value.city,
+      mob: this.aboutForm.value.mobile,
+      state: this.aboutForm.value.state,
+      country: this.aboutForm.value.country,
+      occupation: this.aboutForm.value.occupation,
+      email: this.shared.getMessage()
+  }
+  console.log('req Data:', this.aboutForm.value);
+  this.http.post('http://localhost:9090/users', reqBody)
+    .subscribe(
+      (response: any) => {
+        console.log('about information submitted successful!');
+        this.router.navigate(['/about']);
+      },
+      (error) => {
+        console.error('Error occurred during registration:', error);
+        // Handle error accordingly, display error message, etc.
+      }
+    );
 }
 
 }
