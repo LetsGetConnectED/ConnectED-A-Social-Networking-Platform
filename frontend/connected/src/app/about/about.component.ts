@@ -53,6 +53,7 @@ filterSkills(searchTerm: string): void {
   this.filteredSkills = this.skills.filter(skill =>
     skill.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
 }
 
 onSubmit(): void {

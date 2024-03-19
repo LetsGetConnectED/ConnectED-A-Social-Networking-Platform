@@ -9,6 +9,7 @@ import com.test.profile.exception.ResourceNotFoundException;
 import com.test.profile.service.UserServiceImpl;
 
 @RestController
+@CrossOrigin(origins="http://localhost:4200")
 @RequestMapping("/users")
 public class UserController {
 
