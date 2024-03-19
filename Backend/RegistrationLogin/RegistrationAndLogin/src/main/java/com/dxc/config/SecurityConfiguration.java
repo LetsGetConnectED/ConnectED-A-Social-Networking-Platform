@@ -102,6 +102,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.dxc.model.Role;
 import com.dxc.service.UserService;
+import com.dxc.service.UserServiceImpl;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -117,7 +119,7 @@ public class SecurityConfiguration {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     
     @Autowired
     private UserDetailsService userDetailsService;
@@ -125,12 +127,12 @@ public class SecurityConfiguration {
     @Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable)
-		.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
+		.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**", "/api/v1/auth/signin","/api/v1/admin", "/api/v1/user","/api/v1/recruiter","/api/v1/advertiser" )
 				.permitAll()
-				.requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
-				.requestMatchers("/api/v1/user").hasAnyAuthority(Role.USER.name())
-				.requestMatchers("/api/v1/recruiter").hasAnyAuthority(Role.RECRUITER.name())
-				.requestMatchers("/api/v1/advertiser").hasAnyAuthority(Role.ADVERTISER.name())
+//				.requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
+//				.requestMatchers("/api/v1/user").hasAnyAuthority(Role.USER.name())
+//				.requestMatchers("/api/v1/recruiter").hasAnyAuthority(Role.RECRUITER.name())
+//				.requestMatchers("/api/v1/advertiser").hasAnyAuthority(Role.ADVERTISER.name())
 				.anyRequest().authenticated())
 		
 		.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -138,7 +140,36 @@ public class SecurityConfiguration {
 				jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
 				);
 		return http.build();
-	}
+    }
+    
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.csrf(AbstractHttpConfigurer::disable)
+//            .authorizeRequests()
+//                .requestMatchers("/api/v1/auth/signup", "/api/v1/auth/signin").permitAll()
+//                .requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
+//                .requestMatchers("/api/v1/user").hasAnyAuthority(Role.USER.name())
+//                .requestMatchers("/api/v1/recruiter").hasAnyAuthority(Role.RECRUITER.name())
+//                .requestMatchers("/api/v1/advertiser").hasAnyAuthority(Role.ADVERTISER.name())
+//                .anyRequest().authenticated()
+//            .and()
+//            .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        http.authenticationProvider(authenticationProvider())
+//            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
+
+//    	http.authorizeRequests().requestMatchers("/api/v1/user","/api/v1/admin")
+//		.permitAll().anyRequest().authenticated().and().exceptionHandling().and().sessionManagement()
+//		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//		
+//		http.authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//	
+//		return http.build();
+//	}
 		
     
     @Bean
