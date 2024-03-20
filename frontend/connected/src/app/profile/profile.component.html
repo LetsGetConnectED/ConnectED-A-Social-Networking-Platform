@@ -3,25 +3,26 @@
     <div class="main_context mt-5">
         <div class="info_context ps-5 pt-5 row">
             <div class="img-container  ms-2 col-8">
-                <img src="assets/avatar.jpg" alt="" class="col-12">
+                <label for="imageInput">
+                    <input type="file" id="imageInput" (change)="onImageSelected($event)">
+                    <img src="assets/avatar.jpg" alt="" class="col-12">
+                </label>
             </div>
-            <div class="name-education row fw-semibold">
-                <div class="col-6 me-5"><i class="bi bi-person p-3"></i>John Doe</div>
-                <div class="col-5 ps-5"><i class="bi bi-backpack3-fill p-3"></i>Btech(Computer Science Engineering )
+            <div class="name-education row fw-semibold mt-3">
+                <div class="col-6 me-5"><i class="bi bi-person p-3"></i>{{firstname}} {{lastname}}</div>
+                <div class="col-5 ps-5"><i class="bi bi-backpack3-fill p-3"></i>{{education}}
                 </div>
             </div>
             <div class="name-education row fw-semibold">
-                <div class="col-6 me-5"> <i class="bi bi-person-workspace p-3"></i> UI/UX designer</div>
-                <div class="col-5 ps-5"><i class="bi bi-pc-display-horizontal p-3"></i>UI/UX, React, Angular, Java</div>
+                <div class="col-6 me-5"> <i class="bi bi-person-workspace p-3"></i> {{occupation}}</div>
+                <div class="col-5 ps-5"><i class="bi bi-pc-display-horizontal p-3"></i>{{skill}}</div>
             </div>
             <div class="name-education row fw-semibold">
-                <div class="col-6 me-5"><i class="bi bi-compass p-3"></i>Karnataka,India</div>
-                <div class="col-5 ps-5"><i class="bi bi-alarm-fill p-3"></i>2 years</div>
+                <div class="col-6 me-5"><i class="bi bi-compass p-3"></i>{{state}},{{country}}</div>
+                <div class="col-5 ps-5"><i class="bi bi-alarm-fill p-3"></i>{{workexp}}</div>
             </div>
             <div class="name-education row fw-semibold">
-                <div class="col-6"><i class="bi bi-file-person-fill p-3"></i>As a UI/UX engineer, I craft seamless
-                    digital experiences, blending creativity with technical expertise. My focus is on enhancing
-                    usability and creating intuitive interfaces for users.</div>
+                <div class="col-6"><i class="bi bi-file-person-fill p-3"></i>{{bio}}</div>
                 <div class="col-6 text-end"><i class="bi bi-upload" style="font-size: 42px; cursor: pointer;" (click)="togglePopup()"></i></div>
 
             </div>

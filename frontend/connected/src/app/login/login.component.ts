@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { AuthserviceService } from '../service/authservice.service';
 import { SharedService } from '../service/shared.service';
 
 @Component({
@@ -12,12 +14,13 @@ import { SharedService } from '../service/shared.service';
 export class LoginComponent implements OnInit{
   loginForm: FormGroup;
   credentials:boolean=false;
+  isUserLoggedIn=new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
   sessionStorage.clear();
   }
 
-  constructor(private formBuilder: FormBuilder,private http: HttpClient,private router: Router,private shared: SharedService) {
+  constructor(private formBuilder: FormBuilder,private http: HttpClient,private router: Router,private shared: SharedService,private authSerivce:AuthserviceService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -38,7 +41,9 @@ export class LoginComponent implements OnInit{
         this.router.navigate(['/about']);
         this.credentials=false
         sessionStorage.setItem("token",response.token)
+        this.authSerivce.isLoggedIn();
         this.shared.setMessage(this.loginForm.value.email)
+        this.isUserLoggedIn.next(true)
       },
       (error) => {
         console.error('Error occurred during registration:', error);

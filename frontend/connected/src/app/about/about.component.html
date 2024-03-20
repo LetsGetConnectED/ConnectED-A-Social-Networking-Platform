@@ -7,7 +7,7 @@
       <form [formGroup]="aboutForm" (ngSubmit)="onSubmit()">
         <div class="row mb-3">
           <div class="col-6">
-            <label for="firstName" class="form-label fw-semibold">First Name</label>
+            <label for="firstName" class="form-label">First Name</label>
             <input type="text" class="form-control rounded_field" id="firstName" formControlName="firstName">
             <div *ngIf="aboutForm.get('firstName')?.errors as firstNameErrors">
               <div
@@ -17,22 +17,22 @@
             </div>
           </div>
           <div class="col-6">
-            <label for="lastName" class="form-label fw-semibold">Last Name</label>
+            <label for="lastName" class="form-label">Last Name</label>
             <input type="text" class="form-control rounded_field" id="lastName" formControlName="lastName">
           </div>
         </div>
         <div class="mb-3">
-          <label for="address" class="form-label fw-semibold">Address</label>
+          <label for="address" class="form-label">Address</label>
         </div>
         <div class="row mb-3">
           <div class="col-md-4">
-            <label for="country" class="form-label fw-semibold">Country</label>
+            <label for="country" class="form-label">Country</label>
             <select class="form-select rounded_field" id="country" formControlName="country">
               <option value="india">India</option>
             </select>
           </div>
           <div class="col-md-4">
-            <label for="state" class="form-label fw-semibold">State</label>
+            <label for="state" class="form-label">State</label>
             <select class="form-select rounded_field" id="state" formControlName="state">
               <option value="andhra_pradesh">Andhra Pradesh</option>
               <option value="arunachal_pradesh">Arunachal Pradesh</option>
@@ -66,14 +66,14 @@
             </select>
           </div>
           <div class="col-md-4">
-            <label for="city" class="form-label fw-semibold">City</label>
+            <label for="city" class="form-label">City</label>
             <input type="text" class="form-control rounded_field" id="city" formControlName="city">
           </div>
         </div>
         <br>
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="gender" class="form-label fw-semibold">Gender</label>
+            <label for="gender" class="form-label">Gender</label>
             <select class="form-select rounded_field" id="gender" formControlName="gender">
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -81,20 +81,20 @@
             </select>
           </div>
           <div class="col-md-6">
-            <label for="mobile" class="form-label fw-semibold">Mobile Number</label>
+            <label for="mobile" class="form-label">Mobile Number</label>
             <input type="tel" class="form-control rounded_field" id="mobile" formControlName="mobile">
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-md-6">
-            <label class="form-label fw-semibold">Skills</label>
+            <label class="form-label">Skills</label>
             <select multiple class="form-select rounded_field" formControlName="skills">
               <option *ngFor="let skill of skills" [value]="skill">{{ skill }}</option>
             </select>
             <span class="ms-2 fs-6" style="color: grey">ctrl + click to choose more than one</span>
           </div>
           <div class="col-md-6">
-            <label for="occupation" class="form-label fw-semibold">Occupation</label>
+            <label for="occupation" class="form-label">Occupation</label>
             <input type="text" class="form-control rounded_field" id="occupation" formControlName="occupation">
             <div *ngIf="aboutForm.get('occupation')?.errors as occupationErrors">
               <div
@@ -107,7 +107,7 @@
         <br>
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="education" class="form-label fw-semibold">Education</label>
+            <label for="education" class="form-label">Education</label>
             <select class="form-select rounded_field" id="education" formControlName="education">
               <option value="ug">UG</option>
               <option value="pg">PG</option>
@@ -121,7 +121,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <label for="experience" class="form-label fw-semibold">Experience</label>
+            <label for="experience" class="form-label">Experience</label>
             <select class="form-select rounded_field" id="experience" formControlName="experience">
               <option value="0-2">0-2Years</option>
               <option value="5-10">5-10Years</option>
@@ -137,7 +137,7 @@
           </div>
         </div>
         <div class="mb-3">
-          <label for="about" class="form-label fw-semibold">Bio</label>
+          <label for="about" class="form-label">Bio</label>
           <textarea class="form-control rounded_field" id="about" formControlName="about"></textarea>
         </div>
         <button type="submit" class="form-control rounded_field"

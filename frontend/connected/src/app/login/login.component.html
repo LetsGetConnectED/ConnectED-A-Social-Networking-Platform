@@ -9,7 +9,7 @@
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                     <!-- Email Input -->
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label fw-semibold">Email</label>
+                        <label for="exampleInputEmail1" class="form-label ">Email</label>
                         <input type="email" class="form-control rounded_field" id="exampleInputEmail1"
                             aria-describedby="emailHelp" formControlName="email">
                         <div *ngIf="loginForm.get('email')?.errors as emailErrors">
@@ -23,7 +23,7 @@
 
                     <!-- Password Input -->
                     <div class="mb-4">
-                    <label for="exampleInputPassword1" class="form-label fw-semibold">Password</label>
+                    <label for="exampleInputPassword1" class="form-label ">Password</label>
                     <input type="password" class="form-control rounded_field" id="exampleInputPassword1" formControlName="password">
                     <div *ngIf="loginForm.get('password')?.errors as passwordErrors">
                       <div *ngIf="passwordErrors && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">

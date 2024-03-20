@@ -80,7 +80,7 @@ onSubmit(): void {
     .subscribe(
       (response: any) => {
         console.log('about information submitted successful!');
-        this.router.navigate(['/about']);
+        this.router.navigate(['/profile']);
       },
       (error) => {
         console.error('Error occurred during registration:', error);
