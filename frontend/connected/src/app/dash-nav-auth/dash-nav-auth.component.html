@@ -2,7 +2,35 @@
   <div class="col-4">
     <img src="assets/image.png" alt="" routerLink="/login" />
   </div>
-  <div class="col-4 text-center">Welcome To ConnectED</div>
+  <div class="col-4 text-center">
+    <a class="nav-link active d-flex" aria-current="page" href="#"></a>
+    <title>Search Box</title>
+    <body ng-controller="SearchController">
+      <div class="col-4 text-center">
+        <a class="nav-link active d-flex" aria-current="page" href="#">
+          <i class="bi bi-search" ng-show="showSearchIcon"></i>
+          <input
+            type="text"
+            ng-model="searchText"
+            ng-change="toggleSearchIcon()"
+            placeholder="Search..."
+          />
+        </a>
+      </div>
+      <script>
+        angular
+          .module("searchApp", [])
+          .controller("SearchController", function ($scope) {
+            $scope.searchText = "";
+            $scope.showSearchIcon = true;
+
+            $scope.toggleSearchIcon = function () {
+              $scope.showSearchIcon = $scope.searchText.trim() === "";
+            };
+          });
+      </script>
+    </body>
+  </div>
   <div class="col-4 p-3 d-flex">
     <a
       class="nav-link active d-flex flex-column text-center"
@@ -29,22 +57,10 @@
       class="nav-link active d-flex flex-column text-center"
       aria-current="page"
       href="#"
-      ><i class="bi bi-search"></i> Search</a
-    >
-
-    <a
-      class="nav-link active d-flex flex-column text-center"
-      aria-current="page"
-      href="#"
       ><i class="bi bi-gear"></i> Settings</a
     >
   </div>
 </div>
-
-
-
-
-
 
 <!-- 
 <div class="collapse navbar-collapse" id="navbarNav"> 
