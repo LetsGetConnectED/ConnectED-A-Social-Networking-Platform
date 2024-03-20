@@ -8,6 +8,7 @@ import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
 
+
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login page
   { path: 'login', component: LoginComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: 'about',component:AboutComponent},
   {path: 'dashboard',component:DashboardComponent},
   {path:'otp',component:OtpVerifyComponent},
-  {path:'dash-nav-auth' , component: DashNavAuthComponent}
+  {path:'dash-nav-auth' , component: DashNavAuthComponent},
+  {path:'otp',component:OtpVerifyComponent}
   // Add more routes here if needed
 ];
 

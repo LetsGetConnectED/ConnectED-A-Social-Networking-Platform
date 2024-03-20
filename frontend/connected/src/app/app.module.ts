@@ -12,6 +12,7 @@ import { AboutComponent } from './about/about.component';
 import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -24,14 +25,16 @@ import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
     AboutComponent,
     OtpVerifyComponent,
     DashboardComponent,
-    DashNavAuthComponent
+    DashNavAuthComponent,
+    OtpVerifyComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
     
   ],
   providers: [],

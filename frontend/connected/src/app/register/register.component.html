@@ -1,6 +1,6 @@
 <div class="container-fluid main_background">
     <app-header-auth></app-header-auth>
-    <div class="main_context mt-5">
+    <div class="main_context mt-3">
         <div class="info_context">
             <div class="register_info p-3">
                 <h1 class="">Create your account</h1>
@@ -63,14 +63,14 @@
                 <div class="mb-3">
                     <label for="role" class="form-label fw-semibold">Role</label>
                     <select class="form-select rounded_field" id="role" formControlName="role">
-                      <option value="male">User</option>
-                      <option value="female">Advertiser</option>
-                      <option value="other">Recruiter</option>
+                      <option value="User">User</option>
+                      <option value="Advertiser">Advertiser</option>
+                      <option value="Recruiter">Recruiter</option>
                     </select>
                   </div>
   
                     <!-- Submit Button -->
-                    <button type="submit" class="form-control rounded_field" (click)="onSubmit()" [disabled]="registerForm.invalid">Submit</button>
+                    <button type="submit" class="form-control rounded_field"  [disabled]="registerForm.invalid">Submit</button>
                 </form>
   
                 <br>
