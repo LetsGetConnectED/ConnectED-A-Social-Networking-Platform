@@ -12,31 +12,66 @@
     align-items: center;
 }
 .info_context{
-    width:95%;
+    width:60%;
     height: 85vh;
     background-color: white;
     border-radius: 20px;
     display: flex;
     overflow: hidden;
 }
+.toggle{
+    width: 4rem;
+    height: 4rem;
+    background-color: #25371B;
+    position: relative; /* Required for absolute positioning */
+    border-radius: 4rem;
+}
+
+
+.plus-sign {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 3px;
+    background-color: white; /* White color for the plus sign */
+}
+
+.plus-sign::after {
+    content: "";
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 30px;
+    background-color: white; /* White color for the plus sign */
+}
+
 img{
     width: 14rem;
-    border-radius: 2rem;
+    border-radius: 7rem;
     height: 14rem;
 }
 div{
     color: #25371B;
 }
+.upload{
+    color: white;
+    background-color: #25371B;
+    border-radius: 3px;
+}
 .name-education {
     height: auto; /* Set height to auto */
 }
 .img-container{
-    height: 10rem;
+    height: auto
 }
 
 .popup{
-    height: 40rem;
-    width: 60rem;
+    height: auto;
+    width: auto;
     position: absolute;
     background-color: #c7cac7;
 }
@@ -47,4 +82,7 @@ div{
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
+}
+.bi{
+    font-size: 2rem;
 }

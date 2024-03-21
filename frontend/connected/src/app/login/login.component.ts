@@ -14,7 +14,6 @@ import { SharedService } from '../service/shared.service';
 export class LoginComponent implements OnInit{
   loginForm: FormGroup;
   credentials:boolean=false;
-  isUserLoggedIn=new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
   sessionStorage.clear();
@@ -38,12 +37,19 @@ export class LoginComponent implements OnInit{
     .subscribe(
       (response: any) => {
         console.log('login successful!', response.token);
+        this.credentials=false   //error message
+        sessionStorage.setItem("token",response.token)  //token placement
+        this.authSerivce.isLoggedIn();   //authgaurdd
+        this.shared.setMessage(this.loginForm.value.email)  //email transfer
         this.router.navigate(['/about']);
-        this.credentials=false
-        sessionStorage.setItem("token",response.token)
-        this.authSerivce.isLoggedIn();
-        this.shared.setMessage(this.loginForm.value.email)
-        this.isUserLoggedIn.next(true)
+        this.http.get<any>(`http://localhost:9090/users/${this.loginForm.value.email}`)
+        .subscribe((data)=>{
+          console.log("profile found")
+          this.router.navigate(['/profile'])
+      },(error)=>{
+        console.log("profile not found")
+          this.router.navigate(['/about'])
+        })
       },
       (error) => {
         console.error('Error occurred during registration:', error);
