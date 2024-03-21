@@ -42,21 +42,37 @@ export class ProfileComponent implements OnInit {
       })
     }
   }
-
+// base64 format in string
+// else in formdata
   popupVisible: boolean = false;
   onImageSelected(event: any): void {
-    const file = event.target.files[0]; // Get the selected file
-    if (file) {
+    const file = event.target.files[0];
+    if (file && this.isValidImageFile(file) && this.isValidImageSize(file)) {
       const reader = new FileReader();
-      reader.readAsDataURL(file); // Convert the file to base64 string
+      reader.readAsDataURL(file);
       reader.onload = () => {
-        // Update the image source with the selected image
         const imgElement = document.querySelector('.img-container img');
         if (imgElement) {
           imgElement.setAttribute('src', reader.result as string);
         }
-      }}}
-
+      }
+    } else {
+      if (!this.isValidImageFile(file)) {
+        alert('Please select a valid image file (JPEG/JPG)');
+      } else if (!this.isValidImageSize(file)) {
+        alert('Image size should be less than 1MB');
+      }
+    }
+  }
+      isValidImageFile(file: File): boolean {
+        const allowedExtensions = /(\.jpg|\.jpeg)$/i;
+        return allowedExtensions.test(file.name);
+      }
+      
+      isValidImageSize(file: File): boolean {
+        return file.size <= 1000000; // Check if the file size is less than or equal to 1MB
+      }
+      
   togglePopup() {
     this.popupVisible = !this.popupVisible;
   }
@@ -65,12 +81,18 @@ export class ProfileComponent implements OnInit {
   }
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
-    if (file) {
+    if (file && this.isValidImageFile(file) && this.isValidImageSize(file)) {
       const reader = new FileReader();
       reader.onload = () => {
         this.selectedImage = reader.result;
       };
       reader.readAsDataURL(file);
+    } else {
+      if (!this.isValidImageFile(file)) {
+        alert('Please select a valid image file (JPEG/JPG)');
+      } else if (!this.isValidImageSize(file)) {
+        alert('Image size should be less than 1MB');
+      }
     }
   }
   submitAndClose() {
