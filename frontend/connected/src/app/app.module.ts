@@ -8,6 +8,12 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { HeaderAuthComponent } from './header-auth/header-auth.component';
+import { AboutComponent } from './about/about.component';
+import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
+<<<<<<< HEAD
+import { DashboardComponent } from './dashboard/dashboard.component';
+=======
+>>>>>>> bc3d5ddf15faf7b588449b45e7f31da96c3e5669
 
 
 @NgModule({
@@ -16,7 +22,14 @@ import { HeaderAuthComponent } from './header-auth/header-auth.component';
     LoginComponent,
     RegisterComponent,
     ForgetPasswordComponent,
-    HeaderAuthComponent
+    HeaderAuthComponent,
+    AboutComponent,
+<<<<<<< HEAD
+    OtpVerifyComponent,
+    DashboardComponent
+=======
+    OtpVerifyComponent
+>>>>>>> bc3d5ddf15faf7b588449b45e7f31da96c3e5669
   ],
   imports: [
     BrowserModule,

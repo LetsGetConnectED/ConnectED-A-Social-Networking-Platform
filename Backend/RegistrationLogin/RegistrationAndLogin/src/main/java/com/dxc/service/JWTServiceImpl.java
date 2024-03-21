@@ -13,46 +13,28 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.util.HashMap;
 
 @Service
 public class JWTServiceImpl implements JWTService {
+
+    private Key getSigningKey() {
+        String base64Key = "HIXcy+elQc3LoEY4UYx6lkJdg1+JoAtB6I5w80Bb9wc=";
+        byte[] keyBytes = Decoders.BASE64.decode(base64Key);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
     @Override
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
-                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Token valid for 10 hours
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-    public String generateRefreshToken(Map<String, Object>extraClaims, UserDetails userDetails) {
-        return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+604800000))
-                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    @Override
-    public String extractUserName(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimResolver.apply(claims);
-    }
-
-    private Key getSigninKey() {
-        byte[] key = Decoders.BASE64.decode("generated key");
-        return Keys.hmacShaKeyFor(key);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSigninKey()).build().parseClaimsJws(token).getBody();
-    }
+    
+    
 
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -63,5 +45,54 @@ public class JWTServiceImpl implements JWTService {
     private boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
     }
-}
 
+    private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
+    }
+
+    @Override
+    public String extractUserName(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+
+
+//    @Override
+//    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+//        return Jwts.builder()
+//                .setSubject(userDetails.getUsername())
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date(System.currentTimeMillis() + 604800000)) // Refresh token valid for 7 days
+//                .addClaims(extraClaims)
+//                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+//                .compact();
+//    }
+//
+//    @Override
+//    public String generateRefreshToken(String useremail) {
+//        return null;
+//    }
+//
+//	@Override
+//	public String generateRefreshToken(UserDetails userDetails) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public boolean validateRefreshToken(String refreshToken) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
+//	@Override
+//	public String extractUserEmail(String refreshToken) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+}

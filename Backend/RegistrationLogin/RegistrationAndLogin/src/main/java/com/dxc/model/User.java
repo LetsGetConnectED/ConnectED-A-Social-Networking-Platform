@@ -2,6 +2,8 @@
 package com.dxc.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,40 +15,36 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data
-@Entity
-@Table(name="USER")
+@Entity(name= "USERS")
+//@Table(name="USERS")
 public class User implements UserDetails {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int userid; 
+    
     private String username;
     private String useremail;
     private String userpassword;
+    
+    @Enumerated(EnumType.STRING)
     private Role role;
-    private String token;
+    
+    
     public User() {
         super();
     }
     
-    public User(int userid, String username, String useremail, String userpassword, Role role,String token) {
+    public User(String username, String useremail, String userpassword, Role role) {
         super();
-        this.userid = userid;
         this.username = username;
         this.useremail = useremail;
         this.userpassword = userpassword;
         this.role = role;
-        this.token =token;
-        
     }
     
     public int getUserid() {
         return userid;
-    }
-
-    public void setUserid(int userid) {
-        this.userid = userid;
     }
 
     public String getUseremail() {
@@ -77,15 +75,7 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	@Override
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
@@ -119,4 +109,9 @@ public class User implements UserDetails {
     public String getPassword() {
         return userpassword;
     }
+
+	public boolean isPresent() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

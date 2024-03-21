@@ -1,0 +1,80 @@
+.main_context{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+
+}
+
+.info_context{
+    width: 25%;
+    height: 60vh;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    /* Center items vertically */
+    overflow: hidden;
+}
+.navBarLogin{
+    display: flex;
+    justify-content: space-between;
+}
+.login_info{
+
+    width: 60%;
+    height: 100%;
+}
+.login_pic{
+    width: 40%;
+    height: 100%;
+    
+
+}
+.button-group {
+    display: flex;
+    /* or any other suitable spacing */
+}
+
+/* Adjust margins if needed */
+.cancel {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.rounded_field{
+    border-radius: 20px;
+}
+.cancel{
+    color: black;
+    background-color: white;
+    width: 7rem;
+}
+.submit{
+    width:  7rem;
+    height: 2rem;
+}
+
+button{
+    background-color: #25371B;
+    color: white;
+}
+.link{
+    color: blue;
+    text-decoration: none;
+}
+img{
+    display: block; /* Ensure the image behaves like a block element */
+    width: 40%; /* Ensure the image spans the full width of its container */
+    height: 40%; /* Allow the browser to calculate the height while maintaining aspect ratio */
+    border-radius: 100%;
+}
+input{
+    width:10%;
+    border: 2px solid #25371b;
+    border-radius: 3px;
+}
+.bi{
+    color: white;
+}
