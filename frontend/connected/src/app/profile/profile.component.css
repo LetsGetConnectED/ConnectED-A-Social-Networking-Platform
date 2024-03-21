@@ -1,0 +1,50 @@
+.info_context{
+    width:80%;
+    height: 60vh;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+}
+.main_context{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.info_context{
+    width:95%;
+    height: 85vh;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+}
+img{
+    width: 14rem;
+    border-radius: 2rem;
+    height: 14rem;
+}
+div{
+    color: #25371B;
+}
+.name-education {
+    height: auto; /* Set height to auto */
+}
+.img-container{
+    height: 10rem;
+}
+
+.popup{
+    height: 40rem;
+    width: 60rem;
+    position: absolute;
+    background-color: #c7cac7;
+}
+#imageInput {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
