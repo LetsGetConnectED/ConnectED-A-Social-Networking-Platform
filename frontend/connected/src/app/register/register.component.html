@@ -8,7 +8,7 @@
                   <br>
                     <!-- Username Input -->
                     <div class="mb-3">
-                        <label for="username" class="form-label fw-semibold">Username</label>
+                        <label for="username" class="form-label ">Username</label>
                         <input type="text" class="form-control rounded_field" id="username" formControlName="username">
                         <div *ngIf="registerForm.get('username')?.errors as usernameErrors">
                             <div
@@ -20,7 +20,7 @@
   
                     <!-- Email Input -->
                     <div class="mb-3">
-                        <label for="email" class="form-label fw-semibold">Email</label>
+                        <label for="email" class="form-label ">Email</label>
                         <input type="email" class="form-control rounded_field" id="email" formControlName="email">
                         <div *ngIf="registerForm.get('email')?.errors as emailErrors">
                             <div
@@ -33,7 +33,7 @@
   
                     <!-- Password Input -->
                     <div class="mb-3">
-                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <label for="password" class="form-label ">Password</label>
                         <input type="password" class="form-control rounded_field" id="password" formControlName="password">
                         <div *ngIf="registerForm.get('password')?.errors as passwordErrors">
                             <div *ngIf="passwordErrors && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
@@ -45,7 +45,7 @@
   
                     <!-- Confirm Password Input -->
                     <div class="mb-4">
-                        <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                        <label for="confirmPassword" class="form-label ">Confirm Password</label>
                         <input type="password" class="form-control rounded_field" id="confirmPassword"
                         formControlName="confirmPassword" (input)="confirmvalidation()">
                     
@@ -61,7 +61,7 @@
 
                     
                 <div class="mb-3">
-                    <label for="role" class="form-label fw-semibold">Role</label>
+                    <label for="role" class="form-label ">Role</label>
                     <select class="form-select rounded_field" id="role" formControlName="role">
                       <option value="User">User</option>
                       <option value="Advertiser">Advertiser</option>

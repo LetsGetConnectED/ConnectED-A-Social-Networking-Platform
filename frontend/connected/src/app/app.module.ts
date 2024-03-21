@@ -13,6 +13,8 @@ import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ProfileComponent } from './profile/profile.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -26,7 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
     OtpVerifyComponent,
     DashboardComponent,
     DashNavAuthComponent,
-    OtpVerifyComponent
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,8 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
     
   ],
   providers: [],

@@ -7,6 +7,8 @@ import { AboutComponent } from './about/about.component';
 import { OtpVerifyComponent } from './otp-verify/otp-verify.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AuthGuard } from './gaurd/auth.guard';
 
 
 const routes: Routes = [
@@ -14,11 +16,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {path: 'forget-password',component:ForgetPasswordComponent},
-  {path: 'about',component:AboutComponent},
+  { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
   {path: 'dashboard',component:DashboardComponent},
   {path:'otp',component:OtpVerifyComponent},
   {path:'dash-nav-auth' , component: DashNavAuthComponent},
-  {path:'otp',component:OtpVerifyComponent}
+  {path:'otp',component:OtpVerifyComponent},
+  {path:'profile',component:ProfileComponent,canActivate: [AuthGuard]}
   // Add more routes here if needed
 ];
 
