@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProfileApplication<Profile>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.ConnectED.Profile.ProfileApplication",
+            "projectName": "Profile",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
