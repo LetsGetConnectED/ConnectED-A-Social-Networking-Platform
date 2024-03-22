@@ -11,15 +11,7 @@ import javax.sql.rowset.serial.SerialException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ConnectED.Profile.model.Profile;
@@ -31,13 +23,14 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/profiles")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
     
     
-    @GetMapping("/profiles/{email}")
+    @GetMapping("/{email}")
     public ResponseEntity<Profile> getProfileByEmail(@PathVariable String email) {
         Profile profile = profileService.getByEmail(email);
         if (profile != null) {
@@ -54,7 +47,7 @@ public class ProfileController {
         }
     }
 
-    @GetMapping("/profiles/{email}/image")
+    @GetMapping("/{email}/image")
     public ResponseEntity<String> getProfileImageByEmail(@PathVariable String email) {
         Profile profile = profileService.getByEmail(email);
         if (profile != null) {
