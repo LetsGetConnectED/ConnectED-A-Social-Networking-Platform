@@ -1,9 +1,0 @@
-package com.dxc.dto;
-
-public class SigninRequest {
-	
-	private String useremail;
-	private String userpassword;
-	
-
-}

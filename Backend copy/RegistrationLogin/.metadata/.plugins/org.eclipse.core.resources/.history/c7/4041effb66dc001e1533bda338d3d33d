@@ -1,5 +1,0 @@
-package com.dxc.dao;
-
-public interface UserDao {
-
-}
