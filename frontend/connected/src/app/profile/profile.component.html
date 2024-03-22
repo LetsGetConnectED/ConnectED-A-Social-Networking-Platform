@@ -1,0 +1,53 @@
+<div class="container-fluid main_background  p-0">
+    <app-header-auth></app-header-auth>
+    <div class="main_context mt-5">
+        <div class="info_context ps-5 pt-5 row">
+            <div class="img-container  ms-2 col-12">
+                <label for="imageInput">
+                    <input type="file" id="imageInput" (change)="onImageSelected($event)" accept=".jpg, .jpeg">
+                    <img src="assets/avatar.jpg" alt="" class="col-12">
+                </label>
+            </div>
+            <div class="name-education row fw-semibold mt-3">
+                <div class="col-5 me-5"><i class="bi bi-person-badge p-3"></i>{{firstname}} {{lastname}}</div>
+                <div class="col-5 ps-5"><i class="bi bi-backpack3-fill p-3"></i>{{education}}
+                </div>
+            </div>
+            <div class="name-education row fw-semibold">
+                <div class="col-5 me-5"> <i class="bi bi-person-workspace p-3"></i> {{occupation}}</div>
+                <div class="col-5 ps-5"><i class="bi bi-pc-display-horizontal p-3"></i>{{skill}}</div>
+            </div>
+            <div class="name-education row fw-semibold">
+                <div class="col-5 me-5"><i class="bi bi-compass p-3"></i>{{state}},{{country}}</div>
+                <div class="col-5 ps-5"><i class="bi bi-alarm-fill p-3"></i>{{workexp}}</div>
+            </div>
+            <div class="name-education row fw-semibold">
+                <div class="col-6"><i class="bi bi-file-person-fill p-3"></i>{{bio}}</div>
+                <div class="col-6 text-center ps-5" (click)="togglePopup()">
+                    <div class="toggle"><div class="plus-sign"></div></div>
+                    
+                </div>
+
+            </div>
+
+        </div>
+        <div class="popup" *ngIf="popupVisible">
+            <div class="text-end">
+              <i class="bi bi-x-circle-fill" style="font-size: 20px;" (click)="hidePopup()"></i>
+            </div>
+            <div class="m-3">
+              <input type="text" class="form-control mb-3" placeholder="Enter caption" [(ngModel)]="caption">
+              <input type="file" (change)="onFileSelected($event)" accept=".jpg, .jpeg">
+              <div class="mt-3" *ngIf="selectedImage">
+                <img [src]="selectedImage" alt="Selected Image" class="img-fluid">
+              </div>
+              
+            </div>
+            <div class="text-center">
+            <button class="upload" (click)="submitAndClose()">Submit</button>
+        </div>
+          </div>
+    </div>
+
+
+</div>

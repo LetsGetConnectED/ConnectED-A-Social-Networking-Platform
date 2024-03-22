@@ -1,25 +1,16 @@
 /*package com.dxc.controller;
 
 import com.dxc.dto.JwtAuthenticationResponse;
-import com.dxc.dto.RefreshTokenRequest;
 import com.dxc.dto.SignUpRequest;
 import com.dxc.dto.SigninRequest;
-import com.dxc.exception.InvalidCredentialsException;
-import com.dxc.exception.UserExistsException;
-import com.dxc.exception.UserNotFoundException;
 import com.dxc.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
@@ -31,6 +22,7 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpRequest signUpRequest) {
+<<<<<<< HEAD
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.signup(signUpRequest));
         } catch (UserExistsException e) {
@@ -103,6 +95,9 @@ public class AuthenticationController {
     @Autowired
     public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
+=======
+        return ResponseEntity.ok(authenticationService.signup(signUpRequest));
+>>>>>>> 2eb8b3e6121c67f01ea61d28ffc44d3247289f66
     }
 
     @PostMapping("/signup")
@@ -118,6 +113,7 @@ public class AuthenticationController {
 =======
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest) {
+<<<<<<< HEAD
         try {
             JwtAuthenticationResponse response = authenticationService.signin(signinRequest);
             return ResponseEntity.ok(response);
@@ -148,4 +144,9 @@ public class AuthenticationController {
 //        }
 //    }
 >>>>>>> 9083e49908be6b2278f251a13d4aec9b7b969535
+=======
+        JwtAuthenticationResponse response = authenticationService.signin(signinRequest);
+        return ResponseEntity.ok(response);
+    }
+>>>>>>> 2eb8b3e6121c67f01ea61d28ffc44d3247289f66
 }
