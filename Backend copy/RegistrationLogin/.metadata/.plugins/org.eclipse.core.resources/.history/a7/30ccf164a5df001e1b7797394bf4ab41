@@ -1,0 +1,24 @@
+package com.dxc.dto;
+
+import lombok.Data;
+
+@Data
+public class JwtAuthenticationResponse {
+	
+	private String token;
+	private String refreshToken;
+	public void setToken(String jwt) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void setRefreshToken(String refreshToken2) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void setToken(String jwt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+}

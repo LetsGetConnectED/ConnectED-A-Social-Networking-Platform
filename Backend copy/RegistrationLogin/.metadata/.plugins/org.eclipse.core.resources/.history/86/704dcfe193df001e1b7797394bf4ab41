@@ -1,0 +1,11 @@
+package com.dxc.dto;
+
+import lombok.Data;
+
+@Data
+public class SigninRequest {
+    
+    private String userEmail; // Corrected method name
+
+    private String userPassword;
+}

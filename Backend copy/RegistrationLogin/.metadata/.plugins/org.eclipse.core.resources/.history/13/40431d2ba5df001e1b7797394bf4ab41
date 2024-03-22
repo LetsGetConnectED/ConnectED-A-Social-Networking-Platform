@@ -1,0 +1,70 @@
+// JWTServiceImpl.java
+package com.dxc.service;
+
+import java.security.Key;
+import java.util.Date;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import javax.crypto.SecretKey;
+import java.util.Map;
+
+@Service
+public class JWTServiceImpl implements JWTService {
+
+    private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    private final long tokenValidity = 3600000; // 1 hour
+    private final long refreshTokenValidity = 86400000; // 24 hours
+
+    @Override
+    public String extractUserName(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+    @Override
+    public String generateToken(UserDetails userDetails) {
+        return createToken(userDetails, tokenValidity);
+    }
+
+    @Override
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUserName(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    @Override
+    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        extraClaims.put("isRefreshToken", true);
+        return createToken(userDetails, refreshTokenValidity, extraClaims);
+    }
+
+    private String createToken(UserDetails userDetails, long validity) {
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + validity))
+                .signWith(secretKey)
+                .compact();
+    }
+
+    private String createToken(UserDetails userDetails, long validity, Map<String, Object> claims) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + validity))
+                .signWith(secretKey)
+                .compact();
+    }
+
+    private Claims extractClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractClaims(token).getExpiration().before(new Date());
+    }
+}

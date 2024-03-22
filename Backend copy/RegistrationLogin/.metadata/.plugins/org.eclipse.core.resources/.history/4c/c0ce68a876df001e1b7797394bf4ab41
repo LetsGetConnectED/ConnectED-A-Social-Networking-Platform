@@ -1,0 +1,9 @@
+package com.dxc.service;
+
+import com.dxc.dto.SignUpRequest;
+import com.dxc.model.User;
+
+public interface AuthenticationService {
+
+	User signup(SignUpRequest signUpRequest);
+}

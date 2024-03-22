@@ -1,0 +1,10 @@
+package com.dxc.dao;
+
+import com.dxc.model.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface RoleDao extends JpaRepository<Role, String> {
+
+}

@@ -1,0 +1,15 @@
+package com.dxc.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dxc.repository.UserRepository;
+
+@Service
+public class AuthenticationServiceImpl implements AuthenticationService {
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+
+}

@@ -1,0 +1,15 @@
+package com.dxc.dto;
+
+public class SigninRequest {
+	
+	private String useremail;
+	public String getUseremail() {
+		return useremail;
+	}
+	public void setUseremail(String useremail) {
+		this.useremail = useremail;
+	}
+	private String userpassword;
+	
+
+}

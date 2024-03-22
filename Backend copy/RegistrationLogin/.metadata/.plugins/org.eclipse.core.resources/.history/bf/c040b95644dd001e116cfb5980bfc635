@@ -1,0 +1,13 @@
+package com.dxc.dto;
+
+import lombok.Data;
+
+@Data
+
+public class SignUpRequest {
+	
+	private String username;
+	private String useremail;
+	private String userpassword;
+
+}
