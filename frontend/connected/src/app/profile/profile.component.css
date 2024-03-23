@@ -14,7 +14,8 @@
 .info_context{
     width:60%;
     height: 85vh;
-    background-color: white;
+    background: rgb(173,215,155);
+    background: linear-gradient(180deg, rgba(173,215,155,1) 10%, rgba(255,255,255,1) 100%);
     border-radius: 20px;
     display: flex;
     overflow: hidden;

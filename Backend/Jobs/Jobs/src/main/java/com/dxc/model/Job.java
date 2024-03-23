@@ -9,6 +9,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -17,15 +19,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import com.dxc.model.User;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -35,7 +37,7 @@ public class Job {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long jobid;
 
     @Column(nullable = false)
     @NonNull
@@ -44,34 +46,41 @@ public class Job {
     @Column(nullable = false, length = 1500)
     @Size(max = 1500)
     private String description;
+    
+    private String skills;
+    private String location;
 
-    @Column
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private Timestamp timestamp;
+ 
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = {"jobsCreated","jobApplied","recommendedJobs","interestReactions"}, allowSetters = true)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties(value = "jobsCreated", allowSetters = true)
     private User userMadeBy;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = {"jobApplied","jobsCreated","recommendedJobs","interestReactions"}, allowSetters = true)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<User> usersApplied = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+        name = "job_user",
+        joinColumns = @JoinColumn(name = "job_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> usersApplied;
 
-    @ManyToMany(mappedBy = "recommendedJobs", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = {"recommendedJobs","jobsCreated","jobApplied","interestReactions","usersFollowing","userFollowedBy","posts"}, allowSetters = true)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private List<User> recommendedTo = new ArrayList<>();
+    @ManyToMany(mappedBy = "recommendedJobs", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = "recommendedJobs", allowSetters = true)
+    private Set<User> recommendedTo = new HashSet<>();
 
-	public Long getId() {
-		return id;
+    
+    
+
+	public Long getJobid() {
+		return jobid;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setJobid(Long jobid) {
+		this.jobid = jobid;
 	}
 
 	public String getTitle() {
@@ -106,6 +115,14 @@ public class Job {
 		this.userMadeBy = userMadeBy;
 	}
 
+	public Set<User> getRecommendedTo() {
+		return recommendedTo;
+	}
+
+	public void setRecommendedTo(Set<User> recommendedTo) {
+		this.recommendedTo = recommendedTo;
+	}
+
 	public Set<User> getUsersApplied() {
 		return usersApplied;
 	}
@@ -114,13 +131,5 @@ public class Job {
 		this.usersApplied = usersApplied;
 	}
 
-	public List<User> getRecommendedTo() {
-		return recommendedTo;
-	}
-
-	public void setRecommendedTo(List<User> recommendedTo) {
-		this.recommendedTo = recommendedTo;
-	}
-
-    
+   
 }

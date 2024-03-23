@@ -47,7 +47,7 @@ public class Profile {
 	    private String gender;
 	    private String bio;
 	    private String edu;
-	    private Long mob;
+	    private String mob;
 	    private String skill;
 	    private String occupation;
 	    private String work_exp;

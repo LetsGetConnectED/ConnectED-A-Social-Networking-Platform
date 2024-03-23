@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { SharedService } from '../service/shared.service';
 
 @Component({
@@ -9,8 +10,9 @@ import { SharedService } from '../service/shared.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private http: HttpClient,private shared:SharedService) { }
-  selectedImage: any;
+  constructor(private http: HttpClient,private shared:SharedService, private sanitizer: DomSanitizer) { }
+  selectedImage: SafeUrl | null = null; // Change the type to SafeUrl
+  uploadingImage:any;
   firstname:string='';
   lastname:string='';
   skill:string='';
@@ -27,7 +29,7 @@ export class ProfileComponent implements OnInit {
     const email=this.shared.getMessage();
     if(email)
     {
-      this.http.get<any>(`http://localhost:9090/users/${email}`).subscribe((data)=>{
+      this.http.get<any>(`http://localhost:7070/profiles/${email}`).subscribe((data)=>{
        console.log("data is here",data)
        this.firstname=data.firstName
        this.lastname=data.lastName
@@ -40,30 +42,24 @@ export class ProfileComponent implements OnInit {
        this.education=data.edu
 
       })
+      this.http.get(`http://localhost:7070/profiles/${email}/image`, { responseType: 'text' }).subscribe(
+  (data: string) => {
+    console.log("image is")
+    const imageUrl = 'data:image/png;base64,' + data; // Adjust the type if it's not PNG
+    this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+  },
+  (error) => {
+    console.error('Error fetching image:', error);
+  }
+);
+
+
     }
   }
 // base64 format in string
 // else in formdata
   popupVisible: boolean = false;
-  onImageSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file && this.isValidImageFile(file) && this.isValidImageSize(file)) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const imgElement = document.querySelector('.img-container img');
-        if (imgElement) {
-          imgElement.setAttribute('src', reader.result as string);
-        }
-      }
-    } else {
-      if (!this.isValidImageFile(file)) {
-        alert('Please select a valid image file (JPEG/JPG)');
-      } else if (!this.isValidImageSize(file)) {
-        alert('Image size should be less than 1MB');
-      }
-    }
-  }
+  
       isValidImageFile(file: File): boolean {
         const allowedExtensions = /(\.jpg|\.jpeg)$/i;
         return allowedExtensions.test(file.name);
@@ -84,7 +80,7 @@ export class ProfileComponent implements OnInit {
     if (file && this.isValidImageFile(file) && this.isValidImageSize(file)) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.selectedImage = reader.result;
+        this.uploadingImage = reader.result;
       };
       reader.readAsDataURL(file);
     } else {
