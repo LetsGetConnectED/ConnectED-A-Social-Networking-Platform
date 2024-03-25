@@ -11,12 +11,16 @@ import { SharedService } from '../service/shared.service';
 })
 export class AboutComponent implements OnInit{
   aboutForm: FormGroup;
+  imageFile:any;
   experienceErrors: any;
+  emailOfEmployee:any;
   skills = ['C', 'AngularJS', 'Java', 'UI', 'Presentation','C++','C#'];
 
   ngOnInit() {
-    console.log("hitting")
+
     console.log(this.shared.getMessage())
+    this.emailOfEmployee=this.shared.getMessage()
+    console.log("hitting",this.emailOfEmployee)
   }
 
   constructor(private formBuilder: FormBuilder,private shared:SharedService,private http: HttpClient,private router: Router) {
@@ -35,6 +39,35 @@ export class AboutComponent implements OnInit{
       about: ['', [Validators.required]]
     });
   }
+  onImageSelected(event: any): void {
+    const file = event.target.files[0];
+    console.log("images are",file)
+    this.imageFile=file
+    if (file && this.isValidImageFile(file) && this.isValidImageSize(file)) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const imgElement = document.querySelector('.img-container img');
+        if (imgElement) {
+          imgElement.setAttribute('src', reader.result as string);
+        }
+      }
+    } else {
+      if (!this.isValidImageFile(file)) {
+        alert('Please select a valid image file (JPEG/JPG)');
+      } else if (!this.isValidImageSize(file)) {
+        alert('Image size should be less than 1MB');
+      }
+    }
+  }
+      isValidImageFile(file: File): boolean {
+        const allowedExtensions = /(\.jpg|\.jpeg)$/i;
+        return allowedExtensions.test(file.name);
+      }
+      
+      isValidImageSize(file: File): boolean {
+        return file.size <= 1000000; // Check if the file size is less than or equal to 1MB
+      }
 
   // aboutWordLimitValidator() {
   //   return (control: { value: { trim: () => { (): any; new(): any; split: { (arg0: RegExp): { (): any; new(): any; length: any; }; new(): any; }; }; }; }) => {
@@ -58,7 +91,7 @@ filterSkills(searchTerm: string): void {
 
 onSubmit(): void {
 
-    console.log('Form submitted successfully!');
+    console.log('Form submitted successfully!',this.shared.getMessage());
 
     const reqBody={
       firstName: this.aboutForm.value.firstName,
@@ -73,10 +106,13 @@ onSubmit(): void {
       state: this.aboutForm.value.state,
       country: this.aboutForm.value.country,
       occupation: this.aboutForm.value.occupation,
-      email: this.shared.getMessage()
+      email:this.emailOfEmployee,
   }
-  console.log('req Data:', this.aboutForm.value);
-  this.http.post('http://localhost:9090/users', reqBody)
+  const formdata =new FormData();
+  formdata.append("profile",JSON.stringify(reqBody))
+  formdata.append("image",this.imageFile)
+  console.log('req Data:', reqBody);
+  this.http.post('http://localhost:7070/profiles/api', formdata)
     .subscribe(
       (response: any) => {
         console.log('about information submitted successful!');

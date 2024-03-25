@@ -5,6 +5,12 @@
       <h1 class="">About Me</h1>
       <br>
       <form [formGroup]="aboutForm" (ngSubmit)="onSubmit()">
+        <div class="img-container ">
+        <label for="imageInput">
+          <input type="file" id="imageInput" (change)="onImageSelected($event)" accept=".jpg, .jpeg">
+          <img src="assets/avatar.jpg" alt="" class="col-12">
+      </label>
+    </div>
         <div class="row mb-3">
           <div class="col-6">
             <label for="firstName" class="form-label">First Name</label>
