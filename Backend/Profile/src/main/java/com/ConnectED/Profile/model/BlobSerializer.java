@@ -13,13 +13,11 @@ public class BlobSerializer extends JsonSerializer<Blob> {
 	@Override
     public void serialize(Blob value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         try {
-            // Convert Blob to byte[] and then to Base64 string
+            
             byte[] bytes = value.getBytes(1, (int) value.length());
             String base64Image = Base64.getEncoder().encodeToString(bytes);
-            // Write the Base64 string to JSON
             gen.writeString(base64Image);
         } catch (SQLException e) {
-            // Handle the SQLException here, or rethrow it as IOException if necessary
             throw new IOException("Error reading Blob data", e);
         }
     }

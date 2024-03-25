@@ -5,9 +5,6 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Base64;
 
-//import javax.servlet.http.HttpServletRequest;
-import javax.sql.rowset.serial.SerialException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,28 +19,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ConnectED.Profile.model.Advertiser;
 import com.ConnectED.Profile.model.Profile;
-import com.ConnectED.Profile.service.ProfileService;
+import com.ConnectED.Profile.repository.AdvertiserRepository;
+import com.ConnectED.Profile.service.AdvertiserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-
 @RestController
-@RequestMapping("/user")
-public class ProfileController {
-
+@RequestMapping("/advertisers")
+public class AdvertiserController {
     @Autowired
-    private ProfileService profileService;
-    
-    
+    private AdvertiserService advertiserService;
+   
     @GetMapping("/{email}")
-    public ResponseEntity<Profile> getFullProfileByEmail(@PathVariable String email) {
-        Profile profile = profileService.getByEmail(email);
+    public ResponseEntity<Advertiser> getFullProfileByEmail(@PathVariable String email) {
+        
+        Advertiser profile =advertiserService.getByEmail(email);
         if (profile != null) {
         	
             try {
-                Blob imageBlob = profile.getImage();
+                Blob imageBlob = profile.getImage(); 
                 byte[] bytes = imageBlob.getBytes(1, (int) imageBlob.length());
                 String base64Image = Base64.getEncoder().encodeToString(bytes);
                 profile.setImageBase64(base64Image);
@@ -57,19 +54,21 @@ public class ProfileController {
         }
         
     }
+    
+    
     @PostMapping("/save")
-    public ResponseEntity<Profile> createOrUpdateProfile(
+    public ResponseEntity<Advertiser> createOrUpdateProfile(
         HttpServletRequest request,
         @RequestParam("image") MultipartFile file,
         @RequestParam("profile") String profileJson
     ) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Profile profile = objectMapper.readValue(profileJson, Profile.class);
+            Advertiser profile = objectMapper.readValue(profileJson, Advertiser.class);
             byte[] bytes = file.getBytes();
             Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
             profile.setImage(imageBlob);
-            Profile savedProfile = profileService.saveOrUpdate(profile);
+            Advertiser savedProfile = advertiserService.save(profile);
             return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
         } catch (IOException| SQLException e) {
             e.printStackTrace();
@@ -79,49 +78,45 @@ public class ProfileController {
     
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteProfileByEmail(@PathVariable String email) {
-        profileService.deleteByEmail(email);
+    	advertiserService.deleteByEmail(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    
-    @PutMapping("/update/{email}")
-    public ResponseEntity<Profile> updateProfile(
+
+//    @GetMapping("/{email}")
+//    public ResponseEntity<Advertiser> getByEmail(@PathVariable String email) {
+//       
+//    }
+//
+    @PutMapping("api/{email}")
+    public ResponseEntity<Advertiser> updateProfile(
             @PathVariable String email,
             @RequestParam("image") MultipartFile file,
             @RequestParam("profile") String profileJson) {
+
         ObjectMapper objectMapper = new ObjectMapper();
+
         try {
-          
-            byte[] bytes = file.getBytes();
-            Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
-            Profile updatedProfile = objectMapper.readValue(profileJson, Profile.class);
-            Profile existingProfile = profileService.getByEmail(email);
-            if (existingProfile == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        
+            Profile profile = objectMapper.readValue(profileJson, Profile.class);
+
+            
+            if (!file.isEmpty()) {
+                //profile.setImage(file.getBytes()); // Assuming setImage method accepts byte[]
             }
 
-            existingProfile.setFirstName(updatedProfile.getFirstName());
-            existingProfile.setLastName(updatedProfile.getLastName());
-            existingProfile.setBio(updatedProfile.getBio());
-            existingProfile.setCity(updatedProfile.getCity());
-            existingProfile.setCountry(updatedProfile.getCountry());
-            existingProfile.setEdu(updatedProfile.getEdu());
-            existingProfile.setGender(updatedProfile.getGender());
-            existingProfile.setMob(updatedProfile.getMob());
-            existingProfile.setSkill(updatedProfile.getSkill());
-            existingProfile.setOccupation(updatedProfile.getOccupation());
-            existingProfile.setState(updatedProfile.getState());
-            existingProfile.setUserName(updatedProfile.getUserName());
-            existingProfile.setWork_exp(updatedProfile.getWork_exp());
-            existingProfile.setImage(imageBlob);
-            Profile savedProfile = profileService.saveOrUpdate(existingProfile);
+         
+            Advertiser updatedProfile = advertiserService.updateByEmail(email);
 
-            return new ResponseEntity<>(savedProfile, HttpStatus.OK);
-            
-        } catch (IOException | SQLException e) {
+            if (updatedProfile != null) {
+                return ResponseEntity.ok(updatedProfile);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-}
-    
 
+  
+}
