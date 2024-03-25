@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit {
     const email=this.shared.getMessage();
     if(email)
     {
-      this.http.get<any>(`http://localhost:7070/profiles/${email}`).subscribe((data)=>{
+      this.http.get<any>(`http://localhost:7070/user/${email}`).subscribe((data)=>{
        console.log("data is here",data)
        this.firstname=data.firstName
        this.lastname=data.lastName
@@ -40,18 +40,19 @@ export class ProfileComponent implements OnInit {
        this.bio=data.bio
        this.occupation=data.occupation
        this.education=data.edu
-
+       const imageUrl = 'data:image/png;base64,' + data.image
+       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
       })
-      this.http.get(`http://localhost:7070/profiles/${email}/image`, { responseType: 'text' }).subscribe(
-  (data: string) => {
-    console.log("image is")
-    const imageUrl = 'data:image/png;base64,' + data; // Adjust the type if it's not PNG
-    this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-  },
-  (error) => {
-    console.error('Error fetching image:', error);
-  }
-);
+//       this.http.get(`http://localhost:7070/profiles/${email}/image`, { responseType: 'text' }).subscribe(
+//   (data: string) => {
+//     console.log("image is")
+//     const imageUrl = 'data:image/png;base64,' + data; // Adjust the type if it's not PNG
+//     this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+//   },
+//   (error) => {
+//     console.error('Error fetching image:', error);
+//   }
+// );
 
 
     }
