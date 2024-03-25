@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.HashSet;
+
 @Service
 public class JobServiceImpl implements JobService {
 
@@ -43,6 +44,7 @@ public class JobServiceImpl implements JobService {
         }
     }
 
+   
     @Override
     public List<Job> getRecommendedJobs(Long userId) {
 
@@ -58,5 +60,7 @@ public class JobServiceImpl implements JobService {
 
         return recommendedJobs;
     }
+    
+   
 
 }

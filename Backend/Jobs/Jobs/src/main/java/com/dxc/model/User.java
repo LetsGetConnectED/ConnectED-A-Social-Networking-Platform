@@ -1,5 +1,6 @@
 package com.dxc.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -10,49 +11,53 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.management.relation.Role;
+
+import io.micrometer.common.lang.NonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userid;
-
+    @Column(nullable = false)
+    @NonNull
     private String username;
+    @Column(nullable = false)
+    @NonNull
     private String useremail;
+    @Column(nullable = false)
+    @NonNull
     private String userpassword;
 
 
     @OneToMany(mappedBy = "userMadeBy", fetch = FetchType.LAZY)
     private Set<Job> jobsCreated = new HashSet<>();
 
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "job_application",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "job_id")
+            joinColumns = @JoinColumn(name = "userid"),
+            inverseJoinColumns = @JoinColumn(name = "jobid")
     )
     private Set<Job> jobApplications = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "recommended_jobs",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "job_id")
+        name = "recommended_jobs",
+        joinColumns = @JoinColumn(name = "userid"),
+        inverseJoinColumns = @JoinColumn(name = "jobid")
     )
     private Set<Job> recommendedJobs = new HashSet<>();
 
@@ -94,15 +99,31 @@ public class User {
 		this.recommendedJobs = recommendedJobs;
 	}
 
+	
+	public Set<Job> getJobApplications() {
+		return jobApplications;
+	}
+
+	public void setJobApplications(Set<Job> jobApplications) {
+		this.jobApplications = jobApplications;
+	}
+
+	public Set<Job> getAppliedJobs() {
+		return appliedJobs;
+	}
+
+	public void setAppliedJobs(Set<Job> appliedJobs) {
+		this.appliedJobs = appliedJobs;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-    
-	public Object getJobsCreated() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
   
 }
 

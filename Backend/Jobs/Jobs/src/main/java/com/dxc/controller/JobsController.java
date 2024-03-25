@@ -5,38 +5,25 @@ import com.dxc.dto.JobDTO;
 import com.dxc.exception.UserNotFoundException;
 import com.dxc.model.Job;
 import com.dxc.model.User;
-import com.dxc.repository.JobsRepository;
-import com.dxc.repository.UserRepository;
 import com.dxc.service.JobService;
 import com.dxc.service.UserService;
-
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 
 @RestController
 @RequestMapping("/api/jobs")
 @CrossOrigin(origins = "http://localhost:4200")
 public class JobsController {
 
-    @Autowired
-    private JobsRepository jobsRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-    
     @Autowired
     private JobService jobService;
 
@@ -56,6 +43,9 @@ public class JobsController {
         Job job = new Job();
         job.setTitle(jobDTO.getTitle());
         job.setDescription(jobDTO.getDescription());
+        job.setSkills(jobDTO.getSkills());
+        job.setLocation(jobDTO.getLocation()); 
+
         jobService.saveJob(job);
 
         return ResponseEntity.ok("Job created successfully");
@@ -65,23 +55,28 @@ public class JobsController {
     public ResponseEntity<?> getAllJobs() {
         List<Job> jobs = jobService.getAllJobs();
         List<JobDTO> jobDTOs = jobs.stream()
-                .map(job -> new JobDTO(job.getJobid(), job.getTitle(), job.getDescription()))
+                .map(job -> new JobDTO(job.getJobid(), job.getTitle(), job.getDescription(), job.getSkills(), job.getLocation()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(jobDTOs);
     }
 
-    @PostMapping("/{jobId}/apply/{userId}")
-    public ResponseEntity<?> applyForJob(@PathVariable Long jobId, @PathVariable Long userId) {
-        Optional<Job> optionalJob = jobService.getJobById(jobId);
-        Optional<User> optionalUser = userService.getUserById(userId);
-        if (optionalJob.isPresent() && optionalUser.isPresent()) {
-            Job job = optionalJob.get();
+    @PostMapping("/apply/{userid}")
+    public ResponseEntity<?> applyForJob(@RequestBody JobDTO jobDTO, @PathVariable Long userid) {
+        Optional<User> optionalUser = userService.getUserById(userid);
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            job.getUsersApplied().add(user);
+            Job job = new Job();
+            job.setTitle(jobDTO.getTitle());
+            job.setDescription(jobDTO.getDescription());
+            job.setLocation(jobDTO.getLocation());
+            job.setSkills(jobDTO.getSkills());
+            job.setJobid(jobDTO.getjobid()); 
+            job.setUserMadeBy(user);
             jobService.saveJob(job);
+            
             return ResponseEntity.ok("Applied for job successfully");
         } else {
-            throw new UserNotFoundException("Job or user not found");
+            throw new UserNotFoundException("User not found");
         }
     }
 
@@ -95,7 +90,7 @@ public class JobsController {
     public ResponseEntity<?> getRecommendedJobs(@PathVariable Long id) {
         List<Job> recommendedJobs = jobService.getRecommendedJobs(id);
         List<JobDTO> recommendedJobDTOs = recommendedJobs.stream()
-                .map(job -> new JobDTO(job.getJobid(), job.getTitle(), job.getDescription()))
+                .map(job -> new JobDTO(job.getJobid(), job.getTitle(), job.getDescription(), job.getSkills(), job.getLocation()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(recommendedJobDTOs);
     }
