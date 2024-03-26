@@ -37,54 +37,12 @@ public class AdvertiserServiceImpl implements AdvertiserService {
             advertiser.setImage(getByEmail(email).getImage());
             advertiser.setFirstName(getByEmail(email).getFirstName());
             advertiser.setLastName(getByEmail(email).getLastName());
-            // Update other fields similarly
-            // advertiser.setUserName(updatedAdvertiser.getUserName());
-            // advertiser.setFirstName(updatedAdvertiser.getFirstName());
-            // ...
             return advertiserRepository.save(advertiser);
         }
         return null; 
     }
 
-    
-//    public ResponseEntity<Profile> updateProfile(
-//            @PathVariable String email,
-//            @RequestParam("image") MultipartFile file,
-//            @RequestParam("profile") String profileJson) {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        try {
-//          
-//            byte[] bytes = file.getBytes();
-//            Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
-//            Profile updatedProfile = objectMapper.readValue(profileJson, Profile.class);
-//            Profile existingProfile = profileService.getByEmail(email);
-//            if (existingProfile == null) {
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            }
-//
-//            existingProfile.setFirstName(updatedProfile.getFirstName());
-//            existingProfile.setLastName(updatedProfile.getLastName());
-//            existingProfile.setBio(updatedProfile.getBio());
-//            existingProfile.setCity(updatedProfile.getCity());
-//            existingProfile.setCountry(updatedProfile.getCountry());
-//            existingProfile.setEdu(updatedProfile.getEdu());
-//            existingProfile.setGender(updatedProfile.getGender());
-//            existingProfile.setMob(updatedProfile.getMob());
-//            existingProfile.setSkill(updatedProfile.getSkill());
-//            existingProfile.setOccupation(updatedProfile.getOccupation());
-//            existingProfile.setState(updatedProfile.getState());
-//            existingProfile.setUserName(updatedProfile.getUserName());
-//            existingProfile.setWork_exp(updatedProfile.getWork_exp());
-//            existingProfile.setImage(imageBlob);
-//            Profile savedProfile = profileService.saveOrUpdate(existingProfile);
-//
-//            return new ResponseEntity<>(savedProfile, HttpStatus.OK);
-//            
-//        } catch (IOException | SQLException e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+   
     
     
   
@@ -96,9 +54,5 @@ public class AdvertiserServiceImpl implements AdvertiserService {
         }
     }
 
-//	@Override
-//	public Advertiser UpdateByEmail(Advertiser email) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+
 }

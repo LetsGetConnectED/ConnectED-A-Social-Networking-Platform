@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/advertisers")
+@RequestMapping("/advertiser")
 public class AdvertiserController {
     @Autowired
     private AdvertiserService advertiserService;
@@ -57,24 +57,33 @@ public class AdvertiserController {
     
     
     @PostMapping("/save")
-    public ResponseEntity<Advertiser> createOrUpdateProfile(
-        HttpServletRequest request,
-        @RequestParam("image") MultipartFile file,
-        @RequestParam("profile") String profileJson
+    public ResponseEntity<?> createOrUpdateProfile(
+            HttpServletRequest request,
+            @RequestParam(value = "image", required = false) MultipartFile file,
+            @RequestParam(value = "profile",required = false) String profileJson
     ) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        if (profileJson == null) {
+           
+            return ResponseEntity.badRequest().body("Profile JSON is required.");
+        }
+
         try {
+        	ObjectMapper objectMapper = new ObjectMapper();
             Advertiser profile = objectMapper.readValue(profileJson, Advertiser.class);
-            byte[] bytes = file.getBytes();
-            Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
-            profile.setImage(imageBlob);
+
+            if (file != null) { 
+                byte[] bytes = file.getBytes();
+                Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
+                profile.setImage(imageBlob);
+            }
+
             Advertiser savedProfile = advertiserService.save(profile);
             return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
-        } catch (IOException| SQLException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+ }
     
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteProfileByEmail(@PathVariable String email) {
@@ -82,41 +91,50 @@ public class AdvertiserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @GetMapping("/{email}")
-//    public ResponseEntity<Advertiser> getByEmail(@PathVariable String email) {
-//       
-//    }
-//
-    @PutMapping("api/{email}")
-    public ResponseEntity<Advertiser> updateProfile(
-            @PathVariable String email,
-            @RequestParam("image") MultipartFile file,
-            @RequestParam("profile") String profileJson) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
+    
+    @PutMapping("/update/{email}")
+    public ResponseEntity<?> updateProfile(
+            @PathVariable String email,
+            @RequestParam(value = "image", required = false) MultipartFile file,
+            @RequestParam(value = "profile", required = false) String profileJson) {
+
+        if (profileJson == null) {
+            return ResponseEntity.badRequest().body("Profile JSON is required.");
+        }
 
         try {
-        
-            Profile profile = objectMapper.readValue(profileJson, Profile.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Advertiser updatedProfile = objectMapper.readValue(profileJson, Advertiser.class);
 
-            
-            if (!file.isEmpty()) {
-                //profile.setImage(file.getBytes()); // Assuming setImage method accepts byte[]
-            }
-
-         
-            Advertiser updatedProfile = advertiserService.updateByEmail(email);
-
-            if (updatedProfile != null) {
-                return ResponseEntity.ok(updatedProfile);
-            } else {
+            Advertiser existingProfile = advertiserService.getByEmail(email);
+            if (existingProfile == null) {
                 return ResponseEntity.notFound().build();
             }
-        } catch (Exception e) {
+
+            if (file != null && !file.isEmpty()) { 
+                byte[] bytes = file.getBytes();
+                Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
+                existingProfile.setImage(imageBlob);
+            }
+
+          
+            existingProfile.setFirstName(updatedProfile.getFirstName());
+            existingProfile.setLastName(updatedProfile.getLastName());
+            existingProfile.setBio(updatedProfile.getBio());
+            existingProfile.setCity(updatedProfile.getCity());
+            existingProfile.setCountry(updatedProfile.getCountry());
+            existingProfile.setMob(updatedProfile.getMob());
+            existingProfile.setGender(updatedProfile.getGender());
+            existingProfile.setCompanyName(updatedProfile.getCompanyName());
+            existingProfile.setState(updatedProfile.getState());
+            existingProfile.setUserName(updatedProfile.getUserName());
+            Advertiser savedProfile = advertiserService.save(existingProfile);
+            return new ResponseEntity<>(savedProfile, HttpStatus.OK);
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing request.");
         }
     }
-
   
 }
