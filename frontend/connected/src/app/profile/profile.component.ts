@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { SharedService } from '../service/shared.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { SharedService } from '../service/shared.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private http: HttpClient,private shared:SharedService, private sanitizer: DomSanitizer) { }
+  constructor(private http: HttpClient,private shared:SharedService, private sanitizer: DomSanitizer,private router: Router) { }
   selectedImage: SafeUrl | null = null; // Change the type to SafeUrl
   uploadingImage:any;
   firstname:string='';
@@ -22,14 +23,17 @@ export class ProfileComponent implements OnInit {
   bio:any;
   occupation:any;
   education:any;
+  dashboardImage:any;
+  email:any;
+
 
   caption: string = ''; // Define the 'caption' property here
 
   ngOnInit(): void {
-    const email=this.shared.getMessage();
-    if(email)
+    this.email=this.shared.getMessage();
+    if(this.email)
     {
-      this.http.get<any>(`http://localhost:7070/profiles/${email}`).subscribe((data)=>{
+      this.http.get<any>(`http://localhost:7070/user/${this.email}`).subscribe((data)=>{
        console.log("data is here",data)
        this.firstname=data.firstName
        this.lastname=data.lastName
@@ -40,24 +44,15 @@ export class ProfileComponent implements OnInit {
        this.bio=data.bio
        this.occupation=data.occupation
        this.education=data.edu
-
+       const imageUrl = 'data:image/png;base64,' + data.image
+       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
       })
-      this.http.get(`http://localhost:7070/profiles/${email}/image`, { responseType: 'text' }).subscribe(
-  (data: string) => {
-    console.log("image is")
-    const imageUrl = 'data:image/png;base64,' + data; // Adjust the type if it's not PNG
-    this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-  },
-  (error) => {
-    console.error('Error fetching image:', error);
-  }
-);
+
 
 
     }
   }
-// base64 format in string
-// else in formdata
+
   popupVisible: boolean = false;
   
       isValidImageFile(file: File): boolean {
@@ -77,6 +72,7 @@ export class ProfileComponent implements OnInit {
   }
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
+    this.dashboardImage=file;
     if (file && this.isValidImageFile(file) && this.isValidImageSize(file)) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -92,7 +88,36 @@ export class ProfileComponent implements OnInit {
     }
   }
   submitAndClose() {
-
+     console.log(
+      "caption is",this.caption
+     )
+     console.log("image is",this.dashboardImage)
+     const reqBody={
+      caption:this.caption,
+      likes:0,
+      shares:0
+     }
+     const formdata =new FormData();
+     formdata.append("file",this.dashboardImage)
+     console.log("reqbody",reqBody)
+    //  this.http.post(`http://localhost:6060/user/${this.email}`,reqBody ).subscribe((response: any) => {
+    //   console.log('caption posted successfully');
+    // },
+    // (error) => {
+    //   console.error('Error occurred during registration:', error)
+    // }
+    //  )
+     this.http.post(`http://localhost:6060/${this.email}/9/image`,formdata ).subscribe((response: any) => {
+      console.log('image posted successfully');
+      // this.router.navigate(['/profile']);
+    },
+    (error) => {
+      console.error('Error occurred during registration:', error);
+      // Handle error accordingly, display error message, etc.
+    }
+     )
     this.popupVisible = false;
   }
 }
+
+// 

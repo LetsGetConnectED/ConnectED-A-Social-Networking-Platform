@@ -7,11 +7,7 @@ import com.ConnectED.Profile.model.Profile;
 
 public interface ProfileService {
 	
-//	User saveUser(User user);
-	
-//	    void deleteByEmail();
-//	    String saveOrUpdate(String email);
-//	    Profile  getByEmail(Profile profile);
+
 		Profile saveOrUpdate(Profile profile);
 		Profile getByEmail(String email);
 		void deleteByEmail(String email);

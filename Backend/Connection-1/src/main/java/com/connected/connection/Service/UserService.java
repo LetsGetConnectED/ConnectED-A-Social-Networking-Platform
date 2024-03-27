@@ -7,24 +7,53 @@ import java.util.Optional;
 
 public interface UserService {
 
-	List<User> getAllUsers();
+    List<User> getAllUsers();
 
-	Optional<User> getUserById(Long id);
+    Optional<User> getUserById(Long id);
 
-	User getUserByUsername(String username);
+    Optional<User> getUserByUsername(String username);
 
-	User addUser(User user);
+    User addUser(User user);
 
-	User updateUserById(Long id, User user);
+    User updateUserById(Long id, User user);
 
-	User updateUserByUsername(String username, User user);
+    User updateUserByUsername(String username, User user);
 
-	void deleteUserById(Long id);
+    void deleteUserById(Long id);
 
-	void deleteUserByUsername(String username);
-	
-	 User getUserByUsernameAndPassword(String username, String password);
+    //void deleteUserByUsername(String username);
+
+    Optional<User> getUserByUsernameAndPassword(String username, String password);
 }
+
+
+/*
+ * package com.connected.connection.Service;
+ * 
+ * import com.connected.connection.model.User;
+ * 
+ * import java.util.List; import java.util.Optional;
+ * 
+ * public interface UserService {
+ * 
+ * List<User> getAllUsers();
+ * 
+ * Optional<User> getUserById(Long id);
+ * 
+ * User getUserByUsername(String username);
+ * 
+ * User addUser(User user);
+ * 
+ * User updateUserById(Long id, User user);
+ * 
+ * User updateUserByUsername(String username, User user);
+ * 
+ * void deleteUserById(Long id);
+ * 
+ * void deleteUserByUsername(String username);
+ * 
+ * User getUserByUsernameAndPassword(String username, String password); }
+ */
 
 
 
