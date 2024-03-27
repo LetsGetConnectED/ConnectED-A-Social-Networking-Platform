@@ -55,10 +55,10 @@ public class UserController {
 
 	// Sign-in end-point
 	@PostMapping("/signin")
-	public ResponseEntity<User> signIn(@RequestParam String username, @RequestParam String password) {
+	public ResponseEntity<Optional<User>> signIn(@RequestParam String username, @RequestParam String password) {
 		try {
 			// Authenticate the user based on the provided user-name and password
-			User user = userService.getUserByUsernameAndPassword(username, password);
+			Optional<User> user = userService.getUserByUsernameAndPassword(username, password);
 			if (user != null) {
 				return ResponseEntity.ok(user);
 			} else {
@@ -98,9 +98,9 @@ public class UserController {
 	}
 
 	@GetMapping("/getUserByUsername/{username}")
-	public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+	public ResponseEntity<Optional<User>> getUserByUsername(@PathVariable String username) {
 		try {
-			User user = userService.getUserByUsername(username);
+			Optional<User> user = userService.getUserByUsername(username);
 			if (user != null) {
 				return ResponseEntity.ok(user);
 			} else {
@@ -173,15 +173,13 @@ public class UserController {
 		}
 	}
 
-	@DeleteMapping("/deleteUserByUsername/{username}")
-	public ResponseEntity<Void> deleteUserByUsername(@PathVariable String username) {
-		try {
-			userService.deleteUserByUsername(username);
-			return ResponseEntity.noContent().build();
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
-	}
+	/*
+	 * @DeleteMapping("/deleteUserByUsername/{username}") public
+	 * ResponseEntity<Void> deleteUserByUsername(@PathVariable String username) {
+	 * try { userService.deleteUserByUsername(username); return
+	 * ResponseEntity.noContent().build(); } catch (Exception e) { return
+	 * ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); } }
+	 */
 }
 
 /*-----------------------------------------------------------------------------------*/

@@ -11,61 +11,117 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Override
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
-	}
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-	@Override
-	public Optional<User> getUserById(Long id) {
-		return userRepository.findById(id);
-	}
+    @Override
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
 
-	@Override
-	public User getUserByUsername(String username) {
-		return userRepository.findByUsername(username);
-	}
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
-	@Override
-	public User addUser(User user) {
-		return userRepository.save(user);
-	}
+    @Override
+    public User addUser(User user) {
+        return userRepository.save(user);
+    }
 
-	@Override
-	public User updateUserById(Long id, User user) {
-		user.setId(id);
-		return userRepository.save(user);
-	}
+    @Override
+    public User updateUserById(Long id, User user) {
+        user.setId(id);
+        return userRepository.save(user);
+    }
+    
+    @Override
+    public User updateUserByUsername(String username, User user) {
+        Optional<User> existingUserOptional = userRepository.findByUsername(username);
+        if (existingUserOptional.isPresent()) {
+            User existingUser = existingUserOptional.get();
+            existingUser.setName(user.getName());
+            existingUser.setPassword(user.getPassword());
+            return userRepository.save(existingUser);
+        }
+        return null; // or throw an exception, depending on your use case
+    }
 
-	@Override
-	public User updateUserByUsername(String username, User user) {
-		User existingUser = userRepository.findByUsername(username);
-		if (existingUser != null) {
-			existingUser.setName(user.getName());
-			existingUser.setPassword(user.getPassword());
-			return userRepository.save(existingUser);
-		}
-		return null;
-	}
 
-	@Override
-	public void deleteUserById(Long id) {
-		userRepository.deleteById(id);
-	}
+	/*
+	 * @Override public User updateUserByUsername(String username, User user) { User
+	 * existingUser = userRepository.findByUsername(username); if (existingUser !=
+	 * null) { existingUser.setName(user.getName());
+	 * existingUser.setPassword(user.getPassword()); return
+	 * userRepository.save(existingUser); } return null; }
+	 */
 
-	@Override
-	public void deleteUserByUsername(String username) {
-		User existingUser = userRepository.findByUsername(username);
-		if (existingUser != null) {
-			userRepository.delete(existingUser);
-		}
-	}
+    @Override
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
+    }
 
-	@Override
-	public User getUserByUsernameAndPassword(String username, String password) {
-		return userRepository.findByUsernameAndPassword(username, password);
-	}
+	/*
+	 * @Override public void deleteUserByUsername(String username) { Optional<User>
+	 * existingUser = userRepository.findByUsername(username); if (existingUser !=
+	 * null) { userRepository.delete(existingUser); } }
+	 */
+
+    @Override
+    public Optional<User> getUserByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, password);
+    }
 }
+
+
+/*
+ * package com.connected.connection.Service;
+ * 
+ * import com.connected.connection.Repository.UserRepository; import
+ * com.connected.connection.model.User; import
+ * org.springframework.beans.factory.annotation.Autowired; import
+ * org.springframework.stereotype.Service;
+ * 
+ * import java.util.List; import java.util.Optional;
+ * 
+ * @Service public class UserServiceImpl implements UserService {
+ * 
+ * @Autowired private UserRepository userRepository;
+ * 
+ * @Override public List<User> getAllUsers() { return userRepository.findAll();
+ * }
+ * 
+ * @Override public Optional<User> getUserById(Long id) { return
+ * userRepository.findById(id); }
+ * 
+ * @Override public User getUserByUsername(String username) { return
+ * userRepository.findByUsername(username); }
+ * 
+ * @Override public User addUser(User user) { return userRepository.save(user);
+ * }
+ * 
+ * @Override public User updateUserById(Long id, User user) { user.setId(id);
+ * return userRepository.save(user); }
+ * 
+ * @Override public User updateUserByUsername(String username, User user) { User
+ * existingUser = userRepository.findByUsername(username); if (existingUser !=
+ * null) { existingUser.setName(user.getName());
+ * existingUser.setPassword(user.getPassword()); return
+ * userRepository.save(existingUser); } return null; }
+ * 
+ * @Override public void deleteUserById(Long id) {
+ * userRepository.deleteById(id); }
+ * 
+ * @Override public void deleteUserByUsername(String username) { User
+ * existingUser = userRepository.findByUsername(username); if (existingUser !=
+ * null) { userRepository.delete(existingUser); } }
+ * 
+ * @Override public User getUserByUsernameAndPassword(String username, String
+ * password) { return userRepository.findByUsernameAndPassword(username,
+ * password); } }
+ */
