@@ -25,6 +25,10 @@ public interface FriendRequestService {
 	List<FriendRequest> getPendingFriendRequestsForUser(User user);
 	
 	List<FriendRequest> getAcceptedFriendRequestsForUser(User user);
+	
+	void acceptFriendRequest(User sender, User receiver);
+	
+	void rejectFriendRequest(User sender, User receiver);
 }
 
 /*
