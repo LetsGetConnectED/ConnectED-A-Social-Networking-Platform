@@ -4,68 +4,23 @@
   </div>
   <div class="col-4 text-center">
     <a class="nav-link active d-flex" aria-current="page" href="#"></a>
-    <title>Search Box</title>
-    <body ng-controller="SearchController">
-      <div class="col-4 text-center">
-        <a class="nav-link active d-flex" aria-current="page" href="#">
-          <i class="bi bi-search" ng-show="showSearchIcon"></i>
-          <input
-            type="text"
-            ng-model="searchText"
-            ng-change="toggleSearchIcon()"
-            placeholder="Search..."
-          />
-        </a>
-      </div>
-      <script>
-        angular
-          .module("searchApp", [])
-          .controller("SearchController", function ($scope) {
-            $scope.searchText = "";
-            $scope.showSearchIcon = true;
-
-            $scope.toggleSearchIcon = function () {
-              $scope.showSearchIcon = $scope.searchText.trim() === "";
-            };
-          });
-      </script>
-    </body>
+    <input >
+    <i class="bi bi-search ms-3"></i>
   </div>
   <div class="col-4 p-3 d-flex">
-    <a
-      class="nav-link active d-flex flex-column text-center me-1"
-      aria-current="page"
-      href="#"
-      ><i class="bi bi-chat-text"></i>Messages</a
-    >
+    <a class="nav-link active d-flex flex-column text-center me-1" aria-current="page" href="#"><i
+        class="bi bi-chat-text"></i>Messages</a>
 
-    <a
-      class="nav-link active d-flex flex-column text-center me-1"
-      aria-current="page"
-      href="#"
-      ><i class="bi bi-bell"></i>Notifications</a
-    >
+    <a class="nav-link active d-flex flex-column text-center me-1" aria-current="page" href="#"><i
+        class="bi bi-bell"></i>Notifications</a>
 
-    <a
-      class="nav-link active d-flex flex-column text-center me-1"
-      aria-current="page"
-      href="#"
-      ><i class="bi bi-person"></i>Profile</a
-    >
+    <a class="nav-link active d-flex flex-column text-center me-1" aria-current="page" href="#"><i
+        class="bi bi-person"></i>Profile</a>
 
-    <a
-      class="nav-link active d-flex flex-column text-center me-1"
-      aria-current="page"
-      href="#"
-      ><i class="bi bi-gear"></i>Settings</a
-    >
-    <a
-    class="nav-link active d-flex flex-column text-center me-1"
-    aria-current="page"
-    href="#"
-    routerLink="/login"
-    ><i class="bi bi-door-closed-fill"></i>Log Out</a
-  >
+    <a class="nav-link active d-flex flex-column text-center me-1" aria-current="page" href="#"><i
+        class="bi bi-gear"></i>Settings</a>
+    <a class="nav-link active d-flex flex-column text-center me-1" aria-current="page" href="#" routerLink="/login"><i
+        class="bi bi-door-closed-fill"></i>Log Out</a>
   </div>
 </div>
 
