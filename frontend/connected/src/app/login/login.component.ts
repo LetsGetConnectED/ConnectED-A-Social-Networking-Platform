@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AuthserviceService } from '../service/authservice.service';
 import { SharedService } from '../service/shared.service';
+import { RoleService } from '../role.service';
 
 @Component({
   selector: 'app-login',
@@ -14,12 +15,13 @@ import { SharedService } from '../service/shared.service';
 export class LoginComponent implements OnInit{
   loginForm: FormGroup;
   credentials:boolean=false;
+  Role: string | undefined;
 
   ngOnInit(): void {
   sessionStorage.clear();
   }
 
-  constructor(private formBuilder: FormBuilder,private http: HttpClient,private router: Router,private shared: SharedService,private authSerivce:AuthserviceService) {
+  constructor(private formBuilder: FormBuilder,private http: HttpClient,private router: Router,private shared: SharedService,private roleService: RoleService, private authSerivce:AuthserviceService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -27,6 +29,8 @@ export class LoginComponent implements OnInit{
   }
 
   onSubmit(): void {
+    const useremail = this.loginForm.value.email;
+
     if (this.loginForm.valid) {
       console.log('Form submitted successfully!',this.loginForm.value);
       const reqBody={
@@ -42,6 +46,17 @@ export class LoginComponent implements OnInit{
         this.authSerivce.isLoggedIn();   //authgaurdd
         this.shared.setMessage(this.loginForm.value.email)  //email transfer
         this.router.navigate(['/about']);
+        this.http.get<any>(`http://localhost:8080/api/v1/user/role/${useremail}`)
+        .subscribe((data)=>{
+          console.log("Role fetched:", data.role);
+          this.roleService.setRole(data.role);
+          if (data.role === 'User' || data.role === 'Advertiser') {
+            this.router.navigate(['/about']); 
+          }
+          else{
+            console.error("Invalid role:", data.role);
+          }
+        })
         this.http.get<any>(`http://localhost:7070/user/${this.loginForm.value.email}`)
         .subscribe((data)=>{
           console.log("profile found")

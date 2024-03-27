@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedService } from '../service/shared.service';
+import { RoleService } from '../role.service';
 
 @Component({
   selector: 'app-about',
@@ -12,18 +13,35 @@ import { SharedService } from '../service/shared.service';
 export class AboutComponent implements OnInit{
   aboutForm: FormGroup;
   imageFile:any;
+  Role: string | undefined;
   experienceErrors: any;
   emailOfEmployee:any;
   skills = ['C', 'AngularJS', 'Java', 'UI', 'Presentation','C++','C#'];
 
   ngOnInit() {
-
+    
+    this.Role =this.roleService.role;
+    console.log("Role:",this.Role);
+    console.log('Role retrieved:', this.Role); // Log the retrieved role value
     console.log(this.shared.getMessage())
+    //console.log(this.shared.getMessage())
     this.emailOfEmployee=this.shared.getMessage()
     console.log("hitting",this.emailOfEmployee)
+    this.http.get<any>(`http://localhost:8080/api/v1/user/role/${this.emailOfEmployee}`)
+        .subscribe((data)=>{
+          console.log(data)
+          //console.log("Role fetched:", data.role);
+          //this.roleService.setRole(data.role);
+          // if (data.role === 'User' || data.role === 'Advertiser') {
+          //   this.router.navigate(['/about']); 
+          // }
+          //else{
+            //console.error("Invalid role:", data.role);
+          //}
+        })
   }
 
-  constructor(private formBuilder: FormBuilder,private shared:SharedService,private http: HttpClient,private router: Router) {
+  constructor(private formBuilder: FormBuilder,private shared:SharedService,private http: HttpClient,private router: Router , private roleService: RoleService) {
     this.aboutForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
       lastName: [''],
