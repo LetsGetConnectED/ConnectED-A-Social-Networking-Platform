@@ -52,7 +52,9 @@ export class ProfileComponent implements OnInit {
 
     }
   }
-
+  navigateToAbout(){
+    this.router.navigate(['/about'])
+  }
   popupVisible: boolean = false;
   
       isValidImageFile(file: File): boolean {

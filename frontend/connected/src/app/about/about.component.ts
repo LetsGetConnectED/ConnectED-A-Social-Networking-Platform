@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { SharedService } from '../service/shared.service';
+import { RoleService } from '../role.service';
 
 @Component({
   selector: 'app-about',
@@ -12,18 +14,30 @@ import { SharedService } from '../service/shared.service';
 export class AboutComponent implements OnInit{
   aboutForm: FormGroup;
   imageFile:any;
+  Role: string | undefined;
   experienceErrors: any;
   emailOfEmployee:any;
   skills = ['C', 'AngularJS', 'Java', 'UI', 'Presentation','C++','C#'];
+  firstname: any;
+  lastname: any;
+  workexp: any;
+  state: any;
+  updateKey:boolean=false;
+  country: any;
+  skill: any;
+  bio: any;
+  occupation: any;
+  education: any;
+  selectedImage: any;
+  city: any;
+  mobile: any;
 
-  ngOnInit() {
 
-    console.log(this.shared.getMessage())
-    this.emailOfEmployee=this.shared.getMessage()
-    console.log("hitting",this.emailOfEmployee)
-  }
 
-  constructor(private formBuilder: FormBuilder,private shared:SharedService,private http: HttpClient,private router: Router) {
+
+ 
+
+  constructor(private formBuilder: FormBuilder,private shared:SharedService,private http: HttpClient,private router: Router,private sanitizer: DomSanitizer, private roleService: RoleService) {
     this.aboutForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
       lastName: [''],
@@ -39,6 +53,60 @@ export class AboutComponent implements OnInit{
       about: ['', [Validators.required]]
     });
   }
+  ngOnInit() {
+    this.Role =this.roleService.role;
+    console.log("Role:",this.Role);
+    console.log('Role retrieved:', this.Role); // Log the retrieved role value
+    console.log(this.shared.getMessage())
+    //console.log(this.shared.getMessage())
+    this.emailOfEmployee=this.shared.getMessage()
+    console.log("hitting",this.emailOfEmployee)
+    this.http.get<any>(`http://localhost:8080/api/v1/user/role/${this.emailOfEmployee}`)
+        .subscribe((data)=>{
+          console.log(data)
+          //console.log("Role fetched:", data.role);
+          //this.roleService.setRole(data.role);
+          // if (data.role === 'User' || data.role === 'Advertiser') {
+          //   this.router.navigate(['/about']); 
+          // }
+          //else{
+            //console.error("Invalid role:", data.role);
+          //}
+        })
+    console.log(this.shared.getMessage())
+    this.emailOfEmployee=this.shared.getMessage()
+    console.log("hitting",this.emailOfEmployee)
+    this.http.get<any>(`http://localhost:7070/user/${this.emailOfEmployee}`).subscribe((data)=>{
+       console.log("data is here",data)
+       if(data.gender){
+        this.updateKey=true
+       this.firstname=data.firstName
+       this.aboutForm.get("firstName")?.setValue(this.firstname)
+       this.lastname=data.lastName
+       this.aboutForm.get("lastName")?.setValue(this.lastname)
+       this.skill=data.skill
+       this.aboutForm.get("skills")?.setValue(this.skill)
+       this.workexp=data.work_exp
+       this.aboutForm.get("experience")?.setValue(this.workexp)
+       this.state=data.state
+       this.aboutForm.get("state")?.setValue(this.state)
+       this.country=data.country
+       this.aboutForm.get("country")?.setValue(this.country)
+       this.city=data.city
+       this.aboutForm.get("city")?.setValue(data.city)
+       this.mobile=data.mobile
+       this.aboutForm.get("country")?.setValue(this.country)
+       this.mobile=data.mob
+       this.aboutForm.get("mobile")?.setValue(this.mobile)
+       this.bio=data.bio
+       this.aboutForm.get("about")?.setValue(this.bio)
+       this.occupation=data.occupation
+       this.aboutForm.get("occupation")?.setValue(this.occupation)
+       this.education=data.edu
+       this.aboutForm.get("gender")?.setValue(data.gender)
+       this.aboutForm.get("education")?.setValue(this.education)
+       }
+  })}
   onImageSelected(event: any): void {
     const file = event.target.files[0];
     console.log("images are",file)
@@ -112,6 +180,8 @@ onSubmit(): void {
   formdata.append("profile",JSON.stringify(reqBody))
   formdata.append("image",this.imageFile)
   console.log('req Data:', reqBody);
+  if(this.updateKey==false)
+  {
   this.http.post('http://localhost:7070/user/save', formdata)
     .subscribe(
       (response: any) => {
@@ -123,6 +193,11 @@ onSubmit(): void {
         // Handle error accordingly, display error message, etc.
       }
     );
+  }
+  else if(this.updateKey==true)
+  {
+    
+  }
 }
 
 }

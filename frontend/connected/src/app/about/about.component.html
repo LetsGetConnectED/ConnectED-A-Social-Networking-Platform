@@ -1,4 +1,4 @@
-<app-header-auth></app-header-auth>
+<app-dash-nav-auth></app-dash-nav-auth>
 <div class="main_context ">
   <div class="info_context">
     <div class="about_info p-3">
@@ -92,14 +92,14 @@
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
             <label class="form-label">Skills</label>
             <select multiple class="form-select rounded_field" formControlName="skills">
               <option *ngFor="let skill of skills" [value]="skill">{{ skill }}</option>
             </select>
             <span class="ms-2 fs-6" style="color: grey">ctrl + click to choose more than one</span>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
             <label for="occupation" class="form-label">Occupation</label>
             <input type="text" class="form-control rounded_field" id="occupation" formControlName="occupation">
             <div *ngIf="aboutForm.get('occupation')?.errors as occupationErrors">
@@ -112,7 +112,7 @@
         </div>
         <br>
         <div class="row mb-3">
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
             <label for="education" class="form-label">Education</label>
             <select class="form-select rounded_field" id="education" formControlName="education">
               <option value="ug">UG</option>
@@ -126,7 +126,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
             <label for="experience" class="form-label">Experience</label>
             <select class="form-select rounded_field" id="experience" formControlName="experience">
               <option value="0-2">0-2Years</option>
@@ -139,6 +139,16 @@
                 *ngIf="experienceErrors && (aboutForm.get('experience')?.dirty || aboutForm.get('experience')?.touched)">
                 <p class="text-danger" *ngIf="experienceErrors['required']">Experience is required</p>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="md-3" *ngIf="Role !== 'USER'">
+          <label for="companyName" class="form-label">Company Name</label>
+          <input type="text" class="form-control rounded_field" id="companyName" formControlName="companyName">
+          <div *ngIf="aboutForm.get('companyName')?.errors as companyNameErrors">
+            <div
+              *ngIf="companyNameErrors && (aboutForm.get('companyName')?.dirty || aboutForm.get('companyName')?.touched)">
+              <p class="text-danger" *ngIf="companyNameErrors['required']">CompanyName is required</p>
             </div>
           </div>
         </div>
