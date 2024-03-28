@@ -8,6 +8,5 @@ public interface AdvertiserService {
 	Advertiser save(Advertiser advertiser);
 	Advertiser getByEmail(String email);
 	void deleteByEmail(String email);
-	Advertiser updateByEmail(String email);
 
 }

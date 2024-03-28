@@ -1,0 +1,165 @@
+.main_context{
+    background-color: #B7C6B1;
+    top: 0;
+    left: 0;
+    width: 100%;
+   min-height: 100vh;
+    margin: 0;
+    height: 100%;
+    padding: 0;
+  }
+
+  .heading_btn{
+    background-color: #25371B;
+    color: white;
+    border-radius: 15px;
+  }
+
+  .main_context{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color:#B7C6B1;
+  }
+  
+  body {
+    margin: 50px;
+    padding: 10px;
+    font-family: 'Arial', sans-serif;
+    background-color: #25371B; 
+  }
+  
+  .container-fluid.main_background {
+    background-color: #25371B;
+    color: white;
+    padding: 10px 20px;
+  }
+  
+  .navBarLogin {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #25371B;
+    color: white;
+  }
+  
+  .heading_btn {
+    background-color: #25371B;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .info_context {
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+  }
+  
+  .about_info {
+    width: 100%;
+    height: 100%;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .skill {
+    width: 50%;
+    height: 50%;
+    padding: 0px 12px;
+  }
+
+  .skill {
+    width: 50%;
+    height: 50%;
+    padding: 0px 12px;
+  }
+  
+  .skill input[type="checkbox"] {
+    display: none; /* Hide the checkbox */
+  }
+  
+  .skill label {
+    display: block;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  
+  .skill input[type="checkbox"]:checked + label {
+    background-color: #25371B;
+    color: #fff;
+  }
+  
+  
+  
+  .form-label {
+    font-weight: 400;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .textarea-control {
+    resize: vertical;
+  }
+  
+  .rounded_field {
+    border-radius: 50px;
+  }
+  
+  button {
+    background-color: #25371B;
+    color: white;
+    border: navajowhite;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .link {
+    color: blue;
+    text-decoration: none;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .info_context {
+      flex-direction: column;
+      height: auto;
+    }
+  
+    .about_info,
+    .about_pic {
+      width: 100%;
+    }
+  }
+  
+  img{
+    width: 14rem;
+    border-radius: 7rem;
+    height: 14rem;
+}
+#imageInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

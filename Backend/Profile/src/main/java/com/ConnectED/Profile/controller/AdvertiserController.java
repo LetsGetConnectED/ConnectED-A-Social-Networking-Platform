@@ -41,9 +41,13 @@ public class AdvertiserController {
         	
             try {
                 Blob imageBlob = profile.getImage(); 
-                byte[] bytes = imageBlob.getBytes(1, (int) imageBlob.length());
-                String base64Image = Base64.getEncoder().encodeToString(bytes);
-                profile.setImageBase64(base64Image);
+                if (imageBlob != null) {
+              	byte[] bytes = imageBlob.getBytes(1, (int) imageBlob.length());
+                  String base64Image = Base64.getEncoder().encodeToString(bytes);
+                  profile.setImageBase64(base64Image);
+              } else {
+              	profile.setImageBase64(null);
+              }
                 return new ResponseEntity<>(profile, HttpStatus.OK);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -54,7 +58,6 @@ public class AdvertiserController {
         }
         
     }
-    
     
     @PostMapping("/save")
     public ResponseEntity<?> createOrUpdateProfile(
@@ -116,6 +119,11 @@ public class AdvertiserController {
                 byte[] bytes = file.getBytes();
                 Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
                 existingProfile.setImage(imageBlob);
+            }
+            
+            if (file == null) { 
+                
+                existingProfile.setImage(null);
             }
 
           

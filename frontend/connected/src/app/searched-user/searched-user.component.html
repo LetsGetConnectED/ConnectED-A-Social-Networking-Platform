@@ -1,0 +1,40 @@
+<div class="container-fluid main_background  p-0">
+    <app-dash-nav-auth></app-dash-nav-auth>
+    <div class="main_context mt-5">
+        <div class="info_context ps-5 pt-5 row">
+            <div class="img-container  ms-2 col-8">
+                <label for="imageInput">
+                    <img [src]="selectedImage ? selectedImage : 'assets/avatar.jpg'" alt="" class="col-12">
+                </label>
+            </div>
+            <div class="edit-profile col-3 mt-5" >
+                <div class="pencil-holder py-3" >
+                    <i class="bi bi-person-plus-fill ms-4"></i>
+            </div>
+            </div>
+            <div class="name-education row fw-semibold mt-3">
+                <div class="col-5 me-5"><i class="bi bi-person-badge p-3"></i>{{firstname}} {{lastname}}</div>
+                <div class="col-5 ps-5"><i class="bi bi-backpack3-fill p-3"></i>{{education}}
+                </div>
+            </div>
+            <div class="name-education row fw-semibold">
+                <div class="col-5 me-5"> <i class="bi bi-person-workspace p-3"></i> {{occupation}}</div>
+                <div class="col-5 ps-5"><i class="bi bi-pc-display-horizontal p-3"></i>{{skill}}</div>
+            </div>
+            <div class="name-education row fw-semibold">
+                <div class="col-5 me-5"><i class="bi bi-compass p-3"></i>{{state}},{{country}}</div>
+                <div class="col-5 ps-5"><i class="bi bi-alarm-fill p-3"></i>{{workexp}}</div>
+            </div>
+            <div class="name-education row fw-semibold">
+                <div class="col-6"><i class="bi bi-file-person-fill p-3"></i>{{bio}}</div>
+                
+
+            </div>
+
+        </div>
+       
+        
+    </div>
+</div>
+
+

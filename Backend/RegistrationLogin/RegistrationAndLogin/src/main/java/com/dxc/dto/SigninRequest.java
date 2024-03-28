@@ -6,8 +6,7 @@ import lombok.Setter;
 //import lombok.Data;
 //
 //@Data
-@Getter
-@Setter
+
 public class SigninRequest {
 	
 	private String useremail;
