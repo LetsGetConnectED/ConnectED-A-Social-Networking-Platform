@@ -3,7 +3,7 @@ package com.ConnectED.Profile.service;
 import java.util.List;
 
 import com.ConnectED.Profile.model.Profile;
-//import com.test.profile.entity.Image;
+
 
 public interface ProfileService {
 	

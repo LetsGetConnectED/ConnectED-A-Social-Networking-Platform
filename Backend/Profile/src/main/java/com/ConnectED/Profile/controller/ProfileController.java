@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ConnectED.Profile.model.Profile;
+import com.ConnectED.Profile.model.Recruiter;
 import com.ConnectED.Profile.service.ProfileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -44,9 +45,13 @@ public class ProfileController {
         	
             try {
                 Blob imageBlob = profile.getImage();
-                byte[] bytes = imageBlob.getBytes(1, (int) imageBlob.length());
-                String base64Image = Base64.getEncoder().encodeToString(bytes);
-                profile.setImageBase64(base64Image);
+                if (imageBlob != null) {
+                	byte[] bytes = imageBlob.getBytes(1, (int) imageBlob.length());
+                    String base64Image = Base64.getEncoder().encodeToString(bytes);
+                    profile.setImageBase64(base64Image);
+                } else {
+                	profile.setImageBase64(null);
+                }
                 return new ResponseEntity<>(profile, HttpStatus.OK);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -57,6 +62,8 @@ public class ProfileController {
         }
         
     }
+    
+   
     
     
     @PostMapping("/save")
@@ -83,8 +90,8 @@ public class ProfileController {
             Profile savedProfile = profileService.saveOrUpdate(profile);
             return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
         } catch (IOException | SQLException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        	e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.valueOf("email already present"));
         }
  }
 
@@ -123,8 +130,11 @@ public ResponseEntity<?> updateProfile(
             Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
             existingProfile.setImage(imageBlob);
         }
-
-      
+        if (file == null) { 
+            
+            existingProfile.setImage(null);
+        }
+       
         existingProfile.setFirstName(updatedProfile.getFirstName());
         existingProfile.setLastName(updatedProfile.getLastName());
         existingProfile.setBio(updatedProfile.getBio());
