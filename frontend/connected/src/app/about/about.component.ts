@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,25 +20,20 @@ export class AboutComponent implements OnInit{
 
   ngOnInit() {
     
-    this.Role =this.roleService.role;
-    console.log("Role:",this.Role);
-    console.log('Role retrieved:', this.Role); // Log the retrieved role value
-    console.log(this.shared.getMessage())
-    //console.log(this.shared.getMessage())
+    
     this.emailOfEmployee=this.shared.getMessage()
-    console.log("hitting",this.emailOfEmployee)
-    this.http.get<any>(`http://localhost:8080/api/v1/user/role/${this.emailOfEmployee}`)
-        .subscribe((data)=>{
-          console.log(data)
-          //console.log("Role fetched:", data.role);
-          //this.roleService.setRole(data.role);
-          // if (data.role === 'User' || data.role === 'Advertiser') {
-          //   this.router.navigate(['/about']); 
-          // }
-          //else{
-            //console.error("Invalid role:", data.role);
-          //}
-        })
+    
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${sessionStorage.getItem("token")}`
+    });
+   
+    this.http.get<any>(`http://localhost:8080/api/v1/user/role/${this.emailOfEmployee}`, { headers })
+  .subscribe((responseData) => {
+    this.Role=responseData
+  }, (error) => {
+    // Handle any errors
+    console.error('Error:', error);
+  });
   }
 
   constructor(private formBuilder: FormBuilder,private shared:SharedService,private http: HttpClient,private router: Router , private roleService: RoleService) {

@@ -46,17 +46,7 @@ export class LoginComponent implements OnInit{
         this.authSerivce.isLoggedIn();   //authgaurdd
         this.shared.setMessage(this.loginForm.value.email)  //email transfer
         this.router.navigate(['/about']);
-        this.http.get<any>(`http://localhost:8080/api/v1/user/role/${useremail}`)
-        .subscribe((data)=>{
-          console.log("Role fetched:", data.role);
-          this.roleService.setRole(data.role);
-          if (data.role === 'User' || data.role === 'Advertiser') {
-            this.router.navigate(['/about']); 
-          }
-          else{
-            console.error("Invalid role:", data.role);
-          }
-        })
+        
         this.http.get<any>(`http://localhost:7070/user/${this.loginForm.value.email}`)
         .subscribe((data)=>{
           console.log("profile found")
