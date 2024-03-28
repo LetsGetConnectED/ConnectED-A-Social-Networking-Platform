@@ -1,6 +1,7 @@
 package com.dxc.model;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 //import jakarta.persistence.Entity;
 //
@@ -34,6 +35,9 @@ public class User {
     @OneToMany(mappedBy = "recommendedTo")
     private List<Job> recommendedJobs;
 =======
+=======
+import jakarta.persistence.Column;
+>>>>>>> 48b0fbe02e87a595ab4c60fed6b71c3f43b9b453
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -44,30 +48,33 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.management.relation.Role;
+
+import io.micrometer.common.lang.NonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userid;
-
+    @Column(nullable = false)
+    @NonNull
     private String username;
+    @Column(nullable = false)
+    @NonNull
     private String useremail;
+    @Column(nullable = false)
+    @NonNull
     private String userpassword;
 >>>>>>> 77816930c4e51066f841f596e73b37895c1d5433
 
@@ -87,19 +94,20 @@ public class User {
     private Set<Job> jobsCreated = new HashSet<>();
 >>>>>>> 77816930c4e51066f841f596e73b37895c1d5433
 
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "job_application",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "job_id")
+            joinColumns = @JoinColumn(name = "userid"),
+            inverseJoinColumns = @JoinColumn(name = "jobid")
     )
     private Set<Job> jobApplications = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "recommended_jobs",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "job_id")
+        name = "recommended_jobs",
+        joinColumns = @JoinColumn(name = "userid"),
+        inverseJoinColumns = @JoinColumn(name = "jobid")
     )
     private Set<Job> recommendedJobs = new HashSet<>();
 
@@ -142,6 +150,7 @@ public class User {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public String getUserMadeBy() {
 		return userMadeBy;
 	}
@@ -163,16 +172,34 @@ public class User {
 		return "User [userid=" + userid + ", username=" + username + ", useremail=" + useremail + ", userpassword="
 				+ userpassword + ", role=" + role + "]";
 =======
+=======
+	
+	public Set<Job> getJobApplications() {
+		return jobApplications;
+	}
+
+	public void setJobApplications(Set<Job> jobApplications) {
+		this.jobApplications = jobApplications;
+	}
+
+	public Set<Job> getAppliedJobs() {
+		return appliedJobs;
+	}
+
+	public void setAppliedJobs(Set<Job> appliedJobs) {
+		this.appliedJobs = appliedJobs;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+>>>>>>> 48b0fbe02e87a595ab4c60fed6b71c3f43b9b453
 	public void setUsername(String username) {
 		this.username = username;
 >>>>>>> 77816930c4e51066f841f596e73b37895c1d5433
 	}
-
-    
-	public Object getJobsCreated() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
   
 }
 

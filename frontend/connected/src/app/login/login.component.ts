@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit{
         this.authSerivce.isLoggedIn();   //authgaurdd
         this.shared.setMessage(this.loginForm.value.email)  //email transfer
         this.router.navigate(['/about']);
-        this.http.get<any>(`http://localhost:7070/profiles/${this.loginForm.value.email}`)
+        this.http.get<any>(`http://localhost:7070/user/${this.loginForm.value.email}`)
         .subscribe((data)=>{
           console.log("profile found")
           this.router.navigate(['/profile'])

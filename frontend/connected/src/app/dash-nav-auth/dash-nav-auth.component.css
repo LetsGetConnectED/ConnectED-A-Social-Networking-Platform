@@ -19,16 +19,14 @@ img{
   text-align: center;
 }
 
-input[type="text"] {
-  padding: 8px 15px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  outline: none; 
+input {
+width: 80%; 
+height: 80%;
+border-radius: 10px;
 }
 
-.bi.bi-search {
-  margin-right: 15px;
+.bi-search {
+ font-size: 20px;
 }
 
 

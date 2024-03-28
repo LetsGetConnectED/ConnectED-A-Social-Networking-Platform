@@ -3,6 +3,7 @@ package com.dxc.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.micrometer.common.lang.NonNull;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,11 +17,10 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,14 +30,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "job")
 public class Job {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long jobid;
 
     @Column(nullable = false)
@@ -48,24 +47,29 @@ public class Job {
     @Size(max = 1500)
     private String description;
     
-    private String skills;
+//    @Column(nullable = false)
+//    @Size(max = 1500)
+    @NotBlank(message = "Location is required")
     private String location;
+
+//    @Column(nullable = false)
+    @NotBlank(message = "Skills are required")
+    private String skills;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Timestamp timestamp;
- 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userid")
     @JsonIgnoreProperties(value = "jobsCreated", allowSetters = true)
     private User userMadeBy;
 
     @ManyToMany
     @JoinTable(
         name = "job_user",
-        joinColumns = @JoinColumn(name = "job_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
+        joinColumns = @JoinColumn(name = "jobid"),
+        inverseJoinColumns = @JoinColumn(name = "userid")
     )
     private Set<User> usersApplied;
 
@@ -74,63 +78,76 @@ public class Job {
     private Set<User> recommendedTo = new HashSet<>();
 
     
-    
 
-	public Long getJobid() {
-		return jobid;
-	}
+    public String getSkills() {
+        return skills;
+    }
 
-	public void setJobid(Long jobid) {
-		this.jobid = jobid;
-	}
+    public void setSkills(String skills) {
+        this.skills = skills;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Long getJobid() {
+        return jobid;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setJobid(Long jobid) {
+        this.jobid = jobid;
+    }
 
-	public Timestamp getTimestamp() {
-		return timestamp;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTimestamp(Timestamp timestamp) {
-		this.timestamp = timestamp;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public User getUserMadeBy() {
-		return userMadeBy;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setUserMadeBy(User userMadeBy) {
-		this.userMadeBy = userMadeBy;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Set<User> getRecommendedTo() {
-		return recommendedTo;
-	}
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
 
-	public void setRecommendedTo(Set<User> recommendedTo) {
-		this.recommendedTo = recommendedTo;
-	}
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public Set<User> getUsersApplied() {
-		return usersApplied;
-	}
+    public User getUserMadeBy() {
+        return userMadeBy;
+    }
 
-	public void setUsersApplied(Set<User> usersApplied) {
-		this.usersApplied = usersApplied;
-	}
+    public void setUserMadeBy(User userMadeBy) {
+        this.userMadeBy = userMadeBy;
+    }
 
-   
+    public Set<User> getRecommendedTo() {
+        return recommendedTo;
+    }
+
+    public void setRecommendedTo(Set<User> recommendedTo) {
+        this.recommendedTo = recommendedTo;
+    }
+
+    public Set<User> getUsersApplied() {
+        return usersApplied;
+    }
+
+    public void setUsersApplied(Set<User> usersApplied) {
+        this.usersApplied = usersApplied;
+    }
 }

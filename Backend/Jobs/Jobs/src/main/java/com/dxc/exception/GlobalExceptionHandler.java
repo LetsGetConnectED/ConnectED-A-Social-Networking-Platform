@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,7 +27,7 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.toList());
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Validation Error", LocalDateTime.now());
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errors.toString(), LocalDateTime.now());
     }
 
     @ExceptionHandler(BindException.class)
@@ -40,7 +39,7 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.toList());
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Binding Error", LocalDateTime.now());
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errors.toString(), LocalDateTime.now());
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -60,7 +59,5 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
-
- 
 
 }

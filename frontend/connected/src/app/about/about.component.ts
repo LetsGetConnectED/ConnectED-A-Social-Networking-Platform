@@ -112,7 +112,7 @@ onSubmit(): void {
   formdata.append("profile",JSON.stringify(reqBody))
   formdata.append("image",this.imageFile)
   console.log('req Data:', reqBody);
-  this.http.post('http://localhost:7070/profiles/api', formdata)
+  this.http.post('http://localhost:7070/user/save', formdata)
     .subscribe(
       (response: any) => {
         console.log('about information submitted successful!');
