@@ -87,3 +87,12 @@ div{
 .bi{
     font-size: 2rem;
 }
+.bi-pencil-fill{
+    color: white;
+}
+.pencil-holder{
+   background-color: #25371B;
+   width:5rem;
+   height:5rem;
+   border-radius: 36px;
+}

@@ -111,4 +111,38 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         
         return acceptedRequests;
     }
+    
+    @Override
+    public void acceptFriendRequest(User sender, User receiver) {
+        // Find the friend request between the sender and receiver
+        List<FriendRequest> requests = friendRequestRepository.findBySenderAndReceiver(sender, receiver);
+        
+        // Check if the request exists and is pending
+        for (FriendRequest request : requests) {
+            if (request.getStatus() == RequestStatus.PENDING) {
+                // Update the status to ACCEPTED
+                request.setStatus(RequestStatus.ACCEPTED);
+                friendRequestRepository.save(request); // Save the updated request
+                return; // Exit the loop after finding the first pending request
+            }
+        }
+    }
+    
+    @Override
+    public void rejectFriendRequest(User sender, User receiver) {
+        // Find the friend request between the sender and receiver
+        List<FriendRequest> requests = friendRequestRepository.findBySenderAndReceiver(sender, receiver);
+        
+        // Check if the request exists and is pending
+        for (FriendRequest request : requests) {
+            if (request.getStatus() == RequestStatus.PENDING) {
+                // Update the status to REJECTED
+                request.setStatus(RequestStatus.REJECTED);
+                friendRequestRepository.save(request); // Save the updated request
+                return; // Exit the loop after finding the first pending request
+            }
+        }
+    }
+
+
 }

@@ -1,0 +1,44 @@
+<app-dash-nav-auth></app-dash-nav-auth>
+
+
+<div class="main_context ">
+  <div class="info_context">
+    <div class="about_info p-3">
+      <h1 class="">Job Creation</h1>
+      <br>
+      <form [formGroup]="aboutForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="jobtitle" class="form-label ">Job Title</label>
+          <input type="text" class="form-control rounded_field" id="jobtitle" formControlName="jobtitle">
+        </div>
+        <div class="mb-3">
+          <label for="jobdiscreption" class="form-label ">Job Discription</label>
+          <input type="text" class="form-control rounded_field" id="jobdiscreption" formControlName="jobdiscreption">
+        </div>
+
+        <div class="jobfeatures row">
+          <div class="col-6">
+            <div class="mb-3">
+              <label class="form-label">Skills</label>
+              <select multiple class="form-select rounded_field" formControlName="skills">
+                <option *ngFor="let skill of skills" [value]="skill">{{ skill }}</option>
+              </select>
+              <span class="ms-2 fs-6" style="color: grey">ctrl + click to choose more than one</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-3">
+              <label for="location" class="form-label ">location</label>
+              <input type="text" class="form-control rounded_field" id="location" formControlName="location">
+            </div>
+          </div>
+          <div class="col-4 mt-4 ms-3">
+            <button type="submit" class="rounded_field">Post Job</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>

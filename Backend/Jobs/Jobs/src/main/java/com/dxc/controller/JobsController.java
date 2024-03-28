@@ -2,6 +2,11 @@ package com.dxc.controller;
 
 import com.dxc.dto.ErrorResponse;
 import com.dxc.dto.JobDTO;
+<<<<<<< HEAD
+
+import com.dxc.exception.ObjectExistsException;
+=======
+>>>>>>> 77816930c4e51066f841f596e73b37895c1d5433
 import com.dxc.exception.UserNotFoundException;
 import com.dxc.model.Job;
 import com.dxc.model.User;
@@ -14,7 +19,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+<<<<<<< HEAD
+<<<<<<< HEAD
+import java.util.HashSet;
+
+
+=======
+>>>>>>> 77816930c4e51066f841f596e73b37895c1d5433
+=======
 import java.time.LocalDateTime;
+>>>>>>> 48b0fbe02e87a595ab4c60fed6b71c3f43b9b453
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,6 +65,15 @@ public class JobsController {
         return ResponseEntity.ok("Job created successfully");
     }
 
+<<<<<<< HEAD
+    @GetMapping("/in/{id}/jobs")
+    public ResponseEntity<Set<Job>> getJobs(@PathVariable Long id) {
+        User currentUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
+      Set<Job> jobs = new HashSet<>();
+        return ResponseEntity.ok(jobs);
+=======
     @GetMapping("/list")
     public ResponseEntity<?> getAllJobs() {
         List<Job> jobs = jobService.getAllJobs();
@@ -58,6 +81,7 @@ public class JobsController {
                 .map(job -> new JobDTO(job.getJobid(), job.getTitle(), job.getDescription(), job.getSkills(), job.getLocation()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(jobDTOs);
+>>>>>>> 77816930c4e51066f841f596e73b37895c1d5433
     }
 
     @PostMapping("/apply/{userid}")

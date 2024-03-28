@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { RoleService } from '../role.service';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
   registerForm: FormGroup;
   mismatch:boolean=false
-  constructor(private formBuilder: FormBuilder,private http: HttpClient,private router: Router) {
+  constructor(private formBuilder: FormBuilder,private http: HttpClient,private router: Router , private roleService: RoleService) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -38,6 +39,11 @@ export class RegisterComponent {
 
   onSubmit(): void {
     const formData = { ...this.registerForm.value };
+    delete formData.confirmPassword;
+    this.roleService.role = formData.role;
+    console.log('Role set:', this.roleService.role);
+
+    //const formData = { ...this.registerForm.value };
     delete formData.confirmPassword;
     const reqBody={
       username:formData.username,

@@ -11,15 +11,7 @@ import javax.sql.rowset.serial.SerialException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ConnectED.Profile.model.Profile;
@@ -31,18 +23,19 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/user")
 public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
-    
-    
+
+
     @GetMapping("/{email}")
     public ResponseEntity<Profile> getFullProfileByEmail(@PathVariable String email) {
         Profile profile = profileService.getByEmail(email);
         if (profile != null) {
-        	
+
             try {
                 Blob imageBlob = profile.getImage();
                 if (imageBlob != null) {
@@ -60,12 +53,17 @@ public class ProfileController {
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        
+
     }
+<<<<<<< HEAD
     
    
     
     
+=======
+
+
+>>>>>>> 5e6f60ab387a63ababb445569022a8f545170052
     @PostMapping("/save")
     public ResponseEntity<?> createOrUpdateProfile(
             HttpServletRequest request,
@@ -73,7 +71,7 @@ public class ProfileController {
             @RequestParam(value = "profile",required = false) String profileJson
     ) {
         if (profileJson == null) {
-           
+
             return ResponseEntity.badRequest().body("Profile JSON is required.");
         }
 
@@ -81,7 +79,7 @@ public class ProfileController {
         	ObjectMapper objectMapper = new ObjectMapper();
             Profile profile = objectMapper.readValue(profileJson, Profile.class);
 
-            if (file != null) { 
+            if (file != null) {
                 byte[] bytes = file.getBytes();
                 Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
                 profile.setImage(imageBlob);
@@ -95,8 +93,8 @@ public class ProfileController {
         }
  }
 
-    
-   
+
+
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteProfileByEmail(@PathVariable String email) {
         profileService.deleteByEmail(email);
@@ -125,16 +123,21 @@ public ResponseEntity<?> updateProfile(
             return ResponseEntity.notFound().build();
         }
 
-        if (file != null && !file.isEmpty()) { 
+        if (file != null && !file.isEmpty()) {
             byte[] bytes = file.getBytes();
             Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
             existingProfile.setImage(imageBlob);
         }
+<<<<<<< HEAD
         if (file == null) { 
             
             existingProfile.setImage(null);
         }
        
+=======
+
+
+>>>>>>> 5e6f60ab387a63ababb445569022a8f545170052
         existingProfile.setFirstName(updatedProfile.getFirstName());
         existingProfile.setLastName(updatedProfile.getLastName());
         existingProfile.setBio(updatedProfile.getBio());
