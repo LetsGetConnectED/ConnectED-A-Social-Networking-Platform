@@ -15,6 +15,8 @@ import { DashNavAuthComponent } from './dash-nav-auth/dash-nav-auth.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './profile/profile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JobCreationComponent } from './job-creation/job-creation.component';
+import { SearchedUserComponent } from './searched-user/searched-user.component';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     OtpVerifyComponent,
     DashboardComponent,
     DashNavAuthComponent,
-    ProfileComponent
+    ProfileComponent,
+    JobCreationComponent,
+    SearchedUserComponent
   ],
   imports: [
     BrowserModule,

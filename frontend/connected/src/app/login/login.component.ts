@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit{
         this.http.get<any>(`http://localhost:7070/user/${this.loginForm.value.email}`)
         .subscribe((data)=>{
           console.log("profile found")
-          this.router.navigate(['/profile'])
+          this.router.navigate(['/dashboard'])
       },(error)=>{
         console.log("profile not found")
           this.router.navigate(['/about'])
