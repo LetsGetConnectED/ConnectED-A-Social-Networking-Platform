@@ -76,105 +76,6 @@
 //
 //}
 
-<<<<<<< HEAD
-
-  package com.dxc.service;
-  
-  import org.springframework.beans.factory.annotation.Autowired; import
-  org.springframework.security.authentication.AuthenticationManager; import
-  org.springframework.security.authentication.
-  UsernamePasswordAuthenticationToken; import
-  org.springframework.security.core.Authentication; import
-  org.springframework.security.core.context.SecurityContextHolder; import
-  org.springframework.security.crypto.password.PasswordEncoder; import
-  org.springframework.stereotype.Service;
-  
-  import com.dxc.config.JwtTokenProvider; import
-  com.dxc.dto.JwtAuthenticationResponse; import
-  com.dxc.dto.RefreshTokenRequest; import com.dxc.dto.SignUpRequest; import
-  com.dxc.dto.SigninRequest; import com.dxc.model.Role; import
-  com.dxc.model.User; import com.dxc.repository.UserRepository;
-  
-  import java.util.HashMap;
-  
-  @Service 
-  public class AuthenticationServiceImpl implements AuthenticationService {
-  
-  @Autowired private UserRepository userRepository;
-  
-  @Autowired private PasswordEncoder passwordEncoder;
-  
-  @Autowired private AuthenticationManager authenticationManager;
-  
-  @Autowired private JWTService jwtService;
-  
-  @Autowired 
-  private JwtTokenProvider tokenprovider;
-  
-  @Override 
-  
-  public JwtAuthenticationResponse signup(SignUpRequest signUpRequest) { 
-	  String password =signUpRequest.getUserpassword();
-  if (password == null ||
-  password.isEmpty()) 
-  {  
-	  throw new IllegalArgumentException("Password cannot be null or empty");  }
-  
-  
-  
-  // Set the token in the User object or return it separately
-  
-  User user = new User(); 
-  user.setUseremail(signUpRequest.getUseremail());
-  user.setUsername(signUpRequest.getUsername()); 
-  user.setRole(Role.USER);
-  user.setUserpassword(passwordEncoder.encode(signUpRequest.getUserpassword())); 
-  
-   userRepository.save(user);
-  
-  String token = tokenprovider.generateToken(user.getUseremail());
-
-  return new JwtAuthenticationResponse();
-  
-  
-  
-  }
-  
-  
-  
-  @Override public JwtAuthenticationResponse signin(SigninRequest
-  signinRequest) { authenticationManager.authenticate(new
-  UsernamePasswordAuthenticationToken(signinRequest.getUseremail(),
-  signinRequest.getUserpassword()));
-  
-  var user =userRepository.findByUseremail(signinRequest.getUseremail()).orElseThrow(()
-  -> new IllegalArgumentException("Invalid email or password")); 
-  var jwt =jwtService.generateToken(user); 
-  var refreshToken =jwtService.generateRefreshToken(new HashMap<>(), user);
-  
-  JwtAuthenticationResponse jwtAuthenticationResponse = new
-  JwtAuthenticationResponse(); jwtAuthenticationResponse.setToken(jwt);
-  jwtAuthenticationResponse.setRefreshToken(refreshToken); 
-  return jwtAuthenticationResponse; 
-  }
-  
-  @Override public JwtAuthenticationResponse refreshToken(RefreshTokenRequest
-  refreshTokenRequest)
-  { String username = jwtService.extractUserName(refreshTokenRequest.getToken()); User user =
-  userRepository.findByUseremail(username).orElseThrow(() -> new
-  IllegalArgumentException("User not found"));
-  
-  if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) { String
-  jwt = jwtService.generateToken(user);
-  
-  JwtAuthenticationResponse jwtAuthenticationResponse = new
-  JwtAuthenticationResponse(); jwtAuthenticationResponse.setToken(jwt);
-  jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
-  return jwtAuthenticationResponse; } return null; } }
-  
-  
- 
-=======
 package com.dxc.service;
 
 import java.util.Optional;
@@ -226,7 +127,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setUseremail(email);
         user.setUsername(signUpRequest.getUsername());
-        user.setRole(Role.USER);
+        String extractedRole = signUpRequest.getRole();
+        if (extractedRole != null) {
+            user.setRole(Enum.valueOf(Role.class, extractedRole.toUpperCase())); 
+        } else {
+            user.setRole(Role.USER);
+        }
         user.setUserpassword(passwordEncoder.encode(password));
         return userRepository.save(user);
     }
@@ -279,70 +185,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtAuthenticationResponse generateToken(User user) {
         String token = jwtService.generateToken(user);
-//        String refreshToken = jwtService.generateRefreshToken(user.getUseremail());
-        
         JwtAuthenticationResponse response = new JwtAuthenticationResponse();
         response.setToken(token);
-//        response.setRefreshToken(refreshToken);
+
         return response;
     }
-
 //    @Override
-//    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-//        String username = jwtService.extractUserName(refreshTokenRequest.getToken());
-//        Optional<User> user = userRepository.findByUserEmail(username);
-//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-//
-//        if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
-//            String jwt = jwtService.generateToken(user);
-//
-//            JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
-//            jwtAuthenticationResponse.setToken(jwt);
-//            jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
-//            return jwtAuthenticationResponse;
-//        }
-//        return null;
-//    }
-//}
-//    @Override
-//    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-//        String username = jwtService.extractUserName(refreshTokenRequest.getToken());
-//        Optional<User> userOptional = userRepository.findByuseremail(username);
-//        User user = userOptional.orElseThrow(() -> new IllegalArgumentException("User not found"));
-//
-//        if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
-//            String jwt = jwtService.generateToken(user);
-//
-//            JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
-//            jwtAuthenticationResponse.setToken(jwt);
-//            jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
-//            return jwtAuthenticationResponse;
-//        } else {
-//            throw new IllegalArgumentException("Invalid token or user");
-//        }
-//    }
-
-    
-//    @Override
-//    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-//        String refreshToken = refreshTokenRequest.getToken();
-//        
-//        if (jwtService.validateRefreshToken(refreshToken)) {
-//            String userEmail = jwtService.extractUserEmail(refreshToken);
-//            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-//            
-//            String token = jwtService.generateToken(userDetails);
-//            String newRefreshToken = jwtService.generateRefreshToken(userDetails);
-//            
-//            JwtAuthenticationResponse response = new JwtAuthenticationResponse();
-//            response.setToken(token);
-//            response.setRefreshToken(newRefreshToken);
-//            
-//            return response;
-//        } else {
-//            throw new IllegalArgumentException("Invalid refresh token");
-//        }
+//    public User forgotPassword(String username, String password) {
+//    	Optional<User> user = userRepository.findByuseremail(username);
+//    	User u = user.get();
+//        u.setUserpassword(passwordEncoder.encode(password));
+//        return userRepository.save(u);
+//       
 //    }
 
 }
->>>>>>> 9083e49908be6b2278f251a13d4aec9b7b969535

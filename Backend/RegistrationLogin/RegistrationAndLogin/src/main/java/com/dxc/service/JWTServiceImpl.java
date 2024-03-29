@@ -60,39 +60,4 @@ public class JWTServiceImpl implements JWTService {
         return extractClaim(token, Claims::getSubject);
     }
 
-
-
-//    @Override
-//    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-//        return Jwts.builder()
-//                .setSubject(userDetails.getUsername())
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date(System.currentTimeMillis() + 604800000)) // Refresh token valid for 7 days
-//                .addClaims(extraClaims)
-//                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-//                .compact();
-//    }
-//
-//    @Override
-//    public String generateRefreshToken(String useremail) {
-//        return null;
-//    }
-//
-//	@Override
-//	public String generateRefreshToken(UserDetails userDetails) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public boolean validateRefreshToken(String refreshToken) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public String extractUserEmail(String refreshToken) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 }
