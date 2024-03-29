@@ -44,7 +44,8 @@ export class LoginComponent implements OnInit{
         this.credentials=false   //error message
         sessionStorage.setItem("token",response.token)  //token placement
         this.authSerivce.isLoggedIn();   //authgaurdd
-        this.shared.setMessage(this.loginForm.value.email)  //email transfer
+        this.shared.setMessage(this.loginForm.value.email)
+        sessionStorage.setItem("email",this.loginForm.value.email)  //email transfer
         this.router.navigate(['/about']);
         
         this.http.get<any>(`http://localhost:7070/user/${this.loginForm.value.email}`)

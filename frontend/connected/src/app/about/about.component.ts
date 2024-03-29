@@ -183,6 +183,7 @@ onSubmit(): void {
   console.log('req Data:', reqBody);
   if(this.updateKey==false)
   {
+    console.log("old")
   this.http.post('http://localhost:7070/user/save', formdata)
     .subscribe(
       (response: any) => {
@@ -196,8 +197,18 @@ onSubmit(): void {
     );
   }
   else if(this.updateKey==true)
-  {
-    
+  {console.log("update")
+    this.http.put(`http://localhost:7070/user/update/${this.emailOfEmployee}`, formdata)
+    .subscribe(
+      (response: any) => {
+        console.log('about information submitted successful!');
+        this.router.navigate(['/profile']);
+      },
+      (error) => {
+        console.error('Error occurred during registration:', error);
+        // Handle error accordingly, display error message, etc.
+      }
+    );
   }
 }
 

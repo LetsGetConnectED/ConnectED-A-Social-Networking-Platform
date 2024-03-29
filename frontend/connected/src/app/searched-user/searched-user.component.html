@@ -2,12 +2,19 @@
     <app-dash-nav-auth></app-dash-nav-auth>
     <div class="main_context mt-5">
         <div class="info_context ps-5 pt-5 row">
-            <div class="img-container  ms-2 col-8">
+            <div class="img-container  ms-2 col-8" *ngIf="display">
+
                 <label for="imageInput">
                     <img [src]="selectedImage ? selectedImage : 'assets/avatar.jpg'" alt="" class="col-12">
                 </label>
             </div>
-            <div class="edit-profile col-3 mt-5" >
+            <div class="img-container  ms-2 col-8" *ngIf="!display">
+
+                <label for="imageInput">
+                    <img src="assets/avatar.jpg" alt="" class="col-12">
+                </label>
+            </div>
+            <div class="edit-profile col-3 mt-5" (click)="addfriend()">
                 <div class="pencil-holder py-3" >
                     <i class="bi bi-person-plus-fill ms-4"></i>
             </div>

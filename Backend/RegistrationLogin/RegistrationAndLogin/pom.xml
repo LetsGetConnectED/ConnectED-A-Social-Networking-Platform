@@ -21,7 +21,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+
+
+		<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-mail</artifactId>
+</dependency>
+
+
 <dependency>
     <groupId>org.projectlombok</groupId>
     <artifactId>lombok</artifactId>
@@ -54,12 +63,19 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-mail</artifactId>
 </dependency>
+
+
+
+
+
+
 <dependency>
   <groupId>io.jsonwebtoken</groupId>
   <artifactId>jjwt-jackson</artifactId>
   <version>0.11.2</version>
   <scope>runtime</scope>
 </dependency>
+
 <dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
@@ -68,7 +84,15 @@
 		<dependency>
     <groupId>io.jsonwebtoken</groupId>
     <artifactId>jjwt-impl</artifactId>
+
     <version>0.11.2</version> <!-- Adjust version as needed -->
+
+
+    <version>0.11.5</version> <!-- Make sure the version matches your project -->
+
+    <version>.11.2</version> <!-- Adjust version as needed -->
+
+
 </dependency>
 
 <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->

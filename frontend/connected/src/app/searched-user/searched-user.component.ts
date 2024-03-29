@@ -12,6 +12,7 @@ import { SharedService } from '../service/shared.service';
   styleUrls: ['./searched-user.component.css']
 })
 export class SearchedUserComponent implements OnInit {
+  display: boolean=false;
 
 
   constructor(private http: HttpClient,private shared:SharedService, private sanitizer: DomSanitizer,private router: Router,private activeRoute:ActivatedRoute) { }
@@ -47,6 +48,14 @@ export class SearchedUserComponent implements OnInit {
        this.bio=data.bio
        this.occupation=data.occupation
        this.education=data.edu
+       if(data.image)
+       {
+        this.display=true
+       }
+       else if(data.image==null||data.image=='')
+       {
+        this.display=false
+       }
        const imageUrl = 'data:image/png;base64,' + data.image
        this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
       })
@@ -57,7 +66,27 @@ export class SearchedUserComponent implements OnInit {
   }
   
   popupVisible: boolean = false;
-  
+  addfriend(){
+    this.http.post(
+      `http://localhost:8088/friend/request/send?senderUsername=${sessionStorage.getItem("email")}&receiverUsername=${this.activeRoute.snapshot.params['id']}`,
+      null, // Provide null as the request body if no data needs to be sent
+      { responseType: 'text' } // Specify the response type as 'text'
+    ).subscribe(
+      (data) => {
+        alert(data);
+        this.router.navigate(['/dashboard'])
+      },
+      (error) => {
+        // Handle the error here
+        console.error('An error occurred:', error);
+        // You can display an error message or perform other actions based on the error
+      }
+    );
+    
+    
+    
+    
+  }
   
  
   

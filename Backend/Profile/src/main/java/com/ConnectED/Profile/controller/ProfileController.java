@@ -55,15 +55,8 @@ public class ProfileController {
         }
 
     }
-<<<<<<< HEAD
-    
-   
-    
-    
-=======
 
 
->>>>>>> 5e6f60ab387a63ababb445569022a8f545170052
     @PostMapping("/save")
     public ResponseEntity<?> createOrUpdateProfile(
             HttpServletRequest request,
@@ -128,16 +121,13 @@ public ResponseEntity<?> updateProfile(
             Blob imageBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
             existingProfile.setImage(imageBlob);
         }
-<<<<<<< HEAD
+
         if (file == null) { 
             
             existingProfile.setImage(null);
         }
        
-=======
 
-
->>>>>>> 5e6f60ab387a63ababb445569022a8f545170052
         existingProfile.setFirstName(updatedProfile.getFirstName());
         existingProfile.setLastName(updatedProfile.getLastName());
         existingProfile.setBio(updatedProfile.getBio());

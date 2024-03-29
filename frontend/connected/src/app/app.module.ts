@@ -17,6 +17,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JobCreationComponent } from './job-creation/job-creation.component';
 import { SearchedUserComponent } from './searched-user/searched-user.component';
+import { JobwallComponent } from './jobwall/jobwall.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { SearchedUserComponent } from './searched-user/searched-user.component';
     DashNavAuthComponent,
     ProfileComponent,
     JobCreationComponent,
-    SearchedUserComponent
+    SearchedUserComponent,
+    JobwallComponent
   ],
   imports: [
     BrowserModule,

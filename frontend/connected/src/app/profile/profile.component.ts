@@ -24,13 +24,15 @@ export class ProfileComponent implements OnInit {
   occupation:any;
   education:any;
   dashboardImage:any;
+  display:boolean=false;
   email:any;
 
 
   caption: string = ''; // Define the 'caption' property here
 
   ngOnInit(): void {
-    this.email=this.shared.getMessage();
+    this.email=sessionStorage.getItem("email")
+    console.log("email is",this.email)
     if(this.email)
     {
       this.http.get<any>(`http://localhost:7070/user/${this.email}`).subscribe((data)=>{
@@ -44,11 +46,19 @@ export class ProfileComponent implements OnInit {
        this.bio=data.bio
        this.occupation=data.occupation
        this.education=data.edu
+       if(data.image)
+       {
+        this.display=true
+       }
+       else if(data.image==null||data.image=='')
+       {
+        this.display=false
+       }
        const imageUrl = 'data:image/png;base64,' + data.image
        this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
       })
 
-
+    
 
     }
   }
