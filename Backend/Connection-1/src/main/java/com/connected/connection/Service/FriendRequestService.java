@@ -1,12 +1,15 @@
 package com.connected.connection.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.connected.connection.model.FriendRequest;
 import com.connected.connection.model.RequestStatus;
 import com.connected.connection.model.User;
 
 public interface FriendRequestService {
+	
+	Optional<FriendRequest> getFriendRequest(User sender, User receiver);
 
 	void sendFriendRequest(User sender, User receiver, RequestStatus status);
 
@@ -29,6 +32,13 @@ public interface FriendRequestService {
 	void acceptFriendRequest(User sender, User receiver);
 	
 	void rejectFriendRequest(User sender, User receiver);
+	
+	
+	
+	/*
+	 * public Optional<FriendRequest> getFriendRequest(User sender, User receiver);
+	 */
+
 }
 
 /*

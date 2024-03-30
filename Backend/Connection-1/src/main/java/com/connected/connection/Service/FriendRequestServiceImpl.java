@@ -23,18 +23,49 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         return friendRequestRepository.findByReceiver(user);
     }
     
+	/*
+	 * @Override public FriendRequest getFriendRequest(User sender, User receiver) {
+	 * return friendRequestRepository.findBySenderAndReceiver(sender, receiver); }
+	 */
+    @Override
+    public Optional<FriendRequest> getFriendRequest(User sender, User receiver) {
+        return friendRequestRepository.findBySenderAndReceiver(sender, receiver)
+        		.stream().findFirst();
+    }
+    
+	/*
+	 * @Override public void sendFriendRequest(User sender, User receiver,
+	 * RequestStatus status) { // Create a new friend request with the provided
+	 * sender, receiver, and status FriendRequest request = new FriendRequest();
+	 * request.setSender(sender); request.setReceiver(receiver);
+	 * request.setStatus(status);
+	 * 
+	 * // Save the friend request friendRequestRepository.save(request); }
+	 */
+
     @Override
     public void sendFriendRequest(User sender, User receiver, RequestStatus status) {
-        // Create a new friend request with the provided sender, receiver, and status
-        FriendRequest request = new FriendRequest();
-        request.setSender(sender);
-        request.setReceiver(receiver);
-        request.setStatus(status);
-
-        // Save the friend request
-        friendRequestRepository.save(request);
+        // Check if there is an existing friend request between sender and receiver
+        Optional<FriendRequest> existingRequestOptional = getFriendRequest(sender, receiver);
+        if (existingRequestOptional.isPresent()) {
+            FriendRequest existingRequest = existingRequestOptional.get();
+            if (existingRequest.getStatus() == RequestStatus.PENDING || existingRequest.getStatus() == RequestStatus.ACCEPTED) {
+                throw new IllegalArgumentException("Friend request already exists between " + sender.getUsername() + " and " + receiver.getUsername());
+            } else {
+                // If existing request has status rejected, update the status
+                existingRequest.setStatus(status);
+                friendRequestRepository.save(existingRequest);
+            }
+        } else {
+            // If no existing request, create a new one
+            FriendRequest newRequest = new FriendRequest();
+            newRequest.setSender(sender);
+            newRequest.setReceiver(receiver);
+            newRequest.setStatus(status);
+            friendRequestRepository.save(newRequest);
+        }
     }
-
+    
     @Override
     public void cancelFriendRequest(User sender, User receiver) {
         List<FriendRequest> requests = friendRequestRepository.findBySenderAndReceiver(sender, receiver);
@@ -140,9 +171,17 @@ public class FriendRequestServiceImpl implements FriendRequestService {
                 request.setStatus(RequestStatus.REJECTED);
                 friendRequestRepository.save(request); // Save the updated request
                 return; // Exit the loop after finding the first pending request
+               
             }
         }
     }
+    
+	/*
+	 * @Override public Optional<FriendRequest> getFriendRequest(User sender, User
+	 * receiver) { return friendRequestRepository.fetchBySenderAndReceiver(sender,
+	 * receiver); }
+	 */
+
 
 
 }
