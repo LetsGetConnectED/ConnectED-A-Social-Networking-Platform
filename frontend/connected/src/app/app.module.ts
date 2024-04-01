@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JobCreationComponent } from './job-creation/job-creation.component';
 import { SearchedUserComponent } from './searched-user/searched-user.component';
 import { JobwallComponent } from './jobwall/jobwall.component';
+import { FriendReqComponent } from './friend-req/friend-req.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { JobwallComponent } from './jobwall/jobwall.component';
     ProfileComponent,
     JobCreationComponent,
     SearchedUserComponent,
-    JobwallComponent
+    JobwallComponent,
+    FriendReqComponent
   ],
   imports: [
     BrowserModule,

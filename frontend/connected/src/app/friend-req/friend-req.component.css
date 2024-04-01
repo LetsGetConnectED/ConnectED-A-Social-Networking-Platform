@@ -1,0 +1,43 @@
+.main_context {
+    background-color: #B7C6B1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    height: auto;
+    padding: 0;
+  }
+ 
+  .rounded_field {
+    border-radius: 50px;
+  }
+  .info_context{
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    flex-direction: column;
+  }
+  button {
+    background-color: #25371B;
+    color: white;
+    border: navajowhite;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  .bi-check-lg{
+    color: green;
+  }
+  .bi{
+    font-size: 30px;
+  }
+  .bi-ban{
+    color: red;
+  }
+  .job {
+ /* Add bottom margin to create space between each job card */
+    background-color: white;
+    width: 40%;
+    border: 2px solid #25371B;
+  }
+  

@@ -12,6 +12,7 @@ import { AuthGuard } from './gaurd/auth.guard';
 import { JobCreationComponent } from './job-creation/job-creation.component';
 import { SearchedUserComponent } from './searched-user/searched-user.component';
 import { JobwallComponent } from './jobwall/jobwall.component';
+import { FriendReqComponent } from './friend-req/friend-req.component';
 
 
 const routes: Routes = [
@@ -27,7 +28,8 @@ const routes: Routes = [
   {path:'profile',component:ProfileComponent,canActivate: [AuthGuard]},
   {path:'job-creation',component:JobCreationComponent},
   {path:'user/:id',component:SearchedUserComponent},
-  {path:'jobwall',component:JobwallComponent}
+  {path:'jobwall',component:JobwallComponent},
+  {path:'req',component:FriendReqComponent}
   // Add more routes here if needed
 ];
 
