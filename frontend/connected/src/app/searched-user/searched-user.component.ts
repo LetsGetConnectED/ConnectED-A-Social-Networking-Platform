@@ -1,6 +1,6 @@
 
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -29,6 +29,7 @@ export class SearchedUserComponent implements OnInit {
   education:any;
   dashboardImage:any;
   email:any;
+  requestFlag:boolean=true;
 
 
   caption: string = ''; // Define the 'caption' property here
@@ -60,6 +61,27 @@ export class SearchedUserComponent implements OnInit {
        this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
       })
 
+      this.http.get(
+        `http://localhost:8088/friend/request/check?senderUsername=${sessionStorage.getItem("email")}&receiverUsername=${this.activeRoute.snapshot.params['id']}`
+      ).subscribe(
+        (data: any) => {
+        
+        },
+        (error) => {
+          if (error instanceof HttpErrorResponse && error.status === 400) {
+            // Handle the case where the response is plain text
+            console.log("Friend request already exists part 2");
+            this.requestFlag=false
+          } else {
+            // Handle other errors
+            console.log("No friend request exists");
+            this.requestFlag=true
+          }
+        }
+      );
+      
+      
+      
 
 
     
@@ -73,6 +95,7 @@ export class SearchedUserComponent implements OnInit {
       { responseType: 'text' } // Specify the response type as 'text'
     ).subscribe(
       (data) => {
+        this.requestFlag=false
         alert(data);
         this.router.navigate(['/dashboard'])
       },
@@ -87,7 +110,28 @@ export class SearchedUserComponent implements OnInit {
     
     
   }
-  
+  removefriend(){
+    this.http.delete(
+      `http://localhost:8088/friend/request/cancel?senderUsername=${sessionStorage.getItem("email")}&receiverUsername=${this.activeRoute.snapshot.params['id']}`
+    ).subscribe(
+      (data) => {
+        this.requestFlag = false;
+        console.log("request already sent",data)
+      },
+      (error) => {
+        if (error instanceof HttpErrorResponse && error.status === 200) {
+          // Handle the case where the response is plain text
+          this.requestFlag = false;
+          console.log("request already sent")
+          this.router.navigate(['/dashboard'])
+        } else {
+          // Handle other errors
+          console.error('An error occurred:', error);
+    
+        }
+      }
+    );
+  }
  
   
 }

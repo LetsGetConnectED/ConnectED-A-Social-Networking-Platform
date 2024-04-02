@@ -110,16 +110,11 @@ export class ProfileComponent implements OnInit {
       shares:0
      }
      const formdata =new FormData();
-     formdata.append("file",this.dashboardImage)
+     formdata.append("image",this.dashboardImage)
+     formdata.append("caption",this.caption)
      console.log("reqbody",reqBody)
-    //  this.http.post(`http://localhost:6060/user/${this.email}`,reqBody ).subscribe((response: any) => {
-    //   console.log('caption posted successfully');
-    // },
-    // (error) => {
-    //   console.error('Error occurred during registration:', error)
-    // }
-    //  )
-     this.http.post(`http://localhost:6060/${this.email}/9/image`,formdata ).subscribe((response: any) => {
+
+     this.http.post(`http://localhost:6060/${this.email}`,formdata ).subscribe((response: any) => {
       console.log('image posted successfully');
       // this.router.navigate(['/profile']);
     },
