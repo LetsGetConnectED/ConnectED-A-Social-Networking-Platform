@@ -8,8 +8,14 @@ import { Component, OnInit } from '@angular/core';
 export class DashNavAuthComponent implements OnInit {
 
   constructor() { }
-
+role:any;
+roleFlag:boolean=false;
   ngOnInit(): void {
+    this.role=sessionStorage.getItem("role")
+    if(this.role=="RECRUITER")
+    {
+    this.roleFlag=true
+    }
   }
 
 }

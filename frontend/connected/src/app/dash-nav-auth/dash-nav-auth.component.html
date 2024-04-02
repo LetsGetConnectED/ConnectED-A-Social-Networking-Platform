@@ -13,8 +13,15 @@
 <!-- 
     <a class="nav-link active d-flex flex-column text-center me-1" aria-current="page" href="#"><i
         class="bi bi-bell"></i>Notifications</a> -->
+        <div *ngIf="roleFlag">
         <a class="nav-link active d-flex flex-column text-center me-1" routerLink="/job-creation">
-        <i class="bi bi-bag-check-fill"></i>Job</a>
+        <i class="bi bi-bag-check-fill"></i>posting</a>
+        </div>
+        <div *ngIf="!roleFlag">
+          <a class="nav-link active d-flex flex-column text-center me-1" routerLink="/job-creation">
+            <i class="bi bi-window-dock"></i>Job</a>
+          </div>
+  
 
     <a class="nav-link active d-flex flex-column text-center me-1" routerLink="/profile"><i
         class="bi bi-person"></i>Profile</a>
