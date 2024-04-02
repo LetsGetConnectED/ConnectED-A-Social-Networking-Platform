@@ -3,6 +3,16 @@
   height: 35rem;
   background-color: white;
 }
+.main_context {
+  background-color: #B7C6B1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  height: auto;
+  padding: 0;
+}
 .post-body-header{
   width: auto;
   height: 10%;

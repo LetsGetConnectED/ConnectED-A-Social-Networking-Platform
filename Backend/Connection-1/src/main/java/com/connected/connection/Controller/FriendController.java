@@ -6,25 +6,20 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.connected.connection.Repository.FriendRequestRepository;
 import com.connected.connection.Service.FriendRequestService;
 import com.connected.connection.Service.UserService;
+import com.connected.connection.exceptions.ResourceNotFoundException;
 import com.connected.connection.model.FriendRequest;
 import com.connected.connection.model.RequestStatus;
 import com.connected.connection.model.User;
-import com.connected.connection.exceptions.GlobalExceptionHandler;
-import com.connected.connection.exceptions.ResourceNotFoundException;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/friend")
+
 public class FriendController {
 
     @Autowired
@@ -32,7 +27,9 @@ public class FriendController {
 
     @Autowired
     private UserService userService;
-
+    
+    @Autowired
+    private FriendRequestRepository friendRequestRepository;
 	/*
 	 * @Autowired private GlobalExceptionHandler globalExceptionHandler;
 	 */
@@ -76,7 +73,57 @@ public class FriendController {
         }
     }
 
-    @PostMapping("/request/send") // senderUsername and receiverUsername
+	/*
+	 * @PostMapping("/request/send") // senderUsername and receiverUsername public
+	 * ResponseEntity<?> sendFriendRequest(@RequestParam String senderUsername,
+	 * 
+	 * @RequestParam String receiverUsername) { try { Optional<User> senderOptional
+	 * = userService.getUserByUsername(senderUsername); Optional<User>
+	 * receiverOptional = userService.getUserByUsername(receiverUsername);
+	 * 
+	 * User sender = senderOptional.orElseThrow(() -> new
+	 * ResourceNotFoundException("User", "username", senderUsername)); User receiver
+	 * = receiverOptional.orElseThrow(() -> new ResourceNotFoundException("User",
+	 * "username", receiverUsername));
+	 * 
+	 * friendRequestService.sendFriendRequest(sender, receiver,
+	 * RequestStatus.PENDING); return
+	 * ResponseEntity.ok().body("Friend request sent from " + sender.getUsername() +
+	 * " to " + receiver.getUsername()); } catch (ResourceNotFoundException e) {
+	 * return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); }
+	 * catch (Exception e) { return
+	 * ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+	 * body("Failed to send friend request. Please try again later."); } }
+	 */
+	@GetMapping("/request/check") // senderUsername and receiverUsername
+	public ResponseEntity<?> checkFriendRequest(@RequestParam String senderUsername,
+												@RequestParam String receiverUsername) {
+		try {
+			Optional<User> senderOptional = userService.getUserByUsername(senderUsername);
+			Optional<User> receiverOptional = userService.getUserByUsername(receiverUsername);
+
+			User sender = senderOptional.orElseThrow(() -> new ResourceNotFoundException("User", "username", senderUsername));
+			User receiver = receiverOptional.orElseThrow(() -> new ResourceNotFoundException("User", "username", receiverUsername));
+
+			// Check if there is an existing friend request between sender and receiver
+			Optional<FriendRequest> existingRequestOptional = friendRequestService.getFriendRequest(sender, receiver);
+			if (existingRequestOptional.isPresent()) {
+				FriendRequest existingRequest = existingRequestOptional.get();
+				if (existingRequest.getStatus() == RequestStatus.PENDING || existingRequest.getStatus() == RequestStatus.ACCEPTED) {
+					// If request has pending or accepted status, return a message
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend request already exists between " + sender.getUsername() + " and " + receiver.getUsername());
+				}
+			}
+			// If no existing request or existing request has status rejected, return a message indicating no request exists
+			return ResponseEntity.ok().body("No friend request exists between " + sender.getUsername() + " and " + receiver.getUsername());
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to check friend request. Please try again later.");
+		}
+	}
+
+	@PostMapping("/request/send") // senderUsername and receiverUsername
     public ResponseEntity<?> sendFriendRequest(@RequestParam String senderUsername,
             @RequestParam String receiverUsername) {
         try {
@@ -86,35 +133,45 @@ public class FriendController {
             User sender = senderOptional.orElseThrow(() -> new ResourceNotFoundException("User", "username", senderUsername));
             User receiver = receiverOptional.orElseThrow(() -> new ResourceNotFoundException("User", "username", receiverUsername));
 
+            // Check if there is an existing friend request between sender and receiver
+            Optional<FriendRequest> existingRequestOptional = friendRequestService.getFriendRequest(sender, receiver);
+            if (existingRequestOptional.isPresent()) {
+                FriendRequest existingRequest = existingRequestOptional.get();
+                if (existingRequest.getStatus() == RequestStatus.PENDING || existingRequest.getStatus() == RequestStatus.ACCEPTED) {
+                    // If request has pending or accepted status, return a message
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend request already exists between " + sender.getUsername() + " and " + receiver.getUsername());
+                }
+            }
+
+            // If no existing request or existing request has status rejected, create a new request
             friendRequestService.sendFriendRequest(sender, receiver, RequestStatus.PENDING);
             return ResponseEntity.ok().body("Friend request sent from " + sender.getUsername() + " to " + receiver.getUsername());
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send friend request. Please try again later.");
-        }
-    }
+        }}
 
-    @DeleteMapping("/request/cancel") // senderUsername & receiverUsername
-    public ResponseEntity<?> cancelFriendRequest(@RequestParam String senderUsername,
-            @RequestParam String receiverUsername) {
-        try {
-            Optional<User> senderOptional = userService.getUserByUsername(senderUsername);
-            Optional<User> receiverOptional = userService.getUserByUsername(receiverUsername);
+	@DeleteMapping("/request/cancel") // senderUsername & receiverUsername
+	public ResponseEntity<?> cancelFriendRequest(@RequestParam String senderUsername,
+												 @RequestParam String receiverUsername) {
+		try {
+			Optional<User> senderOptional = userService.getUserByUsername(senderUsername);
+			Optional<User> receiverOptional = userService.getUserByUsername(receiverUsername);
 
-            User sender = senderOptional.orElseThrow(() -> new ResourceNotFoundException("User", "username", senderUsername));
-            User receiver = receiverOptional.orElseThrow(() -> new ResourceNotFoundException("User", "username", receiverUsername));
+			User sender = senderOptional.orElseThrow(() -> new ResourceNotFoundException("User", "username", senderUsername));
+			User receiver = receiverOptional.orElseThrow(() -> new ResourceNotFoundException("User", "username", receiverUsername));
 
-            friendRequestService.cancelFriendRequest(sender, receiver);
-            return ResponseEntity.ok().body("Friend request cancelled by " + sender.getUsername() + " for " + receiver.getUsername());
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to cancel friend request. Please try again later.");
-        }
-    }
+			friendRequestService.cancelFriendRequest(sender, receiver);
+			return ResponseEntity.ok().body("Friend request cancelled by " + sender.getUsername() + " for " + receiver.getUsername());
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to cancel friend request. Please try again later.");
+		}
+	}
 
-    @PutMapping("/request/accept") // senderUsername & receiverUsername
+	@PutMapping("/request/accept") // senderUsername & receiverUsername
     public ResponseEntity<?> acceptFriendRequest(@RequestParam String senderUsername,
             @RequestParam String receiverUsername) {
         try {

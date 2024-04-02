@@ -24,13 +24,15 @@ export class ProfileComponent implements OnInit {
   occupation:any;
   education:any;
   dashboardImage:any;
+  display:boolean=false;
   email:any;
 
 
   caption: string = ''; // Define the 'caption' property here
 
   ngOnInit(): void {
-    this.email=this.shared.getMessage();
+    this.email=sessionStorage.getItem("email")
+    console.log("email is",this.email)
     if(this.email)
     {
       this.http.get<any>(`http://localhost:7070/user/${this.email}`).subscribe((data)=>{
@@ -44,11 +46,19 @@ export class ProfileComponent implements OnInit {
        this.bio=data.bio
        this.occupation=data.occupation
        this.education=data.edu
+       if(data.image)
+       {
+        this.display=true
+       }
+       else if(data.image==null||data.image=='')
+       {
+        this.display=false
+       }
        const imageUrl = 'data:image/png;base64,' + data.image
        this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
       })
 
-
+    
 
     }
   }
@@ -100,16 +110,11 @@ export class ProfileComponent implements OnInit {
       shares:0
      }
      const formdata =new FormData();
-     formdata.append("file",this.dashboardImage)
+     formdata.append("image",this.dashboardImage)
+     formdata.append("caption",this.caption)
      console.log("reqbody",reqBody)
-    //  this.http.post(`http://localhost:6060/user/${this.email}`,reqBody ).subscribe((response: any) => {
-    //   console.log('caption posted successfully');
-    // },
-    // (error) => {
-    //   console.error('Error occurred during registration:', error)
-    // }
-    //  )
-     this.http.post(`http://localhost:6060/${this.email}/9/image`,formdata ).subscribe((response: any) => {
+
+     this.http.post(`http://localhost:6060/${this.email}`,formdata ).subscribe((response: any) => {
       console.log('image posted successfully');
       // this.router.navigate(['/profile']);
     },

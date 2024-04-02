@@ -17,23 +17,21 @@ export class DashboardComponent implements OnInit{
   selectedImage: any;
   emailOfEmployee:any;
   email: string='';
+  posts: any[] = []; // Define an array to store the posts
   caption:string=''
   constructor(private formBuilder: FormBuilder ,private http: HttpClient,private sanitizer: DomSanitizer,private shared:SharedService) {
 
   }
   ngOnInit(): void {
-    this.http.get<any>('http://localhost:6060/user/bhavishyatomer12@gmail.com').subscribe((data)=>{
-      console.log(data[0])
-      this.firstname=data[0].user.firstName
-      this.lastname=data[0].user.lastName
-      this.caption=data[0].caption
-      const imageUrl = 'data:image/png;base64,' + data[0].imageBytes
-      this.uploadedImage= this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+    this.http.get<any>(`http://localhost:6060/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
+      console.log(data)
+    
+      this.posts = data; // Assign the received data to the posts array
     })
     this.email=this.shared.getMessage();
     if(this.email)
     {
-    this.http.get<any>(`http://localhost:7070/user/${this.email}`).subscribe((data)=>{
+    this.http.get<any>(`http://localhost:7070/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
        console.log("data is here",data)
      
        const imageUrl = 'data:image/png;base64,' + data.image
@@ -42,6 +40,14 @@ export class DashboardComponent implements OnInit{
   }
   toggleLike(): void {
     this.isLiked = !this.isLiked; // Toggle the like status
+  }
+  getPostUserImage(post: any): string {
+    return `data:image/png;base64,${post.user.imageBytes}`;
+  }
+
+  // Function to get the post image
+  getPostImage(post: any): string {
+    return `data:image/png;base64,${post.imageBytes}`;
   }
 
 }

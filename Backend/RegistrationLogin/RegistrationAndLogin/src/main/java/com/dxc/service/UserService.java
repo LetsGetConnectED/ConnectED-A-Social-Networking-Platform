@@ -4,14 +4,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.dxc.model.User;
+
 public interface UserService extends UserDetailsService{
 
 UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
-<<<<<<< HEAD
- UserDetailsService userDetailsService();
- 
+static User findUserByEmail(String userEmail) {
+	// TODO Auto-generated method stub
+	return null;
+}
 
-=======
->>>>>>> 9083e49908be6b2278f251a13d4aec9b7b969535
+static void createPasswordResetTokenForUser(User user, String token) {
+	// TODO Auto-generated method stub
+	
+}
+
 }

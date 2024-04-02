@@ -1,0 +1,38 @@
+.main_context {
+    background-color: #B7C6B1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    height: auto;
+    padding: 0;
+  }
+  .info_context{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .rounded_field {
+    border-radius: 50px;
+  }
+  
+  button {
+    background-color: #25371B;
+    color: white;
+    border: navajowhite;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+ 
+  
+  .job {
+    margin-top: 20px; /* Add bottom margin to create space between each job card */
+    background-color: white;
+    width: 60%;
+    border-radius: 20px;
+    border: 2px solid #25371B;
+  }
+  
