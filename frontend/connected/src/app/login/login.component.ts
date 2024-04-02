@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,21 +10,28 @@ import { RoleService } from '../role.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  credentials:boolean=false;
+  credentials: boolean = false;
   Role: string | undefined;
 
   ngOnInit(): void {
-  sessionStorage.clear();
+    sessionStorage.clear();
   }
 
-  constructor(private formBuilder: FormBuilder,private http: HttpClient,private router: Router,private shared: SharedService,private roleService: RoleService, private authSerivce:AuthserviceService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private router: Router,
+    private shared: SharedService,
+    private roleService: RoleService,
+    private authSerivce: AuthserviceService
+  ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
@@ -32,38 +39,79 @@ export class LoginComponent implements OnInit{
     const useremail = this.loginForm.value.email;
 
     if (this.loginForm.valid) {
-      console.log('Form submitted successfully!',this.loginForm.value);
-      const reqBody={
-        useremail:this.loginForm.value.email,
-        userpassword:this.loginForm.value.password
-      }
-      this.http.post('http://localhost:8080/api/v1/auth/signin', reqBody)
-    .subscribe(
-      (response: any) => {
-        console.log('login successful!', response.token);
-        this.credentials=false   //error message
-        sessionStorage.setItem("token",response.token)  //token placement
-        this.authSerivce.isLoggedIn();   //authgaurdd
-        this.shared.setMessage(this.loginForm.value.email)
-        sessionStorage.setItem("email",this.loginForm.value.email)  //email transfer
-        this.router.navigate(['/about']);
+      console.log('Form submitted successfully!', this.loginForm.value);
+      const reqBody = {
+        useremail: this.loginForm.value.email,
+        userpassword: this.loginForm.value.password,
+      };
+      this.http
+        .post('http://localhost:8080/api/v1/auth/signin', reqBody)
+        .subscribe(
+          (response: any) => {
+            console.log('login successful!', response.token);
+            this.credentials = false; //error message
+            sessionStorage.setItem('token', response.token); //token placement
+            this.authSerivce.isLoggedIn(); //authgaurdd
+            this.shared.setMessage(this.loginForm.value.email); //email transfer
+            this.router.navigate(['/about']);
+            const headers = new HttpHeaders({
+              Authorization: `Bearer ${response.token}`,
+            });
+            this.http
+              .get<any>(
+                `http://localhost:8080/api/v1/user/role/${this.loginForm.value.email}`,
+                { headers }
+              )
+              .subscribe(
+                (responseData) => {
+                  //this.Role = responseData;
+                  sessionStorage.setItem('role', responseData);
+                },
+                (error) => {
+                  // Handle any errors
+                  console.error('Error:', error);
+                }
+              );
+
+            this.http
+              .get<any>(
+                `http://localhost:7070/user/${this.loginForm.value.email}`
+              )
+              .subscribe(
+                (data) => {
+                  console.log('profile found');
+                  this.router.navigate(['/dashboard']);
+                },
+                (error) => {
+                  console.log('profile not found');
+                  this.router.navigate(['/about']);
+                }
+              );
+              
+            this.http
+            .get<any>(
+              `http://localhost:7070/advertiser/${this.loginForm.value.email}`
+            )
+            .subscribe(
+              (data) => {
+                console.log('profile found');
+                this.router.navigate(['/dashboard']);
+              },
+              (error) => {
+                console.log('profile not found');
+                this.router.navigate(['/about']);
+              }
+            );
+          },
+          (error) => {
+            console.error('Error occurred during registration:', error);
+            // Handle error accordingly, display error message, etc.
+            this.credentials = true;
+          }
+          
+          
+        );
         
-        this.http.get<any>(`http://localhost:7070/user/${this.loginForm.value.email}`)
-        .subscribe((data)=>{
-          console.log("profile found")
-          this.router.navigate(['/dashboard'])
-      },(error)=>{
-        console.log("profile not found")
-          this.router.navigate(['/about'])
-        })
-      },
-      (error) => {
-        console.error('Error occurred during registration:', error);
-        // Handle error accordingly, display error message, etc.
-        this.credentials=true
-      }
-    );
-    
     }
   }
 }

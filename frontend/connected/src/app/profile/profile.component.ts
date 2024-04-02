@@ -10,6 +10,7 @@ import { SharedService } from '../service/shared.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  
 
   constructor(private http: HttpClient,private shared:SharedService, private sanitizer: DomSanitizer,private router: Router) { }
   selectedImage: SafeUrl | null = null; // Change the type to SafeUrl
@@ -26,14 +27,16 @@ export class ProfileComponent implements OnInit {
   dashboardImage:any;
   display:boolean=false;
   email:any;
+  Role: any ;
+  companyName: any;
 
 
   caption: string = ''; // Define the 'caption' property here
 
   ngOnInit(): void {
-    this.email=sessionStorage.getItem("email")
-    console.log("email is",this.email)
-    if(this.email)
+    this.Role=sessionStorage.getItem("role");
+    this.email=this.shared.getMessage();
+   if(sessionStorage.getItem("role")=="USER")
     {
       this.http.get<any>(`http://localhost:7070/user/${this.email}`).subscribe((data)=>{
        console.log("data is here",data)
@@ -60,6 +63,24 @@ export class ProfileComponent implements OnInit {
 
     
 
+    }
+    else if(sessionStorage.getItem("role")=="ADVERTISER")
+    {
+      this.http.get<any>(`http://localhost:7070/advertiser/${this.email}`).subscribe((data)=>{
+        console.log("data is here",data)
+        this.firstname=data.firstName
+        this.lastname=data.lastName
+        //this.skill=data.skill
+        //this.workexp=data.work_exp
+        this.state=data.state
+        this.country=data.country
+        this.companyName= data.companyName
+        this.bio=data.bio
+        //this.occupation=data.occupation
+        //this.education=data.edu
+        const imageUrl = 'data:image/png;base64,' + data.image
+        this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+       }) 
     }
   }
   navigateToAbout(){
