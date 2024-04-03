@@ -19,5 +19,9 @@ export class JobwallComponent implements OnInit {
 
     })
   }
+  applyJob(id:any){
+    console.log("id is",id)
+    // this.http.post<any>(``)
+  }
 
 }

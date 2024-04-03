@@ -10,11 +10,16 @@ export class DashNavAuthComponent implements OnInit {
   constructor() { }
 role:any;
 roleFlag:boolean=false;
+postingFlag:boolean=false;
   ngOnInit(): void {
     this.role=sessionStorage.getItem("role")
     if(this.role=="RECRUITER")
     {
     this.roleFlag=true
+    }
+    if(this.role=="USER")
+    {
+    this.postingFlag=true
     }
   }
 

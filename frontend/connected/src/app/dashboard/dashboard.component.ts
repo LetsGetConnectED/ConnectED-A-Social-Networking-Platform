@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit{
   isLiked: boolean=false;
   selectedImage: any;
   emailOfEmployee:any;
+  showPost:boolean=true;
   email: string='';
   posts: any[] = []; // Define an array to store the posts
   caption:string=''
@@ -27,6 +28,12 @@ export class DashboardComponent implements OnInit{
       console.log(data)
     
       this.posts = data; // Assign the received data to the posts array
+   
+      if(!data.imageBytes)
+      {
+        this.showPost=false
+      }
+
     })
     this.email=this.shared.getMessage();
     if(this.email)

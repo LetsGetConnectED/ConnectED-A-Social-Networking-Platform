@@ -52,11 +52,13 @@ export class LoginComponent implements OnInit {
             this.credentials = false; //error message
             sessionStorage.setItem('token', response.token); //token placement
             this.authSerivce.isLoggedIn(); //authgaurdd
+            sessionStorage.setItem("email",this.loginForm.value.email)
             this.shared.setMessage(this.loginForm.value.email); //email transfer
             this.router.navigate(['/about']);
             const headers = new HttpHeaders({
               Authorization: `Bearer ${response.token}`,
             });
+            console.log("role starting")
             this.http
               .get<any>(
                 `http://localhost:8080/api/v1/user/role/${this.loginForm.value.email}`,
@@ -64,7 +66,7 @@ export class LoginComponent implements OnInit {
               )
               .subscribe(
                 (responseData) => {
-                  //this.Role = responseData;
+                  console.log("hitting role")
                   sessionStorage.setItem('role', responseData);
                 },
                 (error) => {
@@ -72,7 +74,7 @@ export class LoginComponent implements OnInit {
                   console.error('Error:', error);
                 }
               );
-
+              console.log("role ending")
             this.http
               .get<any>(
                 `http://localhost:7070/user/${this.loginForm.value.email}`

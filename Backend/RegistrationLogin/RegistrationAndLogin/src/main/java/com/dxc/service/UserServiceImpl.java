@@ -2,6 +2,7 @@ package com.dxc.service;
 
 import java.util.Optional;
 
+import com.dxc.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
    
     User user = userRepository.findByuseremail(useremail).orElse(null);
     if (user != null) {
-        return user.getRole(); // Assuming User class has a method to get the role
+        return user.getRole();
     } else {
         return null; // Return null if user not found
     }

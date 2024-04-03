@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 
 @NoArgsConstructor  
-@AllArgsConstructor
+//@AllArgsConstructor
 public class JobDTO {
     private Long jobid;
     
