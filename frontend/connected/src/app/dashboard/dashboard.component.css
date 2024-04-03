@@ -1,7 +1,13 @@
 .post-body{
   width: 40%;
-  height: 35rem;
+  height: auto;
   background-color: white;
+}
+.info_context{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .main_context {
   background-color: #B7C6B1;
@@ -15,28 +21,28 @@
 }
 .post-body-header{
   width: auto;
-  height: 10%;
+  height: 3.5rem;
   background-color:#25371B;
   color: white;
 }
 .post-body-content{
   width: auto;
-  height: 60%;
+  height: 21rem;
   color: white;
 }
 .post-body-function{
   width: auto;
-  height: 10%;
+  height: 3.5rem;
   background-color: #25371B;
 }
 .post-body-cmmnt{
   width: auto;
-  height: 10%;
+  height: 3.5rem;
   background-color: #25371B;
 }
 .post-body-caption{
   color: white;
-  height: 10%;
+  height: 3.5rem;
   background-color: #25371B;
 }
 .cmmnt{

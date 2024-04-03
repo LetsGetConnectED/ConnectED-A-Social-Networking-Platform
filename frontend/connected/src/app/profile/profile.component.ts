@@ -29,15 +29,16 @@ export class ProfileComponent implements OnInit {
   email:any;
   Role: any ;
   companyName: any;
+  occupationFlag:any;
 
 
   caption: string = ''; // Define the 'caption' property here
 
   ngOnInit(): void {
     this.Role=sessionStorage.getItem("role");
-    this.email=this.shared.getMessage();
+    this.email=sessionStorage.getItem("email")
    if(sessionStorage.getItem("role")=="USER")
-    {
+    {this.occupationFlag="USER"
       this.http.get<any>(`http://localhost:7070/user/${this.email}`).subscribe((data)=>{
        console.log("data is here",data)
        this.firstname=data.firstName
@@ -65,7 +66,7 @@ export class ProfileComponent implements OnInit {
 
     }
     else if(sessionStorage.getItem("role")=="ADVERTISER")
-    {
+    {this.occupationFlag="ADVERTISER"
       this.http.get<any>(`http://localhost:7070/advertiser/${this.email}`).subscribe((data)=>{
         console.log("data is here",data)
         this.firstname=data.firstName
@@ -78,6 +79,14 @@ export class ProfileComponent implements OnInit {
         this.bio=data.bio
         //this.occupation=data.occupation
         //this.education=data.edu
+        if(data.image)
+        {
+         this.display=true
+        }
+        else if(data.image==null||data.image=='')
+        {
+         this.display=false
+        }
         const imageUrl = 'data:image/png;base64,' + data.image
         this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
        }) 
@@ -134,7 +143,8 @@ export class ProfileComponent implements OnInit {
      formdata.append("image",this.dashboardImage)
      formdata.append("caption",this.caption)
      console.log("reqbody",reqBody)
-
+    if(sessionStorage.getItem("role")=="USER")
+    {
      this.http.post(`http://localhost:6060/${this.email}`,formdata ).subscribe((response: any) => {
       console.log('image posted successfully');
       // this.router.navigate(['/profile']);
@@ -144,6 +154,20 @@ export class ProfileComponent implements OnInit {
       // Handle error accordingly, display error message, etc.
     }
      )
+  }
+  else if(sessionStorage.getItem("role")=="ADVERTISER")
+  {
+   this.http.post(`http://localhost:6060/${this.email}`,formdata ).subscribe((response: any) => {
+    console.log('image posted successfully');
+    // this.router.navigate(['/profile']);
+  },
+  (error) => {
+    console.error('Error occurred during registration:', error);
+    // Handle error accordingly, display error message, etc.
+  }
+   )
+}
+
     this.popupVisible = false;
   }
 }

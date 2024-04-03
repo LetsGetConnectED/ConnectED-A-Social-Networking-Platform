@@ -60,7 +60,6 @@ export class AboutComponent implements OnInit {
   ngOnInit() {
     this.emailOfEmployee = this.shared.getMessage();
     this.Role=sessionStorage.getItem("role")
-    console.log("roles is",this.Role)
     const headers = new HttpHeaders({
       Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     });
@@ -81,8 +80,10 @@ export class AboutComponent implements OnInit {
   );
   console.log("roles is",this.Role)
    
-
-    this.emailOfEmployee = this.shared.getMessage();
+    if(this.Role=="USER")
+    {
+      console.log("user role is here")
+    this.emailOfEmployee = sessionStorage.getItem("email")
     console.log('hitting', this.emailOfEmployee);
     this.http
       .get<any>(`http://localhost:7070/user/${this.emailOfEmployee}`)
@@ -90,34 +91,52 @@ export class AboutComponent implements OnInit {
         console.log('data is here', data);
         if (data.gender) {
           this.updateKey = true;
-          this.firstname = data.firstName;
-          this.aboutForm.get('firstName')?.setValue(this.firstname);
-          this.lastname = data.lastName;
-          this.aboutForm.get('lastName')?.setValue(this.lastname);
-          this.skill = data.skill;
-          this.aboutForm.get('skills')?.setValue(this.skill);
-          this.workexp = data.work_exp;
-          this.aboutForm.get('experience')?.setValue(this.workexp);
-          this.state = data.state;
-          this.aboutForm.get('state')?.setValue(this.state);
-          this.country = data.country;
-          this.aboutForm.get('country')?.setValue(this.country);
-          this.city = data.city;
+          this.aboutForm.get('firstName')?.setValue(data.firstName);
+          this.aboutForm.get('lastName')?.setValue(data.lastName);
+      
+          this.aboutForm.get('skills')?.setValue(data.skill);
+      
+          this.aboutForm.get('experience')?.setValue(data.work_exp);
+      
+          this.aboutForm.get('state')?.setValue(data.state);
+         
+          this.aboutForm.get('country')?.setValue(data.country);
+  
           this.aboutForm.get('city')?.setValue(data.city);
-          this.mobile = data.mobile;
-          this.aboutForm.get('country')?.setValue(this.country);
-          this.mobile = data.mob;
-          this.aboutForm.get('mobile')?.setValue(this.mobile);
-          this.bio = data.bio;
-          this.aboutForm.get('about')?.setValue(this.bio);
-          this.occupation = data.occupation;
-          this.aboutForm.get('occupation')?.setValue(this.occupation);
-          this.education = data.edu;
+    
+          this.aboutForm.get('mobile')?.setValue(data.mob);
+          this.aboutForm.get('about')?.setValue(data.bio);
+         
+          this.aboutForm.get('occupation')?.setValue(data.occupation);
+          
           this.aboutForm.get('gender')?.setValue(data.gender);
-          this.aboutForm.get('education')?.setValue(this.education);
+          this.aboutForm.get('education')?.setValue(data.edu);
         }
       });
-  }
+    }
+    else if(this.Role=="ADVERTISER")
+    { console.log("advertising flags is up")
+      this.http
+      .get<any>(`http://localhost:7070/advertiser/${this.emailOfEmployee}`)
+      .subscribe((data) => {
+        console.log('data is here', data);
+        this.updateKey = true;
+        this.aboutForm.get('firstName')?.setValue(data.firstName);
+        this.aboutForm.get('lastName')?.setValue(data.lastName);
+        this.aboutForm.get('state')?.setValue(data.state);
+         
+        this.aboutForm.get('country')?.setValue(data.country);
+
+        this.aboutForm.get('city')?.setValue(data.city);
+  
+        this.aboutForm.get('mobile')?.setValue(data.mob);
+        this.aboutForm.get('about')?.setValue(data.bio);
+        this.aboutForm.get('gender')?.setValue(data.gender);
+        this.aboutForm.get('companyName')?.setValue(data.companyName)
+        
+    
+    })
+  }}
   onImageSelected(event: any): void {
     const file = event.target.files[0];
     console.log('images are', file);
@@ -144,9 +163,13 @@ export class AboutComponent implements OnInit {
     return allowedExtensions.test(file.name);
   }
 
+
   isValidImageSize(file: File): boolean {
     return file.size <= 1000000; // Check if the file size is less than or equal to 1MB
   }
+
+ 
+  filteredSkills: string[] = [];
 
  
 
@@ -176,7 +199,7 @@ export class AboutComponent implements OnInit {
       
       formdata.append('profile',JSON.stringify(reqBody));
       formdata.append('image',this.imageFile);
-      console.log('req Data for User',formdata)
+      
       
       
         if (this.updateKey == false) {
@@ -197,21 +220,21 @@ export class AboutComponent implements OnInit {
         } else if (this.updateKey == true) {
           console.log('update');
           console.log('about information submitted successful! for the update user');
-          // this.http
-          //   .put(
-          //     `http://localhost:7070/user/update/${this.emailOfEmployee}`,
-          //     formdata
-          //   )
-          //   .subscribe(
-          //     (response: any) => {
+          this.http
+            .put(
+              `http://localhost:7070/user/update/${this.emailOfEmployee}`,
+              formdata
+            )
+            .subscribe(
+              (response: any) => {
                 
-          //       this.router.navigate(['/profile']);
-          //     },
-          //     (error) => {
-          //       console.error('Error occurred during registration:', error);
-          //       // Handle error accordingly, display error message, etc.
-          //     }
-          //   );
+                this.router.navigate(['/profile']);
+              },
+              (error) => {
+                console.error('Error occurred during registration:', error);
+                // Handle error accordingly, display error message, etc.
+              }
+            );
         }
       
     } else if (this.Role === 'ADVERTISER') {
@@ -250,25 +273,26 @@ export class AboutComponent implements OnInit {
       } 
       
          else if (this.updateKey == true) {
+          
           console.log('update');
-          console.log("updated submit")
-          // this.http
-          //   .put(
-          //     `http://localhost:7070/advertiser/update/${this.emailOfEmployee}`,
-          //     formdata
-          //   )
-          //   .subscribe(
-          //     (response: any) => {
-          //       console.log('about information submitted successful!');
-          //       this.router.navigate(['/profile']);
-          //     },
-          //     (error) => {
-          //       console.error('Error occurred during registration:', error);
-          //       // Handle error accordingly, display error message, etc.
-          //     }
-          //   );
+          console.log("updated advertiser")
+          this.http
+            .put(
+              `http://localhost:7070/advertiser/update/${this.emailOfEmployee}`,
+              formdata
+            )
+            .subscribe(
+              (response: any) => {
+                console.log('about information submitted successful!');
+                this.router.navigate(['/profile']);
+              },
+              (error) => {
+                console.error('Error occurred during registration:', error);
+                // Handle error accordingly, display error message, etc.
+              }
+            );
         
-      }
-    }
+  
+         }}
   }
 }
