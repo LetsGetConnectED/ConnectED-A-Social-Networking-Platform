@@ -29,15 +29,16 @@ export class ProfileComponent implements OnInit {
   email:any;
   Role: any ;
   companyName: any;
+  occupationFlag:any;
 
 
   caption: string = ''; // Define the 'caption' property here
 
   ngOnInit(): void {
     this.Role=sessionStorage.getItem("role");
-    this.email=this.shared.getMessage();
+    this.email=sessionStorage.getItem("email")
    if(sessionStorage.getItem("role")=="USER")
-    {
+    {this.occupationFlag="USER"
       this.http.get<any>(`http://localhost:7070/user/${this.email}`).subscribe((data)=>{
        console.log("data is here",data)
        this.firstname=data.firstName
@@ -65,7 +66,7 @@ export class ProfileComponent implements OnInit {
 
     }
     else if(sessionStorage.getItem("role")=="ADVERTISER")
-    {
+    {this.occupationFlag="ADVERTISER"
       this.http.get<any>(`http://localhost:7070/advertiser/${this.email}`).subscribe((data)=>{
         console.log("data is here",data)
         this.firstname=data.firstName

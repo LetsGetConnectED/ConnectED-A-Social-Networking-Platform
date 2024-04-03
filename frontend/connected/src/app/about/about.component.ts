@@ -83,7 +83,7 @@ export class AboutComponent implements OnInit {
     if(this.Role=="USER")
     {
       console.log("user role is here")
-    this.emailOfEmployee = this.shared.getMessage();
+    this.emailOfEmployee = sessionStorage.getItem("email")
     console.log('hitting', this.emailOfEmployee);
     this.http
       .get<any>(`http://localhost:7070/user/${this.emailOfEmployee}`)
