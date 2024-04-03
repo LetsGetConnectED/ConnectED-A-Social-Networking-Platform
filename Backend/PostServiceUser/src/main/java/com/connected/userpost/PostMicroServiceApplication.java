@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.example.demo"})
+@ComponentScan(basePackages = {"com.connected.userpost"})
 
  
 public class PostMicroServiceApplication {
