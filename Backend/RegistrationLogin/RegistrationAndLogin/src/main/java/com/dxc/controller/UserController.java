@@ -17,6 +17,15 @@ public class UserController {
     public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Hi User");
     }
-    
+     @GetMapping("/role/{useremail}")
+    public ResponseEntity<?> getrole(@PathVariable("useremail") String useremail) {
+        // Assuming AuthenticationService has a method to retrieve user roles by ID
+        Role userRole = ur.getrole(useremail);
+        if (userRole != null) {
+            return ResponseEntity.ok(userRole);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User role not found");
+        }
+}
     
 }

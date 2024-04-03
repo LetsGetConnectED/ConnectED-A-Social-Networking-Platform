@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   Optional<User> findByuseremail(String email);
     
     User findByRole(Role role);
+
+      Role findByrole(String useremail);
 }
 
 //@Param("email")

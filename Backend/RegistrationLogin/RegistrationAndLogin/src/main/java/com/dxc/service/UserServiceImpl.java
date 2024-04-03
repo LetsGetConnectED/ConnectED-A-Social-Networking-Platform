@@ -40,7 +40,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	                .build();
 	    }
 
-
+          public Role getrole(String useremail) {
+   
+    User user = userRepository.findByuseremail(useremail).orElse(null);
+    if (user != null) {
+        return user.getRole(); // Assuming User class has a method to get the role
+    } else {
+        return null; // Return null if user not found
+    }
+}
 			
 		}
 	

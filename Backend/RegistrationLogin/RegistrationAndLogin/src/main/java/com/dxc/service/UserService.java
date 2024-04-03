@@ -19,5 +19,6 @@ static void createPasswordResetTokenForUser(User user, String token) {
 	// TODO Auto-generated method stub
 	
 }
+Role getrole(String useremail);
 
 }
