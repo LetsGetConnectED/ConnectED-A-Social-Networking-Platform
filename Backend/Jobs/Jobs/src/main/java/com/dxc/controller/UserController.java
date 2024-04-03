@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import com.dxc.dto.UserDTO;
 import com.dxc.model.User;
+import com.dxc.model.Job;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -29,10 +30,11 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
         User user = new User();
+         Job job  = new Job();
         user.setUsername(userDTO.getUsername());
         user.setUseremail(userDTO.getUseremail());
         user.setUserpassword(userDTO.getUserpassword());
-        Optional<User> existingUser = userService.getUserByEmail(user.getUseremail());
+        Optional<User> existingUser = userService.getUserByEmail(user.getUseremail(), job.getJobid());
         if (existingUser.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("User with this email already exists");
