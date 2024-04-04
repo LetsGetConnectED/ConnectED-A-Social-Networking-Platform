@@ -237,7 +237,64 @@ export class AboutComponent implements OnInit {
             );
         }
       
-    } else if (this.Role === 'ADVERTISER') {
+    } else if (this.Role === 'RECRUITER') {
+      reqBody = {
+        firstName: this.aboutForm.value.firstName,
+        lastName: this.aboutForm.value.lastName,
+        gender: this.aboutForm.value.gender,
+        bio: this.aboutForm.value.about,
+        edu: this.aboutForm.value.education,
+        skill: this.aboutForm.value.skills.join(','),
+        work_exp: this.aboutForm.value.experience,
+        city: this.aboutForm.value.city,
+        mob: this.aboutForm.value.mobile,
+        state: this.aboutForm.value.state,
+        country: this.aboutForm.value.country,
+        occupation: this.aboutForm.value.occupation,
+        email: this.emailOfEmployee,
+      };
+      
+      formdata.append('profile',JSON.stringify(reqBody));
+      formdata.append('image',this.imageFile);
+      
+      
+      
+        if (this.updateKey == false) {
+          console.log('old');
+          console.log('about information submitted successful! for the recruiter');
+          console.log("req body uis",reqBody)
+      
+          this.http.post('http://localhost:7070/recruiter/save', formdata).subscribe(
+            (response: any) => {
+              console.log('about information submitted successful! for the recruiter');
+              this.router.navigate(['/profile']);
+            },
+            (error) => {
+              console.error('Error occurred during registration:', error);
+              // Handle error accordingly, display error message, etc.
+            }
+          );
+        } else if (this.updateKey == true) {
+          console.log('update');
+          console.log('about information submitted successful! for the update recruiter');
+          this.http
+            .put(
+              `http://localhost:7070/recruiter/update/${this.emailOfEmployee}`,
+              formdata
+            )
+            .subscribe(
+              (response: any) => {
+                
+                this.router.navigate(['/profile']);
+              },
+              (error) => {
+                console.error('Error occurred during registration:', error);
+                // Handle error accordingly, display error message, etc.
+              }
+            );
+        }
+    
+    else if (this.Role === 'ADVERTISER') {
       console.log("advertising post is triggered")
       reqBody = {
         firstName: this.aboutForm.value.firstName,
@@ -294,5 +351,6 @@ export class AboutComponent implements OnInit {
         
   
          }}
+  }
   }
 }

@@ -91,7 +91,33 @@ export class ProfileComponent implements OnInit {
         this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
        }) 
     }
+
+    else if(sessionStorage.getItem("role")=="RECRUITER")
+    {this.occupationFlag="RECRUITER"
+      this.http.get<any>(`http://localhost:7070/recruiter/${this.email}`).subscribe((data)=>{
+       console.log("data is here",data)
+       this.firstname=data.firstName
+       this.lastname=data.lastName
+       this.skill=data.skill
+       this.workexp=data.work_exp
+       this.state=data.state
+       this.country=data.country
+       this.bio=data.bio
+       this.occupation=data.occupation
+       this.education=data.edu
+       if(data.image)
+       {
+        this.display=true
+       }
+       else if(data.image==null||data.image=='')
+       {
+        this.display=false
+       }
+       const imageUrl = 'data:image/png;base64,' + data.image
+       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+      })
   }
+}
   navigateToAbout(){
     this.router.navigate(['/about'])
   }
@@ -166,6 +192,19 @@ export class ProfileComponent implements OnInit {
     // Handle error accordingly, display error message, etc.
   }
    )
+}
+else if(sessionStorage.getItem("role")=="RECRUITER")
+{
+  this.http.post(`http://localhost:6060/${this.email}`,formdata ).subscribe((response: any) => {
+    console.log('image posted successfully');
+    // this.router.navigate(['/profile']);
+  },
+  (error) => {
+    console.error('Error occurred during registration:', error);
+    // Handle error accordingly, display error message, etc.
+  }
+   )
+  
 }
 
     this.popupVisible = false;

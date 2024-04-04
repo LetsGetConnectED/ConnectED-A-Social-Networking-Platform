@@ -104,6 +104,8 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/about']);
               }
             );
+
+        
           },
           (error) => {
             console.error('Error occurred during registration:', error);

@@ -142,7 +142,7 @@
             </div>
           </div>
         </div>
-        <div class="md-3" *ngIf="Role !== 'USER'">
+        <div class="md-3" *ngIf="Role == 'ADVERTISER'">
           <label for="companyName" class="form-label">Company Name</label>
           <input type="text" class="form-control rounded_field" id="companyName" formControlName="companyName">
           <div *ngIf="aboutForm.get('companyName')?.errors as companyNameErrors">
@@ -153,7 +153,7 @@
           </div>
         </div>
         <div class="mb-3">
-          <label for="about" class="form-label" *ngIf="Role !== 'USER'">Prrdouct Discription</label>
+          <label for="about" class="form-label" *ngIf="Role == 'ADVERTISER'">Prrdouct Discription</label>
           <label for="about" class="form-label" *ngIf="Role !== 'ADVERTISER'">Bio</label>
           <textarea class="form-control rounded_field" id="about" formControlName="about"></textarea>
         </div>
