@@ -30,8 +30,9 @@ public class AdvertisementPost {
     @Column(nullable = false)
     private LocalDateTime postDate;
 
+   
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10485760)
     private byte[] image;
 
     private int likes;

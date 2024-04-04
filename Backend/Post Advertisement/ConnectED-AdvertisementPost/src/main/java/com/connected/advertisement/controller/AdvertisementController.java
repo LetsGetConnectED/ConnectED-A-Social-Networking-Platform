@@ -2,6 +2,7 @@ package com.connected.advertisement.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,13 +50,32 @@ public class AdvertisementController {
             @PathVariable String email,
             @PathVariable String postDate) {
         try {
-            LocalDate date = LocalDate.parse(postDate);
+            // Parse the postDate string with the expected format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+            LocalDate date = LocalDate.parse(postDate, formatter);
+
+            // Call the service method with the parsed LocalDate
             Optional<AdvertisementPost> post = advertisementService.getPostByEmailAndDate(email, date);
+            
+            // Return ResponseEntity based on the Optional result
             return post.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
         } catch (Exception ex) {
+            // Handle any parsing errors or other exceptions
             throw new NotFoundException("Invalid email or post date format");
         }
     }
+//    @GetMapping("/advertiser/{email}/{postDate}")
+//    public ResponseEntity<AdvertisementPost> getPostByEmailAndDate(
+//            @PathVariable String email,
+//            @PathVariable String postDate) {
+//        try {
+//            LocalDate date = LocalDate.parse(postDate);
+//            Optional<AdvertisementPost> post = advertisementService.getPostByEmailAndDate(email, date);
+//            return post.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+//        } catch (Exception ex) {
+//            throw new NotFoundException("Invalid email or post date format");
+//        }
+//    }
 
 
 //    @GetMapping("/advertiser/{email}/{postDate}")
