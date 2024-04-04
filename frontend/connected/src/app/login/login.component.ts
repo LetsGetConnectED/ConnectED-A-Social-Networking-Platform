@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
             this.authSerivce.isLoggedIn(); //authgaurdd
             sessionStorage.setItem("email",this.loginForm.value.email)
             this.shared.setMessage(this.loginForm.value.email); //email transfer
-            this.router.navigate(['/about']);
+            // this.router.navigate(['/about']);
             const headers = new HttpHeaders({
               Authorization: `Bearer ${response.token}`,
             });
@@ -68,44 +68,66 @@ export class LoginComponent implements OnInit {
                 (responseData) => {
                   console.log("hitting role")
                   sessionStorage.setItem('role', responseData);
+                  this.Role=responseData
+                  if(this.Role=="USER")
+                  { console.log("executing started of",this.Role)
+                  this.http
+                    .get<any>(
+                      `http://localhost:7070/user/${this.loginForm.value.email}`
+                    )
+                    .subscribe(
+                      (data) => {
+                        console.log('profile found');
+                        this.router.navigate(['/dashboard']);
+                      },
+                      (error) => {
+                        console.log('profile not found');
+                        this.router.navigate(['/about']);
+                      }
+                    );
+                  }
+                  else if(this.Role="ADVERTISER")
+                  {
+                  this.http
+                  .get<any>(
+                    `http://localhost:7070/advertiser/${this.loginForm.value.email}`
+                  )
+                  .subscribe(
+                    (data) => {
+                      console.log('profile found');
+                      this.router.navigate(['/dashboard']);
+                    },
+                    (error) => {
+                      console.log('profile not found');
+                      this.router.navigate(['/about']);
+                    }
+                  );
+                  }
+                  else if(this.Role="RECTRUITER")
+                  {
+                    this.http
+                  .get<any>(
+                    `http://localhost:7070/recruiter/${this.loginForm.value.email}`
+                  )
+                  .subscribe(
+                    (data) => {
+                      console.log('profile found');
+                      this.router.navigate(['/dashboard']);
+                    },
+                    (error) => {
+                      console.log('profile not found');
+                      this.router.navigate(['/about']);
+                    }
+                  );
+                  }
                 },
                 (error) => {
                   // Handle any errors
                   console.error('Error:', error);
                 }
               );
-              console.log("role ending")
-            this.http
-              .get<any>(
-                `http://localhost:7070/user/${this.loginForm.value.email}`
-              )
-              .subscribe(
-                (data) => {
-                  console.log('profile found');
-                  this.router.navigate(['/dashboard']);
-                },
-                (error) => {
-                  console.log('profile not found');
-                  this.router.navigate(['/about']);
-                }
-              );
-              
-            this.http
-            .get<any>(
-              `http://localhost:7070/advertiser/${this.loginForm.value.email}`
-            )
-            .subscribe(
-              (data) => {
-                console.log('profile found');
-                this.router.navigate(['/dashboard']);
-              },
-              (error) => {
-                console.log('profile not found');
-                this.router.navigate(['/about']);
-              }
-            );
-
-        
+            
+          
           },
           (error) => {
             console.error('Error occurred during registration:', error);
