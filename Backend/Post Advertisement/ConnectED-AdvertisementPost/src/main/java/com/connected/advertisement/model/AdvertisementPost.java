@@ -1,5 +1,6 @@
 package com.connected.advertisement.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public class AdvertisementPost {
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime postDate;
+    private LocalDate postDate;
 
    
     @Lob
@@ -36,6 +37,7 @@ public class AdvertisementPost {
     private byte[] image;
 
     private int likes;
+    private int shares;
 
     @ElementCollection
     private List<Comment> comments = new ArrayList<>();
@@ -56,11 +58,11 @@ public class AdvertisementPost {
 		this.email = email;
 	}
 
-	public LocalDateTime getPostDate() {
+	public LocalDate getPostDate() {
 		return postDate;
 	}
 
-	public void setPostDate(LocalDateTime postDate) {
+	public void setPostDate(LocalDate postDate) {
 		this.postDate = postDate;
 	}
 
@@ -80,6 +82,14 @@ public class AdvertisementPost {
 		this.likes = likes;
 	}
 
+	public int getShares() {
+		return shares;
+	}
+
+	public void setShares(int shares) {
+		this.shares = shares;
+	}
+
 	public List<Comment> getComments() {
 		return comments;
 	}
@@ -88,21 +98,22 @@ public class AdvertisementPost {
 		this.comments = comments;
 	}
 
-	@Override
-	public String toString() {
-		return "AdvertisementPost [id=" + id + ", email=" + email + ", postDate=" + postDate + ", image="
-				+ Arrays.toString(image) + ", likes=" + likes + ", comments=" + comments + "]";
-	}
-
-	public AdvertisementPost(Long id, @NotBlank String email, @NotNull LocalDateTime postDate, byte[] image, int likes,
-			List<Comment> comments) {
+	public AdvertisementPost(Long id, @NotBlank String email, @NotNull LocalDate postDate, byte[] image, int likes,
+			int shares, List<Comment> comments) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.postDate = postDate;
 		this.image = image;
 		this.likes = likes;
+		this.shares = shares;
 		this.comments = comments;
+	}
+
+	@Override
+	public String toString() {
+		return "AdvertisementPost [id=" + id + ", email=" + email + ", postDate=" + postDate + ", image="
+				+ Arrays.toString(image) + ", likes=" + likes + ", shares=" + shares + ", comments=" + comments + "]";
 	}
 
 	public AdvertisementPost() {
@@ -110,5 +121,11 @@ public class AdvertisementPost {
 		// TODO Auto-generated constructor stub
 	}
 
-    // Getters and Setters
+	
+
+	
+
+	
+
+    
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,100 +23,128 @@ import jakarta.validation.Valid;
 @Service
 @Transactional
 public class AdvertisementServiceImpl implements AdvertisementService {
+	
+	 @Autowired
+	    private AdvertisementPostRepository postRepository;
 
-    @Autowired
-    private AdvertisementPostRepository postRepository;
+	 
 
-    @Autowired
-    private AdvertiserRepository advertiserRepository;
+	    @Override
+	    public List<AdvertisementPost> getAllPosts() {
+	        return postRepository.findAll();
+	    }
 
-    @Override
-    public List<AdvertisementPost> getAllPosts() {
-        return postRepository.findAll();
-    }
+	    @Override
+	    public List<AdvertisementPost> getAllPostsByEmail(String email) {
+	        return postRepository.findAllByEmail(email);
+	    }
 
-    @Override
-    public List<AdvertisementPost> getAllPostsByEmail(String email) {
-        return postRepository.findAllByEmail(email);
-    }
-    @Override
-    public Optional<AdvertisementPost> getPostByEmailAndDate(String email, LocalDate postDate) {
-        return postRepository.findByEmailAndPostDate(email, postDate.atStartOfDay());
-    }
+	    @Override
+	    public Optional<AdvertisementPost> getPostByEmailAndDate(String email, LocalDate postDate) {
+	        return postRepository.findByEmailAndPostDate(email, postDate);
+	    }
+
+	    @Override
+	    public void deletePostByEmailAndDate(String email, LocalDate postDate) {
+	        postRepository.deleteByEmailAndPostDate(email, postDate);
+	    }
+
+	    @Override
+	    public void deleteAllPostsByEmail(String email) {
+	        postRepository.deleteAllByEmail(email);
+	    }
+
+	    @Override
+	    public void deletePostByIdAndEmail(Long postId, String email) {
+	        Optional<AdvertisementPost> optionalPost = postRepository.findById(postId);
+	        if (optionalPost.isPresent()) {
+	            AdvertisementPost post = optionalPost.get();
+	            if (post.getEmail().equals(email)) {
+	                postRepository.delete(post);
+	            } else {
+	                throw new NotFoundException("Post not found for the specified user");
+	            }
+	        } else {
+	            throw new NotFoundException("Post not found with id: " + postId);
+	        }
+	    }
+
+	    @Override
+	    public void deleteComment(Long postId, String commentText, String commenterName) throws NotFoundException {
+	        AdvertisementPost post = postRepository.findById(postId)
+	                .orElseThrow(() -> new NotFoundException("Post not found with id: " + postId));
+
+	        Comment commentToDelete = null;
+	        for (Comment comment : post.getComments()) {
+	            if (comment != null && Objects.equals(comment.getCommentText(), commentText)
+	                    && Objects.equals(comment.getCommenterName(), commenterName)) {
+	                commentToDelete = comment;
+	                break;
+	            }
+	        }
+
+	        if (commentToDelete != null) {
+	            post.getComments().remove(commentToDelete);
+	            postRepository.save(post);
+	        } else {
+	            throw new NotFoundException("Comment not found");
+	        }
+	    }
+
+	    @Override
+	    public void updatePost(String email, LocalDate postDate, AdvertisementPost updatedPost) {
+	        Optional<AdvertisementPost> existingPost = postRepository.findByEmailAndPostDate(email, postDate);
+	        if (existingPost.isPresent()) {
+	            AdvertisementPost post = existingPost.get();
+	            postRepository.save(post);
+	        }
+	    }
+
+	    @Override
+	    public void likePostByEmailAndDate(String email, LocalDate postDate) {
+	        Optional<AdvertisementPost> optionalPost = postRepository.findByEmailAndPostDate(email, postDate);
+	        if (optionalPost.isPresent()) {
+	            AdvertisementPost post = optionalPost.get();
+	            post.setLikes(post.getLikes() + 1);
+	            postRepository.save(post);
+	        } else {
+	            throw new NotFoundException("Post not found for the specified user and date");
+	        }
+	    }
+	    @Override
+	    public void sharePostByEmailAndDate(String email, LocalDate postDate) {
+	        Optional<AdvertisementPost> optionalPost = postRepository.findByEmailAndPostDate(email, postDate);
+	        if (optionalPost.isPresent()) {
+	            AdvertisementPost post = optionalPost.get();
+	            post.setShares(post.getShares() + 1);
+	            postRepository.save(post);
+	        } else {
+	            throw new NotFoundException("Post not found for the specified user and date");
+	        }
+	    }
 
 
-//    @Override
-//    public Optional<AdvertisementPost> getPostByEmailAndDate(String email, LocalDateTime postDate) {
-//        return postRepository.findByEmailAndPostDate(email, postDate);
-//    }
+	    @Override
+	    public void addComment(Long postId, Comment comment) {
+	        Optional<AdvertisementPost> optionalPost = postRepository.findById(postId);
+	        if (optionalPost.isPresent()) {
+	            AdvertisementPost post = optionalPost.get();
+	            post.getComments().add(comment);
+	            postRepository.save(post);
+	        } else {
+	            throw new NotFoundException("Post not found with id: " + postId);
+	        }
+	    }
 
-    @Override
-    public void deletePostByEmailAndDate(String email, LocalDateTime postDate) {
-        postRepository.deleteByEmailAndPostDate(email, postDate);
-    }
+	    @Override
+	    public AdvertisementPost createAdvertisementPost(String email, byte[] image) {
+	        AdvertisementPost post = new AdvertisementPost();
+	        post.setEmail(email);
+	        post.setPostDate(LocalDate.now());
+	        post.setImage(image);
+	        return postRepository.save(post);
+	    }
 
-    @Override
-    public void deleteAllPostsByEmail(String email) {
-        postRepository.deleteAllByEmail(email);
-    }
 
-    @Override
-    public void updatePost(String email, LocalDateTime postDate, AdvertisementPost updatedPost) {
-        Optional<AdvertisementPost> existingPost = postRepository.findByEmailAndPostDate(email, postDate);
-        if (existingPost.isPresent()) {
-            AdvertisementPost post = existingPost.get();
-            // Update the necessary fields
-			/* post.setSomeField(updatedPost.getSomeField()); */
-            // Update other fields as needed
-            postRepository.save(post);
-        }
-    }
 
-    @Override
-    public void likePost(Long postId) {
-        Optional<AdvertisementPost> optionalPost = postRepository.findById(postId);
-        if (optionalPost.isPresent()) {
-            AdvertisementPost post = optionalPost.get();
-            post.setLikes(post.getLikes() + 1);
-            postRepository.save(post);
-        } else {
-            throw new NotFoundException("Post not found with id: " + postId);
-        }
-    }
-
-    @Override
-    public void addComment(Long postId, Comment comment) {
-        Optional<AdvertisementPost> optionalPost = postRepository.findById(postId);
-        if (optionalPost.isPresent()) {
-            AdvertisementPost post = optionalPost.get();
-            post.getComments().add(comment);
-            postRepository.save(post);
-        } else {
-            throw new NotFoundException("Post not found with id: " + postId);
-        }
-    }
-
-//    @Override
-//    public void createAdvertisementPostForAdvertiser(String email, AdvertisementPost advertisementPost) {
-//        // Find the advertiser by email
-//        Advertiser advertiser = advertiserRepository.findByEmail(email)
-//            .orElseThrow(() -> new NotFoundException("Advertiser not found with email: " + email));
-//
-//        // Here you can add logic to set the post date and perform any other necessary operations
-//        advertisementPost.setPostDate(LocalDateTime.now());
-//
-//        // Save the advertisement post
-//        postRepository.save(advertisementPost);
-//    }
-    
-    @Override
-    public AdvertisementPost createAdvertisementPost(String email, byte[] image) {
-        AdvertisementPost post = new AdvertisementPost();
-        post.setEmail(email);
-        post.setPostDate(LocalDateTime.now());
-        post.setImage(image);
-        return postRepository.save(post);
-    }
-
-    // Implement other functionalities like nested comments and share
 }

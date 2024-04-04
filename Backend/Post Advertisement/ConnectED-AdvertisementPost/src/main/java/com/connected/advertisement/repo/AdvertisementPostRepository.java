@@ -1,4 +1,5 @@
 package com.connected.advertisement.repo;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -10,12 +11,12 @@ import com.connected.advertisement.model.AdvertisementPost;
 
 @Repository
 public interface AdvertisementPostRepository extends JpaRepository<AdvertisementPost, Long> {
-    // Find all posts by advertiser's email
-    List<AdvertisementPost> findAllByEmail(String email);
-    // Find post by advertiser's email and post date
-    Optional<AdvertisementPost> findByEmailAndPostDate(String email, LocalDateTime postDate);
-    // Delete post by advertiser's email and post date
-    void deleteByEmailAndPostDate(String email, LocalDateTime postDate);
-    // Delete all posts by advertiser's email
-    void deleteAllByEmail(String email);
+	
+	 List<AdvertisementPost> findAllByEmail(String email);
+
+	    void deleteByEmailAndPostDate(String email, LocalDate postDate);
+	    void deleteAllByEmail(String email);
+	    Optional<AdvertisementPost> findByEmailAndPostDate(String email, LocalDate postDate);
+
+		
 }
