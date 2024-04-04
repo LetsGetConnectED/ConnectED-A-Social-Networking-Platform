@@ -61,9 +61,9 @@ public class JobsController {
         return ResponseEntity.ok(jobDTOs);
     }
 
-    @PostMapping("/apply/{useremail}")
-    public ResponseEntity<?> applyForJob(@RequestBody JobDTO jobDTO, @PathVariable String useremail) {
-        Optional<User> optionalUser = userService.getUserByEmail(useremail);
+    @PostMapping("/apply/{jobid}/{useremail}")
+    public ResponseEntity<?> applyForJob(@RequestBody JobDTO jobDTO, @PathVariable String useremail, @PathVariable Long jobid) {
+        Optional<User> optionalUser = userService.getUserByEmail(useremail,jobid);
         if (optionalUser.isPresent() ) {
             User user = optionalUser.get();
             Job job = new Job();
