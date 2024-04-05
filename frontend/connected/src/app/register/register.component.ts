@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { RoleService } from '../role.service';
@@ -41,9 +41,8 @@ export class RegisterComponent {
     const formData = { ...this.registerForm.value };
     delete formData.confirmPassword;
     this.roleService.role = formData.role;
-    console.log('Role set:', this.roleService.role);
+   
 
-    //const formData = { ...this.registerForm.value };
     delete formData.confirmPassword;
     const reqBody={
       username:formData.username,
@@ -54,7 +53,7 @@ export class RegisterComponent {
     this.http.post('http://localhost:8080/api/v1/auth/signup', reqBody)
     .subscribe(
       (response) => {
-        console.log('Registration successful!', response);
+        
         this.router.navigate(['/login']);
       },
       (error) => {

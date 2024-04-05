@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 @Entity
-@Table(name = "Profile_Advertiser")
+@Table(name = "profilemangement_Advt")
 public class Advertiser {
 		
 		@Id
@@ -37,12 +37,16 @@ public class Advertiser {
 	    private String city;
 	    private String state;
 	    private String country;
-	
-	    
-	    
-	    
 
-	    @Transient
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	@Transient
 	    private String imageBase64;
 
 	    public String getImageBase64() {
@@ -121,13 +125,7 @@ public class Advertiser {
 			this.bio = bio;
 		}
 
-		public String getCompanyName() {
-			return companyName;
-		}
 
-		public void setCompanyName(String companyName) {
-			this.companyName = companyName;
-		}
 
 		public String getMob() {
 			return mob;

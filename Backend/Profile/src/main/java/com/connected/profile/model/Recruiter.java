@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 @Entity
-@Table(name = "Profile_Recruiter")
+@Table(name = "profilemangement_Recr")
 public class Recruiter {
 			@Id
 		    @GeneratedValue(strategy = GenerationType.IDENTITY)

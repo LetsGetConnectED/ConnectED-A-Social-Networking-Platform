@@ -6,23 +6,14 @@
    min-height: 100vh;
     margin: 0;
     height: 100%;
-    padding: 0;
-  }
-
-  .heading_btn{
-    background-color: #25371B;
-    color: white;
-    border-radius: 15px;
-  }
-
-  .main_context{
+  
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background-color:#B7C6B1;
   }
-  
+
+ 
   body {
     margin: 50px;
     padding: 10px;
@@ -50,6 +41,7 @@
     border: none;
     padding: 5px 10px;
     cursor: pointer;
+    border-radius: 15px;
   }
   
   .info_context {
@@ -78,12 +70,7 @@
     padding: 0px 12px;
   }
 
-  .skill {
-    width: 50%;
-    height: 50%;
-    padding: 0px 12px;
-  }
-  
+
   .skill input[type="checkbox"] {
     display: none; /* Hide the checkbox */
   }

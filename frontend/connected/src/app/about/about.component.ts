@@ -78,17 +78,17 @@ export class AboutComponent implements OnInit {
         console.error('Error:', error);
       }
   );
-  console.log("roles is",this.Role)
+ 
    
     if(this.Role=="USER")
     {
-      console.log("user role is here")
+     
     this.emailOfEmployee = sessionStorage.getItem("email")
-    console.log('hitting', this.emailOfEmployee);
+
     this.http
       .get<any>(`http://localhost:7070/user/${this.emailOfEmployee}`)
       .subscribe((data) => {
-        console.log('data is here', data);
+        
         if (data.gender) {
           this.updateKey = true;
           this.aboutForm.get('firstName')?.setValue(data.firstName);
@@ -115,11 +115,11 @@ export class AboutComponent implements OnInit {
       });
     }
     else if(this.Role=="ADVERTISER")
-    { console.log("advertising flags is up")
+    { 
       this.http
       .get<any>(`http://localhost:7070/advertiser/${this.emailOfEmployee}`)
       .subscribe((data) => {
-        console.log('data is here', data);
+        
         this.updateKey = true;
         this.aboutForm.get('firstName')?.setValue(data.firstName);
         this.aboutForm.get('lastName')?.setValue(data.lastName);
@@ -139,7 +139,7 @@ export class AboutComponent implements OnInit {
   }}
   onImageSelected(event: any): void {
     const file = event.target.files[0];
-    console.log('images are', file);
+    
     this.imageFile = file;
     if (file && this.isValidImageFile(file) && this.isValidImageSize(file)) {
       const reader = new FileReader();
@@ -150,13 +150,11 @@ export class AboutComponent implements OnInit {
           imgElement.setAttribute('src', reader.result as string);
         }
       };
-    } else {
-      if (!this.isValidImageFile(file)) {
+    } else if (!this.isValidImageFile(file)) {
         alert('Please select a valid image file (JPEG/JPG)');
       } else if (!this.isValidImageSize(file)) {
         alert('Image size should be less than 1MB');
       }
-    }
   }
   isValidImageFile(file: File): boolean {
     const allowedExtensions = /(\.jpg|\.jpeg)$/i;
@@ -177,7 +175,6 @@ export class AboutComponent implements OnInit {
   
 
     let reqBody: any;
-    //let http: string;
     const formdata = new FormData();
 
     if (this.Role === 'USER') {
@@ -202,14 +199,12 @@ export class AboutComponent implements OnInit {
       
       
       
-        if (this.updateKey == false) {
-          console.log('old');
-          console.log('about information submitted successful! for the users');
-          console.log("req body uis",reqBody)
+        if (this.updateKey === false) {
+         
       
           this.http.post('http://localhost:7070/user/save', formdata).subscribe(
             (response: any) => {
-              console.log('about information submitted successful! for the users');
+              
               this.router.navigate(['/profile']);
             },
             (error) => {
@@ -217,9 +212,8 @@ export class AboutComponent implements OnInit {
               // Handle error accordingly, display error message, etc.
             }
           );
-        } else if (this.updateKey == true) {
-          console.log('update');
-          console.log('about information submitted successful! for the update user');
+        } else if (this.updateKey === true) {
+          
           this.http
             .put(
               `http://localhost:7070/user/update/${this.emailOfEmployee}`,
@@ -237,65 +231,8 @@ export class AboutComponent implements OnInit {
             );
         }
       
-    } else if (this.Role === 'RECRUITER') {
-      reqBody = {
-        firstName: this.aboutForm.value.firstName,
-        lastName: this.aboutForm.value.lastName,
-        gender: this.aboutForm.value.gender,
-        bio: this.aboutForm.value.about,
-        edu: this.aboutForm.value.education,
-        skill: this.aboutForm.value.skills.join(','),
-        work_exp: this.aboutForm.value.experience,
-        city: this.aboutForm.value.city,
-        mob: this.aboutForm.value.mobile,
-        state: this.aboutForm.value.state,
-        country: this.aboutForm.value.country,
-        occupation: this.aboutForm.value.occupation,
-        email: this.emailOfEmployee,
-      };
+    } else if (this.Role === 'ADVERTISER') {
       
-      formdata.append('profile',JSON.stringify(reqBody));
-      formdata.append('image',this.imageFile);
-      
-      
-      
-        if (this.updateKey == false) {
-          console.log('old');
-          console.log('about information submitted successful! for the recruiter');
-          console.log("req body uis",reqBody)
-      
-          this.http.post('http://localhost:7070/recruiter/save', formdata).subscribe(
-            (response: any) => {
-              console.log('about information submitted successful! for the recruiter');
-              this.router.navigate(['/profile']);
-            },
-            (error) => {
-              console.error('Error occurred during registration:', error);
-              // Handle error accordingly, display error message, etc.
-            }
-          );
-        } else if (this.updateKey == true) {
-          console.log('update');
-          console.log('about information submitted successful! for the update recruiter');
-          this.http
-            .put(
-              `http://localhost:7070/recruiter/update/${this.emailOfEmployee}`,
-              formdata
-            )
-            .subscribe(
-              (response: any) => {
-                
-                this.router.navigate(['/profile']);
-              },
-              (error) => {
-                console.error('Error occurred during registration:', error);
-                // Handle error accordingly, display error message, etc.
-              }
-            );
-        }
-    
-    else if (this.Role === 'ADVERTISER') {
-      console.log("advertising post is triggered")
       reqBody = {
         firstName: this.aboutForm.value.firstName,
         lastName: this.aboutForm.value.lastName,
@@ -312,14 +249,14 @@ export class AboutComponent implements OnInit {
      
       formdata.append('profile', JSON.stringify(reqBody));
       formdata.append('image', this.imageFile);
-      console.log('req Data for advertiser', formdata);
-      if (this.updateKey == false) {
-        console.log("orginal submit for advertiser")
+      
+      if (!this.updateKey) {
+        
         this.http
           .post('http://localhost:7070/advertiser/save', formdata)
           .subscribe(
             (response: any) => {
-              console.log('about information submitted successful!');
+             
               this.router.navigate(['/profile']);
             },
             (error) => {
@@ -329,10 +266,8 @@ export class AboutComponent implements OnInit {
           );
       } 
       
-         else if (this.updateKey == true) {
-          
-          console.log('update');
-          console.log("updated advertiser")
+         else if (this.updateKey) {
+         
           this.http
             .put(
               `http://localhost:7070/advertiser/update/${this.emailOfEmployee}`,
@@ -340,7 +275,7 @@ export class AboutComponent implements OnInit {
             )
             .subscribe(
               (response: any) => {
-                console.log('about information submitted successful!');
+               
                 this.router.navigate(['/profile']);
               },
               (error) => {
@@ -351,6 +286,5 @@ export class AboutComponent implements OnInit {
         
   
          }}
-  }
   }
 }

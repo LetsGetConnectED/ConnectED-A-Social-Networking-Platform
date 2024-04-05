@@ -1,9 +1,8 @@
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import { SharedService } from '../service/shared.service';
 
 @Component({
@@ -36,10 +35,10 @@ export class SearchedUserComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.activeRoute.snapshot.params['id'])
+  
    
       this.http.get<any>(`http://localhost:7070/user/${this.activeRoute.snapshot.params['id']}`).subscribe((data)=>{
-       console.log("data is here",data)
+      
        this.firstname=data.firstName
        this.lastname=data.lastName
        this.skill=data.skill
@@ -70,11 +69,11 @@ export class SearchedUserComponent implements OnInit {
         (error) => {
           if (error instanceof HttpErrorResponse && error.status === 400) {
             // Handle the case where the response is plain text
-            console.log("Friend request already exists part 2");
+           
             this.requestFlag=false
           } else {
             // Handle other errors
-            console.log("No friend request exists");
+          
             this.requestFlag=true
           }
         }
@@ -116,13 +115,13 @@ export class SearchedUserComponent implements OnInit {
     ).subscribe(
       (data) => {
         this.requestFlag = false;
-        console.log("request already sent",data)
+       
       },
       (error) => {
         if (error instanceof HttpErrorResponse && error.status === 200) {
           // Handle the case where the response is plain text
           this.requestFlag = false;
-          console.log("request already sent")
+          
           this.router.navigate(['/dashboard'])
         } else {
           // Handle other errors

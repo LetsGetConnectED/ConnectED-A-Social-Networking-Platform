@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SharedService } from '../service/shared.service';
 
@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit{
   }
   ngOnInit(): void {
     this.http.get<any>(`http://localhost:6060/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
-      console.log(data)
+      
     
       this.posts = data; // Assign the received data to the posts array
    
@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit{
     if(this.email)
     {
     this.http.get<any>(`http://localhost:7070/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
-       console.log("data is here",data)
+      
      
        const imageUrl = 'data:image/png;base64,' + data.image
        this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
