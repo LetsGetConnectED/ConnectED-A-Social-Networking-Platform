@@ -1,4 +1,4 @@
-package com.ConnectED.Profile.exception;
+package com.connected.profile.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 	

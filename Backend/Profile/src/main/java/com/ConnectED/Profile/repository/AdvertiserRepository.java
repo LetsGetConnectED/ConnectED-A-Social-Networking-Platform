@@ -1,9 +1,10 @@
-package com.ConnectED.Profile.repository;
+package com.connected.profile.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ConnectED.Profile.model.Advertiser;
+import com.connected.profile.model.Advertiser;
+
 @Repository
 public interface AdvertiserRepository extends JpaRepository<Advertiser,Long> {
 

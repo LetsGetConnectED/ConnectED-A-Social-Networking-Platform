@@ -1,14 +1,12 @@
-package com.ConnectED.Profile.service;
+package com.connected.profile.service;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ConnectED.Profile.exception.DeletedException;
-import com.ConnectED.Profile.exception.ResourceNotFoundException;
-import com.ConnectED.Profile.model.Recruiter;
-import com.ConnectED.Profile.repository.RecruiterRepository;
+import com.connected.profile.exception.ResourceNotFoundException;
+import com.connected.profile.model.Recruiter;
+import com.connected.profile.repository.RecruiterRepository;
 
 @Service
 public class RecruiterServiceImpl implements RecruiterService{
@@ -27,11 +25,10 @@ public class RecruiterServiceImpl implements RecruiterService{
 	}
 
 	@Override
-	public void deleteByEmail(String email) throws DeletedException {
+	public void deleteByEmail(String email) {
 	    Recruiter recruiter = recruiterRepository.findByEmail(email);
 	    if (recruiter != null) {
 	        recruiterRepository.delete(recruiter);
-	        throw new DeletedException();
 	    } else {
 	        throw new IllegalArgumentException("Email cannot be null");
 	    }

@@ -1,6 +1,6 @@
-package com.ConnectED.Profile.service;
+package com.connected.profile.service;
 
-import com.ConnectED.Profile.model.Recruiter;
+import com.connected.profile.model.Recruiter;
 
 public interface RecruiterService {
 	Recruiter save(Recruiter recruiter);

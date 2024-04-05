@@ -1,8 +1,9 @@
-package com.ConnectED.Profile.model;
+package com.connected.profile.model;
 
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -14,33 +15,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
-@Table(name = "profilemangement_Recr")
+@Table(name = "Profile_Recruiter")
 public class Recruiter {
+			@Id
+		    @GeneratedValue(strategy = GenerationType.IDENTITY)
+		    private long id;
+
+		    //@Lob
+		    @JsonSerialize(using = BlobSerializer.class)
+		    private Blob image;
 		
-		@Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private long id;
-		@Lob
-		@JsonSerialize(using = BlobSerializer.class)
-	    private Blob image;
-		@Column(unique = true)
-		
-	    private String email;
-	    private String userName;
-	    private String firstName;
-	    private String lastName;
-	    private String gender;
-	    private String bio;
-	    private String 
-	    private String mob;
-	    private String city;
-	    private String state;
-	    private String country;
-	    
+		    private Date date = new Date();
+		    
+		    @Column(unique = true)
+		    private String email;
+		    private String userName;
+		    private String firstName;
+		    private String lastName;
+		    private String gender;
+		    private String bio;
+		    private String edu;
+		    private Long mob;
+		    private String skill;
+		    private String occupation;
+		    private String work_exp;
+		    private String city;
+		    private String state;
+		    private String country;
 	    @Transient
 	    private String imageBase64;
 
@@ -54,10 +57,6 @@ public class Recruiter {
 	            }
 	        }
 	        return null;
-	    }
-
-	    public void setImageBase64(String imageBase64) {
-	        this.imageBase64 = imageBase64;
 	    }
 
 		public long getId() {
@@ -74,6 +73,14 @@ public class Recruiter {
 
 		public void setImage(Blob image) {
 			this.image = image;
+		}
+
+		public Date getDate() {
+			return date;
+		}
+
+		public void setDate(Date date) {
+			this.date = date;
 		}
 
 		public String getEmail() {
@@ -124,20 +131,44 @@ public class Recruiter {
 			this.bio = bio;
 		}
 
-		public String getCompanyName() {
-			return companyName;
+		public String getEdu() {
+			return edu;
 		}
 
-		public void setCompanyName(String companyName) {
-			this.companyName = companyName;
+		public void setEdu(String edu) {
+			this.edu = edu;
 		}
 
-		public String getMob() {
+		public Long getMob() {
 			return mob;
 		}
 
-		public void setMob(String mob) {
+		public void setMob(Long mob) {
 			this.mob = mob;
+		}
+
+		public String getSkill() {
+			return skill;
+		}
+
+		public void setSkill(String skill) {
+			this.skill = skill;
+		}
+
+		public String getOccupation() {
+			return occupation;
+		}
+
+		public void setOccupation(String occupation) {
+			this.occupation = occupation;
+		}
+
+		public String getWork_exp() {
+			return work_exp;
+		}
+
+		public void setWork_exp(String work_exp) {
+			this.work_exp = work_exp;
 		}
 
 		public String getCity() {
@@ -163,4 +194,11 @@ public class Recruiter {
 		public void setCountry(String country) {
 			this.country = country;
 		}
+
+		public void setImageBase64(String imageBase64) {
+			this.imageBase64 = imageBase64;
+		}
+	    
+	    
+
 }

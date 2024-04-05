@@ -1,4 +1,4 @@
-package com.ConnectED.Profile.controller;
+package com.connected.profile.controller;
 
 import java.io.IOException;
 import java.sql.Blob;
@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ConnectED.Profile.exception.DeletedException;
-import com.ConnectED.Profile.model.Recruiter;
-import com.ConnectED.Profile.service.RecruiterService;
+import com.connected.profile.model.Recruiter;
+import com.connected.profile.service.RecruiterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -83,17 +82,15 @@ public class RecruiterController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteProfileByEmail(@PathVariable String email) {
-        try {
-            recruiterService.deleteByEmail(email);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (DeletedException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+    	recruiterService.deleteByEmail(email);
+       
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    
 
     @PutMapping("/update/{email}")
     public ResponseEntity<?> updateProfile(
@@ -125,16 +122,19 @@ public class RecruiterController {
                 existingProfile.setImage(null);
             }
 
-            existingProfile.setFirstName(updatedProfile.getFirstName()); 
-            existingProfile.setLastName(updatedProfile.getLastName());
-            existingProfile.setGender(updatedProfile.getGender());
-            existingProfile.setBio(updatedProfile.getBio());
-            existingProfile.setCity(updatedProfile.getCity());
-            existingProfile.setCountry(updatedProfile.getCountry());
-            existingProfile.setCompanyName(updatedProfile.getCompanyName());
-            existingProfile.setMob(updatedProfile.getMob());
-            existingProfile.setState(updatedProfile.getState());
-            existingProfile.setUserName(updatedProfile.getUserName());
+            existingProfile.setFirstName(updatedProfile.getFirstName());
+	        existingProfile.setLastName(updatedProfile.getLastName());
+	        existingProfile.setBio(updatedProfile.getBio());
+	        existingProfile.setCity(updatedProfile.getCity());
+	        existingProfile.setCountry(updatedProfile.getCountry());
+	        existingProfile.setEdu(updatedProfile.getEdu());
+	        existingProfile.setGender(updatedProfile.getGender());
+	        existingProfile.setMob(updatedProfile.getMob());
+	        existingProfile.setSkill(updatedProfile.getSkill());
+	        existingProfile.setOccupation(updatedProfile.getOccupation());
+	        existingProfile.setState(updatedProfile.getState());
+	        existingProfile.setUserName(updatedProfile.getUserName());
+	        existingProfile.setWork_exp(updatedProfile.getWork_exp());
             
             Recruiter savedProfile = recruiterService.save(existingProfile);
             return new ResponseEntity<>(savedProfile, HttpStatus.OK);

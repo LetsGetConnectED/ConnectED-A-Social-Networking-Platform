@@ -1,4 +1,4 @@
-package com.ConnectED.Profile.model;
+package com.connected.profile.model;
 
 import java.io.IOException;
 import java.sql.Blob;
@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 public class BlobSerializer extends JsonSerializer<Blob> {
+	
 	@Override
     public void serialize(Blob value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         try {
@@ -21,4 +22,5 @@ public class BlobSerializer extends JsonSerializer<Blob> {
             throw new IOException("Error reading Blob data", e);
         }
     }
+
 }

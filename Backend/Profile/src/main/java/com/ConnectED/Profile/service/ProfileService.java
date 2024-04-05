@@ -1,15 +1,12 @@
-package com.ConnectED.Profile.service;
+package com.connected.profile.service;
 
-import java.util.List;
-
-import com.ConnectED.Profile.model.Profile;
-
+import com.connected.profile.model.Profile;
 
 public interface ProfileService {
 	
 
-		Profile saveOrUpdate(Profile profile);
-		Profile getByEmail(String email);
-		void deleteByEmail(String email);
+	Profile saveOrUpdate(Profile profile);
+	Profile getByEmail(String email);
+	void deleteByEmail(String email);
 
 }

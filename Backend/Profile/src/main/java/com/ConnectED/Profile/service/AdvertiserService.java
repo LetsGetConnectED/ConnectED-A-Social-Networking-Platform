@@ -1,7 +1,6 @@
-package com.ConnectED.Profile.service;
+package com.connected.profile.service;
 
-import com.ConnectED.Profile.model.Advertiser;
-import com.ConnectED.Profile.model.Profile;
+import com.connected.profile.model.Advertiser;
 
 public interface AdvertiserService {
 	

@@ -1,11 +1,10 @@
-package com.ConnectED.Profile.model;
+package com.connected.profile.model;
 
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import jakarta.persistence.Column;
@@ -13,27 +12,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-//@Getter
-//@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "profilemangement")
+@Table(name = "Profile_User")
 public class Profile {
 	
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private long id;
 
-	    //@Lob
+	   
 	    @JsonSerialize(using = BlobSerializer.class)
 	    private Blob image;
 
@@ -71,10 +61,6 @@ public class Profile {
 	            }
 	        }
 	        return null;
-	    }
-
-	    public void setImageBase64(String imageBase64) {
-	        this.imageBase64 = imageBase64;
 	    }
 
 		public long getId() {
@@ -212,11 +198,11 @@ public class Profile {
 		public void setCountry(String country) {
 			this.country = country;
 		}
-	
 
-
-
-}
+		public void setImageBase64(String imageBase64) {
+			this.imageBase64 = imageBase64;
+		}
+	    
 	    
 
-
+}

@@ -1,4 +1,4 @@
-package com.ConnectED.Profile.model;
+package com.connected.profile.model;
 
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -14,8 +14,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+
 @Entity
-@Table(name = "profilemangement_Advt")
+@Table(name = "Profile_Advertiser")
 public class Advertiser {
 		
 		@Id
@@ -56,9 +57,13 @@ public class Advertiser {
 	        return null;
 	    }
 
-	    public void setImageBase64(String imageBase64) {
-	        this.imageBase64 = imageBase64;
-	    }
+		public long getId() {
+			return id;
+		}
+
+		public void setId(long id) {
+			this.id = id;
+		}
 
 		public Blob getImage() {
 			return image;
@@ -156,8 +161,10 @@ public class Advertiser {
 			this.country = country;
 		}
 
+		public void setImageBase64(String imageBase64) {
+			this.imageBase64 = imageBase64;
+		}
+
+
 	    
-	    
-	    
-	    
-	}
+}
