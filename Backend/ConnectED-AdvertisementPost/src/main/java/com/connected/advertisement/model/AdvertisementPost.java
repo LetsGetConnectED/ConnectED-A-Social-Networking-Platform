@@ -1,22 +1,27 @@
 package com.connected.advertisement.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@Table(indexes = @Index(name = "idx_post_date", columnList = "postDate"))
 public class AdvertisementPost {
 
     @Id
@@ -25,10 +30,15 @@ public class AdvertisementPost {
     private String caption;
     private String link;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "advertiser_email", referencedColumnName = "email")
+	private Advertiser advertiser;
+    
 
-    @NotBlank
-    @Column(nullable = false)
-    private String email; // assuming advertiser's email
+//    @NotBlank
+//    
+//    @Column(nullable = false)
+//    private String email; // assuming advertiser's email
 
     @NotNull
     @Column(nullable = false)
@@ -41,10 +51,19 @@ public class AdvertisementPost {
 
     private int likes;
     private int shares;
+    
+//    @ManyToOne
+//    @JoinColumn(name = "user_email", referencedColumnName = "email")
+//    private User likedBy;
 
     @ElementCollection
     private List<Comment> comments = new ArrayList<>();
-
+    
+//    @Embedded
+//    private PostLike postLike;
+    @ElementCollection
+    private List<PostLike> postLikes = new ArrayList<>();
+    
 	public Long getId() {
 		return id;
 	}
@@ -69,12 +88,12 @@ public class AdvertisementPost {
 		this.link = link;
 	}
 
-	public String getEmail() {
-		return email;
+	public Advertiser getAdvertiser() {
+		return advertiser;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setAdvertiser(Advertiser advertiser) {
+		this.advertiser = advertiser;
 	}
 
 	public LocalDate getPostDate() {
@@ -116,32 +135,55 @@ public class AdvertisementPost {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+	
+	
 
-	public AdvertisementPost(Long id, String caption, String link, @NotBlank String email, @NotNull LocalDate postDate,
-			byte[] image, int likes, int shares, List<Comment> comments) {
-		super();
-		this.id = id;
-		this.caption = caption;
-		this.link = link;
-		this.email = email;
-		this.postDate = postDate;
-		this.image = image;
-		this.likes = likes;
-		this.shares = shares;
-		this.comments = comments;
+	
+
+
+	public List<PostLike> getPostLikes() {
+		return postLikes;
 	}
 
-	@Override
-	public String toString() {
-		return "AdvertisementPost [id=" + id + ", caption=" + caption + ", link=" + link + ", email=" + email
-				+ ", postDate=" + postDate + ", image=" + Arrays.toString(image) + ", likes=" + likes + ", shares="
-				+ shares + ", comments=" + comments + "]";
+	public void setPostLikes(List<PostLike> postLikes) {
+		this.postLikes = postLikes;
 	}
 
 	public AdvertisementPost() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	public AdvertisementPost(Long id, String caption, String link, Advertiser advertiser, @NotNull LocalDate postDate,
+			byte[] image, int likes, int shares, List<Comment> comments, List<PostLike> postLikes) {
+		super();
+		this.id = id;
+		this.caption = caption;
+		this.link = link;
+		this.advertiser = advertiser;
+		this.postDate = postDate;
+		this.image = image;
+		this.likes = likes;
+		this.shares = shares;
+		this.comments = comments;
+		this.postLikes = postLikes;
+	}
+
+	@Override
+	public String toString() {
+		return "AdvertisementPost [id=" + id + ", caption=" + caption + ", link=" + link + ", advertiser=" + advertiser
+				+ ", postDate=" + postDate + ", image=" + Arrays.toString(image) + ", likes=" + likes + ", shares="
+				+ shares + ", comments=" + comments + ", postLikes=" + postLikes + "]";
+	}
+
+	
+
+	
+
+	
+	
+
+	
 
 	
 
