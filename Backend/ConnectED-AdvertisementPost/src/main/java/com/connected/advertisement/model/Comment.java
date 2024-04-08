@@ -17,7 +17,7 @@ public class Comment {
 	    private Advertiser receiverUser;
 
 	    @ManyToOne
-	    @JoinColumn(name = "sender_email", referencedColumnName = "email") // Changed sender_email to user_email
+	    @JoinColumn(name = "user_email", referencedColumnName = "email") // Changed sender_email to user_email
 	    private User senderUser; // Changed to senderUser
 
 	   

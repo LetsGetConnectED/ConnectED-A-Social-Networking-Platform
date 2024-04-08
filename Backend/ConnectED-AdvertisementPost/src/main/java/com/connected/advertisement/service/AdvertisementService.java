@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import com.connected.advertisement.model.AdvertisementPost;
 import com.connected.advertisement.model.Advertiser;
-import com.connected.advertisement.model.Comment;
 import com.connected.advertisement.model.User;
 
 public interface AdvertisementService {
@@ -27,7 +26,4 @@ public interface AdvertisementService {
 	void likePostByUserAndDate(User user, Advertiser advertiser, LocalDate postDate, Long postId);
 	AdvertisementPost addCommentToPost(String receiverEmail, String senderEmail, String commenterEmail, 
 			LocalDate postDate, String commentText);
-	
-	
-	void deleteComment(String receiverEmail, String senderEmail, LocalDate postDate, String comment);
 }

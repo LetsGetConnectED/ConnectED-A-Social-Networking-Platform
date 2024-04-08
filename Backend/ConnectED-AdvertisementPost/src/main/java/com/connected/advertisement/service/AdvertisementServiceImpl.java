@@ -131,7 +131,28 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
     }
 
-
+//    @Override
+//    public AdvertisementPost addCommentToPost(String senderEmail, String receiverEmail, LocalDate postDate,
+//            String commentText) {
+//        AdvertisementPost post = postRepository.findByAdvertiserEmailAndPostDate(receiverEmail, postDate)
+//                .orElseThrow(() -> new NotFoundException("Advertisement post not found"));
+//
+//        Advertiser sender = advertiserRepository.findByEmail(senderEmail)
+//                .orElseThrow(() -> new NotFoundException("Sender advertiser not found"));
+//
+//        Advertiser receiver = advertiserRepository.findByEmail(receiverEmail)
+//                .orElseThrow(() -> new NotFoundException("Receiver advertiser not found"));
+//
+//        Comment comment = new Comment();
+//        comment.setComment(commentText);
+//        comment.setSenderUser(sender);
+//        comment.setReceiverUser(receiver);
+//        comment.setPost(post);
+//
+//        post.getComments().add(comment);
+//
+//        return postRepository.save(post);
+//    }
     @Override
     public AdvertisementPost createAdvertisementPost(String advertiserEmail, String caption, String link, byte[] image) {
        
@@ -181,29 +202,6 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         // Save the updated post
         return postRepository.save(post);
     }
-    
-   
-    @Override
-    public void deleteComment(String receiverEmail, String senderEmail, LocalDate postDate, String comment) {
-        // Find the post
-        AdvertisementPost post = postRepository.findByAdvertiserEmailAndPostDate(receiverEmail, postDate)
-                .orElseThrow(() -> new NotFoundException("Advertisement post not found"));
-
-        // Find the comment to delete
-        Optional<Comment> commentToDelete = post.getComments().stream()
-                .filter(c -> c.getSenderUser().getEmail().equals(senderEmail) &&
-                        c.getComment().equals(comment))
-                .findFirst();
-
-        if (commentToDelete.isPresent()) {
-            post.getComments().remove(commentToDelete.get());
-            postRepository.save(post);
-        } else {
-            throw new NotFoundException("Comment not found");
-        }
-    }
-
-
 
 
 

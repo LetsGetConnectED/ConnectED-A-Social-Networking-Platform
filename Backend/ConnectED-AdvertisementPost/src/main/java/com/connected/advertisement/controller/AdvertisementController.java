@@ -120,7 +120,32 @@ public class AdvertisementController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+//    @PostMapping("/like")
+//    public ResponseEntity<?> likePost(
+//            @RequestParam String userEmail,
+//            @RequestParam String advertiserEmail,
+//            @RequestParam String postDate) {
+//        try {
+//            // Parse the postDate string with the expected format
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//            LocalDate date = LocalDate.parse(postDate, formatter);
+//
+//            // Find the user by email
+//            User user = userRepository.findByEmail(userEmail)
+//                    .orElseThrow(() -> new NotFoundException("User not found"));
+//
+//            // Find the advertiser by email
+//            Advertiser advertiser = advertiserRepository.findByEmail(advertiserEmail)
+//                    .orElseThrow(() -> new NotFoundException("Advertiser not found"));
+//
+//            // Call the service method to like the post
+//            advertisementService.likePostByUserAndDate(user, advertiser, date);
+//            return ResponseEntity.noContent().build();
+//        } catch (DateTimeParseException e) {
+//            // Handle invalid date format
+//            return ResponseEntity.badRequest().body("Invalid date format");
+//        }
+//    }
     
     @PostMapping("/like")
     public ResponseEntity<?> likePost(
@@ -168,24 +193,6 @@ public class AdvertisementController {
         advertisementService.addCommentToPost(receiverEmail, senderEmail, commenterEmail,  parsedPostDate, comment.getComment());
         return ResponseEntity.noContent().build();
     }
-    @DeleteMapping("/comment")
-    public ResponseEntity<?> deleteComment(@RequestParam String receiverEmail,
-                                           @RequestParam String senderEmail,
-                                           @RequestParam String postDate,
-                                           @RequestParam String comment) {
-        LocalDate parsedPostDate;
-        try {
-            parsedPostDate = LocalDate.parse(postDate);
-        } catch (DateTimeParseException e) {
-            return ResponseEntity.badRequest().body("Invalid post date format");
-        }
-
-        advertisementService.deleteComment(receiverEmail, senderEmail, parsedPostDate, comment);
-        return ResponseEntity.noContent().build();
-    }
-
-
-
 
 
 

@@ -152,11 +152,7 @@ export class ProfileComponent implements OnInit {
   }
   submitAndClose() {
    
-     const reqBody={
-      caption:this.caption,
-      likes:0,
-      shares:0
-     }
+    
      const formdata =new FormData();
      formdata.append("image",this.dashboardImage)
      formdata.append("caption",this.caption)
@@ -175,7 +171,10 @@ export class ProfileComponent implements OnInit {
   }
   else if(sessionStorage.getItem("role")=="ADVERTISER")
   {
-   this.http.post(`http://localhost:6060/${this.email}`,formdata ).subscribe((response: any) => {
+    console.log("advertisement triggered")
+    formdata.append("advertiserEmail",this.email);
+  formdata.append("link","www.google.com")
+   this.http.post(`http://localhost:5050/api/advertisements/advertiser}`,formdata ).subscribe((response: any) => {
   
 
   },
