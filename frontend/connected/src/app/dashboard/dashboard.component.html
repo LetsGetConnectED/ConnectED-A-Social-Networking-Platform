@@ -1,6 +1,6 @@
 <app-dash-nav-auth></app-dash-nav-auth>
 <div class="main_context">
-   <div class="info_context">
+   <div class="info_context" *ngIf="role==='USER'">
       <div class="post-body m-auto my-5" *ngFor="let post of posts">
          <div class="post-body-header p-3 ">
             <img [src]="selectedImage" alt="" class="dp"> {{ post.user.firstName }} {{ post.user.lastName }}
@@ -10,6 +10,32 @@
          </div>
          <div class="post-body-caption pt-3 ps-3">
             <img [src]="selectedImage" alt="" class="dp"> {{ post.user.firstName }} {{ post.user.lastName }} : {{
+            post.caption }}
+         </div>
+         <div class="post-body-function text-end pt-2">
+            <span class="like mx-3 mt-5" (click)="toggleLike()"> <i class="bi bi-heart-fill mt-5"
+                  [style.color]="isLiked ? 'red' : 'white'"></i></span>
+            <span class="comment mx-3 mt-5"><i class="bi bi-chat-left-fill"></i></span>
+            <span class="share mx-3 mt-5"><i class="bi bi-share-fill"></i></span>
+         </div>
+
+         <div class="post-body-cmmnt">
+            <input class="cmmnt mx-3">
+            <span class="share mx-3 "><i class="bi bi-arrow-right-circle-fill  "></i></span>
+
+         </div>
+      </div>
+   </div>
+   <div class="info_context" *ngIf="role==='ADVERTISER'">
+      <div class="post-body m-auto my-5" *ngFor="let post of posts">
+         <div class="post-body-header p-3 ">
+            <img [src]="selectedImage" alt="" class="dp"> {{ post.advertiser.firstName }} {{ post.advertiser.lastName }}
+         </div>
+         <div class="post-body-content" >
+            <img [src]="getPostImageAdvertiser(post)" alt="" class="col-12">
+         </div>
+         <div class="post-body-caption pt-3 ps-3">
+            <img [src]="selectedImage" alt="" class="dp"> {{ post.advertiser.firstName }} {{ post.advertiser.lastName }} : {{
             post.caption }}
          </div>
          <div class="post-body-function text-end pt-2">

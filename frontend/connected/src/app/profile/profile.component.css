@@ -1,11 +1,4 @@
-.info_context{
-    width:80%;
-    height: 60vh;
-    background-color: white;
-    border-radius: 20px;
-    display: flex;
-    overflow: hidden;
-}
+
 .main_context{
     display: flex;
     justify-content: center;
@@ -95,4 +88,7 @@ div{
    width:5rem;
    height:5rem;
    border-radius: 36px;
+}
+.tag{
+    font-weight: 700;
 }

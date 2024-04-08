@@ -28,6 +28,7 @@ export class ProfileComponent implements OnInit {
   display:boolean=false;
   email:any;
   Role: any ;
+  link:any;
   companyName: any;
   occupationFlag:any;
 
@@ -171,9 +172,9 @@ export class ProfileComponent implements OnInit {
   }
   else if(sessionStorage.getItem("role")=="ADVERTISER")
   {
-    console.log("advertisement triggered")
+   
     formdata.append("advertiserEmail",this.email);
-  formdata.append("link","www.google.com")
+  formdata.append("link",this.link)
    this.http.post(`http://localhost:5050/api/advertisements/advertiser}`,formdata ).subscribe((response: any) => {
   
 

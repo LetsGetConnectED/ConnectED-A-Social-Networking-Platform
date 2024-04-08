@@ -96,13 +96,16 @@ export class AboutComponent implements OnInit {
           this.aboutForm.get('state')?.setValue(data.state);
 
           this.aboutForm.get('country')?.setValue(data.country);
+          this.aboutForm.get('skills')?.setValue(data.skill);
+      
+          this.aboutForm.get('experience')?.setValue(data.work_exp);
 
           this.aboutForm.get('city')?.setValue(data.city);
-
+          this.aboutForm.get('occupation')?.setValue(data.occupation);
           this.aboutForm.get('mobile')?.setValue(data.mob);
           this.aboutForm.get('about')?.setValue(data.bio);
           this.aboutForm.get('gender')?.setValue(data.gender);
-          this.aboutForm.get('companyName')?.setValue(data.companyName);
+          this.aboutForm.get('education')?.setValue(data.edu);
         }});
     }
     else if(this.Role=="ADVERTISER")
@@ -144,13 +147,16 @@ export class AboutComponent implements OnInit {
           this.aboutForm.get('state')?.setValue(data.state);
 
           this.aboutForm.get('country')?.setValue(data.country);
+          this.aboutForm.get('skills')?.setValue(data.skill);
+      
+          this.aboutForm.get('experience')?.setValue(data.work_exp);
 
           this.aboutForm.get('city')?.setValue(data.city);
-
+          this.aboutForm.get('occupation')?.setValue(data.occupation);
           this.aboutForm.get('mobile')?.setValue(data.mob);
           this.aboutForm.get('about')?.setValue(data.bio);
           this.aboutForm.get('gender')?.setValue(data.gender);
-          this.aboutForm.get('companyName')?.setValue(data.companyName);
+          this.aboutForm.get('education')?.setValue(data.edu);
         }});
     }
   }
@@ -263,7 +269,7 @@ export class AboutComponent implements OnInit {
       formdata.append('profile', JSON.stringify(reqBody));
       formdata.append('image', this.imageFile);
       
-      if (!this.updateKey === false) {
+      if (this.updateKey === false) {
         
         this.http
           .post('http://localhost:7070/advertiser/save', formdata)
@@ -279,7 +285,7 @@ export class AboutComponent implements OnInit {
           );
       } 
       
-         else if (!this.updateKey === true) {
+         else if (this.updateKey === true) {
          
           this.http
             .put(
@@ -319,12 +325,8 @@ export class AboutComponent implements OnInit {
           formdata.append('profile', JSON.stringify(reqBody));
           formdata.append('image', this.imageFile);
     
-          if (!this.updateKey == false) {
-            // console.log('old');
-            // console.log(
-            //   'about information submitted successful! for the recruiter'
-            // );
-            // console.log('req body uis', reqBody);
+          if (this.updateKey === false) {
+ 
     
             this.http
               .post('http://localhost:7070/recruiter/save', formdata)
@@ -340,7 +342,7 @@ export class AboutComponent implements OnInit {
                   // Handle error accordingly, display error message, etc.
                 }
               );
-          } else if (!this.updateKey == true) {
+          } else if (this.updateKey===true) {
             console.log('update');
             console.log(
               'about information submitted successful! for the update recruiter'

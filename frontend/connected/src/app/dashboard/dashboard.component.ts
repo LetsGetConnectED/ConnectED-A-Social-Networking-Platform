@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit{
   isLiked: boolean=false;
   selectedImage: any;
   emailOfEmployee:any;
+  role:any;
   showPost:boolean=true;
   email: string='';
   posts: any[] = []; // Define an array to store the posts
@@ -24,6 +25,9 @@ export class DashboardComponent implements OnInit{
 
   }
   ngOnInit(): void {
+    this.role=sessionStorage.getItem('role');
+    if(sessionStorage.getItem('role')==="USER")
+    {
     this.http.get<any>(`http://localhost:6060/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
       
     
@@ -35,6 +39,22 @@ export class DashboardComponent implements OnInit{
       }
 
     })
+  }
+  else if(sessionStorage.getItem('role')==="ADVERTISER")
+  {
+    this.http.get<any>(`http://localhost:5050/api/advertisements/advertiser/rob123@gmail.com`).subscribe((data)=>{
+      
+    
+      this.posts = data; // Assign the received data to the posts array
+      console.log("data is",data)
+   
+      if(!data.imageBytes)
+      {
+        this.showPost=false
+      }
+
+    })
+  }
     this.email=this.shared.getMessage();
     if(this.email)
     {
@@ -55,6 +75,9 @@ export class DashboardComponent implements OnInit{
   // Function to get the post image
   getPostImage(post: any): string {
     return `data:image/png;base64,${post.imageBytes}`;
+  }
+  getPostImageAdvertiser(post: any): string {
+    return `data:image/png;base64,${post.image}`;
   }
 
 }
