@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component} from '@angular/core';
+import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './job-creation.component.html',
   styleUrls: ['./job-creation.component.css']
 })
-export class JobCreationComponent implements OnInit {
+export class JobCreationComponent  {
   skills = ['C', 'AngularJS', 'Java', 'UI', 'Presentation','C++','C#'];
   aboutForm: FormGroup;
   constructor(private formBuilder: FormBuilder,private router:Router,private http: HttpClient) {
@@ -20,8 +20,7 @@ export class JobCreationComponent implements OnInit {
    })
   }
  
-  ngOnInit(): void {
-  }
+  
   onSubmit(){
     const formData = {
       skills: this.aboutForm.value.skills.join(','),
@@ -29,11 +28,10 @@ export class JobCreationComponent implements OnInit {
       description: this.aboutForm.value.jobdiscreption,
       location: this.aboutForm.value.location,
     };
-    console.log("formadara",formData)
     this.http.post('http://localhost:8083/api/jobs/create', formData, { responseType: 'text' })
 .subscribe(
   (response: any) => {
-    console.log('Job created successful!', response);
+    
     this.router.navigate(['/dashboard']);
   },
   (error) => {

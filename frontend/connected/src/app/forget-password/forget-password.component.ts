@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router'
 @Component({
@@ -6,7 +6,7 @@ import { Router } from '@angular/router'
   templateUrl: './forget-password.component.html',
   styleUrls: ['./forget-password.component.css']
 })
-export class ForgetPasswordComponent implements OnInit {
+export class ForgetPasswordComponent  {
 
   loginForm: FormGroup;
 
@@ -18,16 +18,15 @@ export class ForgetPasswordComponent implements OnInit {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      console.log('Form submitted successfully!');
+      
       this.router.navigate(['/otp']);
     }
   }
 
-  ngOnInit(): void {
-  }
+ 
   loginRollBack()
   {
-    console.log("hitting")
+    
     this.router.navigate(['/login']);
   }
 

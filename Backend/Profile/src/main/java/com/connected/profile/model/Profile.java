@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 @Entity
-@Table(name = "Profile_User")
+@Table(name = "profilemangement")
 public class Profile {
 	
 	    @Id

@@ -64,60 +64,32 @@ export class AboutComponent implements OnInit {
       Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     });
     this.http
-      .get<any>(
-        `http://localhost:8080/api/v1/user/role/${this.emailOfEmployee}`,
-        { headers }
-      )
-      .subscribe(
-        (responseData) => {
-          this.Role = responseData;
-          // sessionStorage.setItem("role",responseData)
-        },
-        (error) => {
-          // Handle any errors
-          console.error('Error:', error);
-        }
-      );
-    console.log('roles is', this.Role);
+    .get<any>(
+      `http://localhost:8080/api/v1/user/role/${this.emailOfEmployee}`,
+      { headers }
+    )
+    .subscribe(
+      (responseData) => {
+        this.Role = responseData;
+        // sessionStorage.setItem("role",responseData)
+      },
+      (error) => {
+        // Handle any errors
+        console.error('Error:', error);
+      }
+  );
+ 
+   
+    if(this.Role=="USER")
+    {
+     
+    this.emailOfEmployee = sessionStorage.getItem("email")
 
-    if (this.Role == 'USER') {
-      console.log('user role is here');
-      this.emailOfEmployee = sessionStorage.getItem('email');
-      console.log('hitting', this.emailOfEmployee);
-      this.http
-        .get<any>(`http://localhost:7070/user/${this.emailOfEmployee}`)
-        .subscribe((data) => {
-          console.log('data is here', data);
-          if (data.gender) {
-            this.updateKey = true;
-            this.aboutForm.get('firstName')?.setValue(data.firstName);
-            this.aboutForm.get('lastName')?.setValue(data.lastName);
-
-            this.aboutForm.get('skills')?.setValue(data.skill);
-
-            this.aboutForm.get('experience')?.setValue(data.work_exp);
-
-            this.aboutForm.get('state')?.setValue(data.state);
-
-            this.aboutForm.get('country')?.setValue(data.country);
-
-            this.aboutForm.get('city')?.setValue(data.city);
-
-            this.aboutForm.get('mobile')?.setValue(data.mob);
-            this.aboutForm.get('about')?.setValue(data.bio);
-
-            this.aboutForm.get('occupation')?.setValue(data.occupation);
-
-            this.aboutForm.get('gender')?.setValue(data.gender);
-            this.aboutForm.get('education')?.setValue(data.edu);
-          }
-        });
-    } else if (this.Role == 'ADVERTISER') {
-      console.log('advertising flags is up');
-      this.http
-        .get<any>(`http://localhost:7070/advertiser/${this.emailOfEmployee}`)
-        .subscribe((data) => {
-          console.log('data is here', data);
+    this.http
+      .get<any>(`http://localhost:7070/user/${this.emailOfEmployee}`)
+      .subscribe((data) => {
+        
+        if (data.gender) {
           this.updateKey = true;
           this.aboutForm.get('firstName')?.setValue(data.firstName);
           this.aboutForm.get('lastName')?.setValue(data.lastName);
@@ -131,12 +103,61 @@ export class AboutComponent implements OnInit {
           this.aboutForm.get('about')?.setValue(data.bio);
           this.aboutForm.get('gender')?.setValue(data.gender);
           this.aboutForm.get('companyName')?.setValue(data.companyName);
-        });
+        }});
+    }
+    else if(this.Role=="ADVERTISER")
+    { 
+      this.http
+      .get<any>(`http://localhost:7070/advertiser/${this.emailOfEmployee}`)
+      .subscribe((data) => {
+        
+        this.updateKey = true;
+        this.aboutForm.get('firstName')?.setValue(data.firstName);
+        this.aboutForm.get('lastName')?.setValue(data.lastName);
+        this.aboutForm.get('state')?.setValue(data.state);
+         
+        this.aboutForm.get('country')?.setValue(data.country);
+
+        this.aboutForm.get('city')?.setValue(data.city);
+  
+        this.aboutForm.get('mobile')?.setValue(data.mob);
+        this.aboutForm.get('about')?.setValue(data.bio);
+        this.aboutForm.get('gender')?.setValue(data.gender);
+        this.aboutForm.get('companyName')?.setValue(data.companyName)
+        
+    
+    })
+  }
+     else if(this.Role=="RECRUITER")
+    {
+     
+    this.emailOfEmployee = sessionStorage.getItem("email")
+
+    this.http
+      .get<any>(`http://localhost:7070/recruiter/${this.emailOfEmployee}`)
+      .subscribe((data) => {
+        
+        if (data.gender) {
+          this.updateKey = true;
+          this.aboutForm.get('firstName')?.setValue(data.firstName);
+          this.aboutForm.get('lastName')?.setValue(data.lastName);
+          this.aboutForm.get('state')?.setValue(data.state);
+
+          this.aboutForm.get('country')?.setValue(data.country);
+
+          this.aboutForm.get('city')?.setValue(data.city);
+
+          this.aboutForm.get('mobile')?.setValue(data.mob);
+          this.aboutForm.get('about')?.setValue(data.bio);
+          this.aboutForm.get('gender')?.setValue(data.gender);
+          this.aboutForm.get('companyName')?.setValue(data.companyName);
+        }});
     }
   }
+  
   onImageSelected(event: any): void {
     const file = event.target.files[0];
-    console.log('images are', file);
+    
     this.imageFile = file;
     if (file && this.isValidImageFile(file) && this.isValidImageSize(file)) {
       const reader = new FileReader();
@@ -147,13 +168,11 @@ export class AboutComponent implements OnInit {
           imgElement.setAttribute('src', reader.result as string);
         }
       };
-    } else {
-      if (!this.isValidImageFile(file)) {
+    } else if (!this.isValidImageFile(file)) {
         alert('Please select a valid image file (JPEG/JPG)');
       } else if (!this.isValidImageSize(file)) {
         alert('Image size should be less than 1MB');
       }
-    }
   }
   isValidImageFile(file: File): boolean {
     const allowedExtensions = /(\.jpg|\.jpeg)$/i;
@@ -169,7 +188,6 @@ export class AboutComponent implements OnInit {
   onSubmit(): void {
     console.log('submit is triggersd');
     let reqBody: any;
-    //let http: string;
     const formdata = new FormData();
 
     if (this.Role === 'USER') {
@@ -188,39 +206,18 @@ export class AboutComponent implements OnInit {
         occupation: this.aboutForm.value.occupation,
         email: this.emailOfEmployee,
       };
-
-      formdata.append('profile', JSON.stringify(reqBody));
-      formdata.append('image', this.imageFile);
-
-      if (this.updateKey == false) {
-        console.log('old');
-        console.log('about information submitted successful! for the users');
-        console.log('req body uis', reqBody);
-
-        this.http.post('http://localhost:7070/user/save', formdata).subscribe(
-          (response: any) => {
-            console.log(
-              'about information submitted successful! for the users'
-            );
-            this.router.navigate(['/profile']);
-          },
-          (error) => {
-            console.error('Error occurred during registration:', error);
-            // Handle error accordingly, display error message, etc.
-          }
-        );
-      } else if (this.updateKey == true) {
-        console.log('update');
-        console.log(
-          'about information submitted successful! for the update user'
-        );
-        this.http
-          .put(
-            `http://localhost:7070/user/update/${this.emailOfEmployee}`,
-            formdata
-          )
-          .subscribe(
+      
+      formdata.append('profile',JSON.stringify(reqBody));
+      formdata.append('image',this.imageFile);
+      
+      
+      
+        if (this.updateKey === false) {
+         
+      
+          this.http.post('http://localhost:7070/user/save', formdata).subscribe(
             (response: any) => {
+              
               this.router.navigate(['/profile']);
             },
             (error) => {
@@ -228,112 +225,16 @@ export class AboutComponent implements OnInit {
               // Handle error accordingly, display error message, etc.
             }
           );
-      }
-    } else if (this.Role === 'RECRUITER') {
-      reqBody = {
-        firstName: this.aboutForm.value.firstName,
-        lastName: this.aboutForm.value.lastName,
-        gender: this.aboutForm.value.gender,
-        bio: this.aboutForm.value.about,
-        edu: this.aboutForm.value.education,
-        skill: this.aboutForm.value.skills.join(','),
-        work_exp: this.aboutForm.value.experience,
-        city: this.aboutForm.value.city,
-        mob: this.aboutForm.value.mobile,
-        state: this.aboutForm.value.state,
-        country: this.aboutForm.value.country,
-        occupation: this.aboutForm.value.occupation,
-        email: this.emailOfEmployee,
-      };
-
-      formdata.append('profile', JSON.stringify(reqBody));
-      formdata.append('image', this.imageFile);
-
-      if (this.updateKey == false) {
-        console.log('old');
-        console.log(
-          'about information submitted successful! for the recruiter'
-        );
-        console.log('req body uis', reqBody);
-
-        this.http
-          .post('http://localhost:7070/recruiter/save', formdata)
-          .subscribe(
-            (response: any) => {
-              console.log(
-                'about information submitted successful! for the recruiter'
-              );
-              this.router.navigate(['/profile']);
-            },
-            (error) => {
-              console.error('Error occurred during registration:', error);
-              // Handle error accordingly, display error message, etc.
-            }
-          );
-      } else if (this.updateKey == true) {
-        console.log('update');
-        console.log(
-          'about information submitted successful! for the update recruiter'
-        );
-        this.http
-          .put(
-            `http://localhost:7070/recruiter/update/${this.emailOfEmployee}`,
-            formdata
-          )
-          .subscribe(
-            (response: any) => {
-              this.router.navigate(['/profile']);
-            },
-            (error) => {
-              console.error('Error occurred during registration:', error);
-              // Handle error accordingly, display error message, etc.
-            }
-          );
-      }
-    }
-      else if (this.Role === 'ADVERTISER') {
-        console.log('advertising post is triggered');
-        reqBody = {
-          firstName: this.aboutForm.value.firstName,
-          lastName: this.aboutForm.value.lastName,
-          gender: this.aboutForm.value.gender,
-          bio: this.aboutForm.value.about,
-          city: this.aboutForm.value.city,
-          mob: this.aboutForm.value.mobile,
-          state: this.aboutForm.value.state,
-          country: this.aboutForm.value.country,
-          companyName: this.aboutForm.value.companyName,
-          email: this.emailOfEmployee,
-        };
-
-        formdata.append('profile', JSON.stringify(reqBody));
-        formdata.append('image', this.imageFile);
-        console.log('req Data for advertiser', formdata);
-        if (this.updateKey == false) {
-          console.log('orginal submit for advertiser');
-          this.http
-            .post('http://localhost:7070/advertiser/save', formdata)
-            .subscribe(
-              (response: any) => {
-                console.log('about information submitted successful!');
-                this.router.navigate(['/profile']);
-              },
-              (error) => {
-                console.error('Error occurred during registration:', error);
-                // Handle error accordingly, display error message, etc.
-              }
-            );
-        } else if (this.updateKey == true) {
-          console.log('update');
-          console.log('updated advertiser');
+        } else if (this.updateKey === true) {
+          
           this.http
             .put(
-              `http://localhost:7070/advertiser/update/${this.emailOfEmployee}`,
+              `http://localhost:7070/user/update/${this.emailOfEmployee}`,
               formdata
             )
             .subscribe(
               (response: any) => {
-                console.log('about information submitted successful!');
+                
                 this.router.navigate(['/profile']);
               },
               (error) => {
@@ -342,7 +243,123 @@ export class AboutComponent implements OnInit {
               }
             );
         }
-      }
+      
+    } else if (this.Role === 'ADVERTISER') {
+      
+      reqBody = {
+        firstName: this.aboutForm.value.firstName,
+        lastName: this.aboutForm.value.lastName,
+        gender: this.aboutForm.value.gender,
+        bio: this.aboutForm.value.about,
+        city: this.aboutForm.value.city,
+        mob: this.aboutForm.value.mobile,
+        state: this.aboutForm.value.state,
+        country: this.aboutForm.value.country,
+        companyName: this.aboutForm.value.companyName,
+        email: this.emailOfEmployee,
+      };
+
+     
+      formdata.append('profile', JSON.stringify(reqBody));
+      formdata.append('image', this.imageFile);
+      
+      if (!this.updateKey === false) {
+        
+        this.http
+          .post('http://localhost:7070/advertiser/save', formdata)
+          .subscribe(
+            (response: any) => {
+             
+              this.router.navigate(['/profile']);
+            },
+            (error) => {
+              console.error('Error occurred during registration:', error);
+              // Handle error accordingly, display error message, etc.
+            }
+          );
+      } 
+      
+         else if (!this.updateKey === true) {
+         
+          this.http
+            .put(
+              `http://localhost:7070/advertiser/update/${this.emailOfEmployee}`,
+              formdata
+            )
+            .subscribe(
+              (response: any) => {
+               
+                this.router.navigate(['/profile']);
+              },
+              (error) => {
+                console.error('Error occurred during registration:', error);
+                // Handle error accordingly, display error message, etc.
+              }
+            );
+        
+  
+         }}
+         else if (this.Role === 'RECRUITER') {
+          reqBody = {
+            firstName: this.aboutForm.value.firstName,
+            lastName: this.aboutForm.value.lastName,
+            gender: this.aboutForm.value.gender,
+            bio: this.aboutForm.value.about,
+            edu: this.aboutForm.value.education,
+            skill: this.aboutForm.value.skills.join(','),
+            work_exp: this.aboutForm.value.experience,
+            city: this.aboutForm.value.city,
+            mob: this.aboutForm.value.mobile,
+            state: this.aboutForm.value.state,
+            country: this.aboutForm.value.country,
+            occupation: this.aboutForm.value.occupation,
+            email: this.emailOfEmployee,
+          };
     
+          formdata.append('profile', JSON.stringify(reqBody));
+          formdata.append('image', this.imageFile);
+    
+          if (!this.updateKey == false) {
+            // console.log('old');
+            // console.log(
+            //   'about information submitted successful! for the recruiter'
+            // );
+            // console.log('req body uis', reqBody);
+    
+            this.http
+              .post('http://localhost:7070/recruiter/save', formdata)
+              .subscribe(
+                (response: any) => {
+                  console.log(
+                    'about information submitted successful! for the recruiter'
+                  );
+                  this.router.navigate(['/profile']);
+                },
+                (error) => {
+                  console.error('Error occurred during registration:', error);
+                  // Handle error accordingly, display error message, etc.
+                }
+              );
+          } else if (!this.updateKey == true) {
+            console.log('update');
+            console.log(
+              'about information submitted successful! for the update recruiter'
+            );
+            this.http
+              .put(
+                `http://localhost:7070/recruiter/update/${this.emailOfEmployee}`,
+                formdata
+              )
+              .subscribe(
+                (response: any) => {
+                  this.router.navigate(['/profile']);
+                },
+                (error) => {
+                  console.error('Error occurred during registration:', error);
+                  // Handle error accordingly, display error message, etc.
+                }
+              );
+          }
+        }
   }
 }

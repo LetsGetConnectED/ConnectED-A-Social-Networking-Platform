@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 import { AuthserviceService } from '../service/authservice.service';
 import { SharedService } from '../service/shared.service';
 import { RoleService } from '../role.service';
@@ -36,7 +35,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const useremail = this.loginForm.value.email;
+
 
     if (this.loginForm.valid) {
       console.log('Form submitted successfully!', this.loginForm.value);
@@ -86,7 +85,7 @@ export class LoginComponent implements OnInit {
                       }
                     );
                   }
-                  else if(this.Role="ADVERTISER")
+                  else if(this.Role=="ADVERTISER")
                   {
                   this.http
                   .get<any>(
@@ -103,7 +102,7 @@ export class LoginComponent implements OnInit {
                     }
                   );
                   }
-                  else if(this.Role="RECTRUITER")
+                  else if(this.Role==="RECRUITER")
                   {
                     this.http
                   .get<any>(

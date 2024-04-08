@@ -14,14 +14,25 @@ export class JobwallComponent implements OnInit {
 
     this.http.get<any>(` http://localhost:8083/api/jobs/list`)
     .subscribe((data)=>{
-      console.log(data)
+      
       this.jobs = data.reverse();
 
     })
   }
-  applyJob(id:any){
-    console.log("id is",id)
-    // this.http.post<any>(``)
+  applyJob(id:any,job:any){
+   
+    this.http.post(`http://localhost:8083/api/jobs/apply/${id}/${sessionStorage.getItem("email")}`, job, { responseType: 'text' }).subscribe(
+      (data) => {
+       
+        
+      },
+      (error) => {
+        console.error('Error:', error);
+        
+      }
+    );
+    
+    
   }
 
 }
