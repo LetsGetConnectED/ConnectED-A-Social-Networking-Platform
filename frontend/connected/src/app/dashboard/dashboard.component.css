@@ -30,17 +30,26 @@
   height: 21rem;
   color: white;
 }
+.buylink{
+  color: white;
+}
+.likeCounter{
+  color: white;
+  font-size: 28px;
+}
 .post-body-function{
   width: auto;
   height: 3.5rem;
   background-color: #25371B;
+  display: flex;
+  justify-content: space-between;
 }
 .post-body-cmmnt{
   width: auto;
   height: 3.5rem;
   background-color: #25371B;
 }
-.post-body-caption{
+.post-body-caption,.link_body{
   color: white;
   height: 3.5rem;
   background-color: #25371B;

@@ -12,11 +12,16 @@
             <img [src]="selectedImage" alt="" class="dp"> {{ post.user.firstName }} {{ post.user.lastName }} : {{
             post.caption }}
          </div>
-         <div class="post-body-function text-end pt-2">
-            <span class="like mx-3 mt-5" (click)="toggleLike()"> <i class="bi bi-heart-fill mt-5"
+         <div class="post-body-function pt-2">
+            <div>
+            <label class="likeCounter ms-3">{{post.likes}} like</label>
+         </div>
+         <div>
+            <span class="like mx-3 mt-5" (click)="toggleLike(post.id,post.user.email,post.postDate)"> <i class="bi bi-heart-fill mt-5"
                   [style.color]="isLiked ? 'red' : 'white'"></i></span>
             <span class="comment mx-3 mt-5"><i class="bi bi-chat-left-fill"></i></span>
             <span class="share mx-3 mt-5"><i class="bi bi-share-fill"></i></span>
+         </div>
          </div>
 
          <div class="post-body-cmmnt">
@@ -31,18 +36,26 @@
          <div class="post-body-header p-3 ">
             <img [src]="selectedImage" alt="" class="dp"> {{ post.advertiser.firstName }} {{ post.advertiser.lastName }}
          </div>
-         <div class="post-body-content" >
+         <div class="post-body-content" (click)="redirectToLink(post.link)" >
             <img [src]="getPostImageAdvertiser(post)" alt="" class="col-12">
          </div>
          <div class="post-body-caption pt-3 ps-3">
             <img [src]="selectedImage" alt="" class="dp"> {{ post.advertiser.firstName }} {{ post.advertiser.lastName }} : {{
-            post.caption }}
+            post.caption }}  
          </div>
-         <div class="post-body-function text-end pt-2">
-            <span class="like mx-3 mt-5" (click)="toggleLike()"> <i class="bi bi-heart-fill mt-5"
+         <div class="link_body pt-2" (click)="redirectToLink(post.link)">
+          <label class="buylink ms-3">Buy it at : {{post.link}}</label>
+         </div>
+         <div class="post-body-function pt-2">
+            <div>
+            <label class="likeCounter ms-3">{{post.likes}} like</label>
+         </div>
+            <div>
+            <span class="like mx-3 mt-5" (click)="toggleLike(post.id,post.advertiser.email,post.postDate)"> <i class="bi bi-heart-fill mt-5"
                   [style.color]="isLiked ? 'red' : 'white'"></i></span>
             <span class="comment mx-3 mt-5"><i class="bi bi-chat-left-fill"></i></span>
             <span class="share mx-3 mt-5"><i class="bi bi-share-fill"></i></span>
+         </div>
          </div>
 
          <div class="post-body-cmmnt">

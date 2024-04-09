@@ -10,6 +10,7 @@ import { SharedService } from '../service/shared.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit{
+
  firstname :any
  lastname: any;
  uploadedImage:any;
@@ -26,6 +27,10 @@ export class DashboardComponent implements OnInit{
   }
   ngOnInit(): void {
     this.role=sessionStorage.getItem('role');
+   this.fetchPosts();
+    
+  }
+  fetchPosts() {
     if(sessionStorage.getItem('role')==="USER")
     {
     this.http.get<any>(`http://localhost:6060/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
@@ -39,22 +44,6 @@ export class DashboardComponent implements OnInit{
       }
 
     })
-  }
-  else if(sessionStorage.getItem('role')==="ADVERTISER")
-  {
-    this.http.get<any>(`http://localhost:5050/api/advertisements/advertiser/rob123@gmail.com`).subscribe((data)=>{
-      
-    
-      this.posts = data; // Assign the received data to the posts array
-      console.log("data is",data)
-   
-      if(!data.imageBytes)
-      {
-        this.showPost=false
-      }
-
-    })
-  }
     this.email=this.shared.getMessage();
     if(this.email)
     {
@@ -65,8 +54,42 @@ export class DashboardComponent implements OnInit{
        this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
       })}
   }
-  toggleLike(): void {
+  else if(sessionStorage.getItem('role')==="ADVERTISER")
+  { console.log("advertiser hitting")
+    this.http.get<any>(`http://localhost:5050/api/advertisements/advertiser/${sessionStorage.getItem("email")}`).subscribe((data)=>{
+      
+      
+      this.posts = data.reverse(); // Assign the received data to the posts array
+      console.log("data is",data)
+   
+      if(!data.imageBytes)
+      {
+        this.showPost=false
+      }
+
+    })
+    this.email=this.shared.getMessage();
+    if(this.email)
+    {
+    this.http.get<any>(`http://localhost:7070/advertiser/${sessionStorage.getItem("email")}`).subscribe((data)=>{
+      
+     
+       const imageUrl = 'data:image/png;base64,' + data.image
+       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+      })}
+  }
+  }
+  toggleLike(id:any,email:any,date:any): void {
+    console.log("arguments are",id,email,date)
     this.isLiked = !this.isLiked; // Toggle the like status
+    this.http.post<any>(`http://localhost:5050/api/advertisements/like?userEmail=${sessionStorage.getItem("email")}&postDate=${date}&advertiserEmail=${email}&postId=${id}`,null).subscribe((response: any) => {
+    this.fetchPosts();
+  },
+  (error) => {
+    console.error('Error occurred during registration:', error);
+  
+  }
+   )
   }
   getPostUserImage(post: any): string {
     return `data:image/png;base64,${post.user.imageBytes}`;
@@ -79,6 +102,17 @@ export class DashboardComponent implements OnInit{
   getPostImageAdvertiser(post: any): string {
     return `data:image/png;base64,${post.image}`;
   }
+  redirectToLink(link: string) {
+    console.log("link is", link);
+    if (!link.startsWith('http://') && !link.startsWith('https://')) {
+        
+        link = 'https://' + link;
+    }
+
+    window.open(link, '_blank');
+}
+
+
 
 }
 
