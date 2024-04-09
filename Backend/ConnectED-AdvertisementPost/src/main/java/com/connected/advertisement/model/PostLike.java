@@ -1,81 +1,53 @@
 package com.connected.advertisement.model;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-
 @Embeddable
 public class PostLike {
-    @ManyToOne
-    @JoinColumn(name = "user_email", referencedColumnName = "email")
-    private User user;
-    
-    
+	@ManyToOne
+	@JoinColumn(name = "user_email", referencedColumnName = "email")
+	private User user;
+	
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "advertisement_post_id") private AdvertisementPost post;
+	 */
+	@Enumerated(EnumType.STRING)
+	private PostLikeStatus likeStatus;
 
-    
-   
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-   
-
-  
-    @Override
-	public String toString() {
-		return "PostLike [user=" + user + "]";
+	public PostLikeStatus getLikeStatus() {
+		return likeStatus;
 	}
 
-	public PostLike(User user) {
-		super();
+	public void setLikeStatus(PostLikeStatus likeStatus) {
+		this.likeStatus = likeStatus;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
 		this.user = user;
 	}
 
-	public PostLike() {
-        // Default constructor
-    }
-}
+	@Override
+	public String toString() {
+		return "PostLike [user=" + user + ", likeStatus=" + likeStatus + "]";
+	}
 
-//@Embeddable
-//public class PostLike {
-//    @ManyToOne
-//    @JoinColumn(name = "user_email", referencedColumnName = "email")
-//    private User user;
-//
-//    private Long advertisementPostId;
-//
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-//
-//    public Long getAdvertisementPostId() {
-//        return advertisementPostId;
-//    }
-//
-//    public void setAdvertisementPostId(Long advertisementPostId) {
-//        this.advertisementPostId = advertisementPostId;
-//    }
-//
-//    public PostLike(User user, Long advertisementPostId) {
-//        this.user = user;
-//        this.advertisementPostId = advertisementPostId;
-//    }
-//
-//    public PostLike() {
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "PostLike [user=" + user + ", advertisementPostId=" + advertisementPostId + "]";
-//    }
-//}
+	 public PostLike(User user, AdvertisementPost post, PostLikeStatus likeStatus) {
+	        this.user = user;
+//	        this.post = post;
+	        this.likeStatus = likeStatus;
+	    }
+
+	public PostLike() {
+		// Default constructor
+	}
+}
