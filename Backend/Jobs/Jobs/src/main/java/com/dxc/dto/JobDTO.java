@@ -3,13 +3,10 @@ package com.dxc.dto;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-
-@NoArgsConstructor  
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class JobDTO {
     private Long jobid;
     
@@ -24,65 +21,57 @@ public class JobDTO {
     
     @NotBlank(message = "Location is required")
     private String location;
-
- 
-    public JobDTO(Long id, String title, String description, String skills, String location) {
-        this.jobid = id;
+    
+    public JobDTO() {
+    }
+    
+    public JobDTO(Long jobid, String title, String description, String skills, String location) {
+        this.jobid = jobid;
         this.title = title;
         this.description = description;
         this.skills = skills;
         this.location = location;
     }
 
-
-	public Long getjobid() {
+	public Long getJobid() {
 		return jobid;
 	}
 
-
-	public void setJobid(Long id) {
-		this.jobid = id;
+	public void setJobid(Long jobid) {
+		this.jobid = jobid;
 	}
-
 
 	public String getTitle() {
 		return title;
 	}
 
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 
 	public String getDescription() {
 		return description;
 	}
 
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 
 	public String getSkills() {
 		return skills;
 	}
 
-
 	public void setSkills(String skills) {
 		this.skills = skills;
 	}
-
 
 	public String getLocation() {
 		return location;
 	}
 
-
 	public void setLocation(String location) {
 		this.location = location;
 	}
 
-   
+    
 }

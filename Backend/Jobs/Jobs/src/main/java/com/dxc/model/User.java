@@ -44,28 +44,18 @@ public class User {
     @OneToMany(mappedBy = "userMadeBy", fetch = FetchType.LAZY)
     private Set<Job> jobsCreated = new HashSet<>();
 
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//        name = "job_application",
+//        joinColumns = @JoinColumn(name = "userid"),
+//        inverseJoinColumns = @JoinColumn(name = "jobid")
+//    )
+//    private Set<Job> jobApplications = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "job_application",
-            joinColumns = @JoinColumn(name = "userid"),
-            inverseJoinColumns = @JoinColumn(name = "jobid")
-    )
-    private Set<Job> jobApplications = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "recommended_jobs",
-        joinColumns = @JoinColumn(name = "userid"),
-        inverseJoinColumns = @JoinColumn(name = "jobid")
-    )
-    private Set<Job> recommendedJobs = new HashSet<>();
-
-    @ManyToMany(mappedBy = "usersApplied")
-    private Set<Job> appliedJobs;
-
-	
-
+    @ManyToMany(mappedBy = "applicants")
+    private Set<Job> appliedJobs = new HashSet<>();
+    
+    
 	public Long getUserid() {
 		return userid;
 	}
@@ -91,22 +81,14 @@ public class User {
 	}
 
 
-	public Set<Job> getRecommendedJobs() {
-		return recommendedJobs;
-	}
-
-	public void setRecommendedJobs(Set<Job> recommendedJobs) {
-		this.recommendedJobs = recommendedJobs;
-	}
-
 	
-	public Set<Job> getJobApplications() {
-		return jobApplications;
-	}
-
-	public void setJobApplications(Set<Job> jobApplications) {
-		this.jobApplications = jobApplications;
-	}
+//	public Set<Job> getJobApplications() {
+//		return jobApplications;
+//	}
+//
+//	public void setJobApplications(Set<Job> jobApplications) {
+//		this.jobApplications = jobApplications;
+//	}
 
 	public Set<Job> getAppliedJobs() {
 		return appliedJobs;

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.dxc.model.Job;
+import com.dxc.model.RequestStatus;
 
 @Repository
 public interface JobsRepository extends JpaRepository<Job, Long> {
@@ -17,5 +18,7 @@ public interface JobsRepository extends JpaRepository<Job, Long> {
 	List<Job> findJobsBySkills(String string);
 
 	boolean existsByUserMadeByUseremailAndJobid(String useremail, Long jobid);
+	
+	  List<Job> findByStatus(RequestStatus status);
 	
 }

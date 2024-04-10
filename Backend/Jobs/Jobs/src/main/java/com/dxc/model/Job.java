@@ -44,6 +44,8 @@ public class Job {
     @NonNull
     private String title;
 
+    private RequestStatus status;
+    
     @Column(nullable = false, length = 1500)
     @Size(max = 1500)
     private String description;
@@ -65,21 +67,24 @@ public class Job {
     @JoinColumn(name = "userid")
    @JsonIgnoreProperties(value = "jobsCreated", allowSetters = true)
     private User userMadeBy;
-
+    
+//    @ManyToMany(mappedBy = "jobApplications")
+//    private Set<User> applicants = new HashSet<>();
+//    
+//    public Job() {
+//        this.applicants = new HashSet<>();
+//    }
+//  
+    
     @ManyToMany
     @JoinTable(
-        name = "job_user",
+        name = "job_applicants",
         joinColumns = @JoinColumn(name = "jobid"),
         inverseJoinColumns = @JoinColumn(name = "userid")
     )
-    private Set<User> usersApplied;
-
-    @ManyToMany(mappedBy = "recommendedJobs", fetch = FetchType.LAZY)
-   @JsonIgnoreProperties(value = "recommendedJobs", allowSetters = true)
-    private Set<User> recommendedTo = new HashSet<>();
+    private Set<User> applicants = new HashSet<>();
 
     
-
     public String getSkills() {
         return skills;
     }
@@ -128,7 +133,24 @@ public class Job {
         this.timestamp = timestamp;
     }
 
-    public User getUserMadeBy() {
+    
+    public RequestStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(RequestStatus status) {
+		this.status = status;
+	}
+
+	public Set<User> getApplicants() {
+		return applicants;
+	}
+
+	public void setApplicants(Set<User> applicants) {
+		this.applicants = applicants;
+	}
+
+	public User getUserMadeBy() {
         return userMadeBy;
     }
 
@@ -136,19 +158,19 @@ public class Job {
         this.userMadeBy = userMadeBy;
     }
 
-    public Set<User> getRecommendedTo() {
-        return recommendedTo;
-    }
-
-    public void setRecommendedTo(Set<User> recommendedTo) {
-        this.recommendedTo = recommendedTo;
-    }
-
-    public Set<User> getUsersApplied() {
-        return usersApplied;
-    }
-
-    public void setUsersApplied(Set<User> usersApplied) {
-        this.usersApplied = usersApplied;
-    }
+//    public Set<User> getRecommendedTo() {
+//        return recommendedTo;
+//    }
+//
+//    public void setRecommendedTo(Set<User> recommendedTo) {
+//        this.recommendedTo = recommendedTo;
+//    }
+//
+//    public Set<User> getUsersApplied() {
+//        return usersApplied;
+//    }
+//
+//    public void setUsersApplied(Set<User> usersApplied) {
+//        this.usersApplied = usersApplied;
+//    }
 }

@@ -3,8 +3,10 @@ package com.dxc.controller;
 import com.dxc.dto.ErrorResponse;
 
 import com.dxc.dto.JobDTO;
+import com.dxc.exception.JobNotFoundException;
 import com.dxc.exception.UserNotFoundException;
 import com.dxc.model.Job;
+import com.dxc.model.RequestStatus;
 import com.dxc.model.User;
 import com.dxc.service.JobService;
 import com.dxc.service.UserService;
@@ -63,45 +65,39 @@ public class JobsController {
 
     @PostMapping("/apply/{jobid}/{useremail}")
     public ResponseEntity<?> applyForJob(@RequestBody JobDTO jobDTO, @PathVariable String useremail, @PathVariable Long jobid) {
-        Optional<User> optionalUser = userService.getUserByEmail(useremail,jobid);
-        if (optionalUser.isPresent() ) {
+        Optional<User> optionalUser = userService.getUserByEmail(useremail, jobid);
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            Job job = new Job();
-            job.setTitle(jobDTO.getTitle());
-            job.setDescription(jobDTO.getDescription());
-            job.setLocation(jobDTO.getLocation());
-            job.setSkills(jobDTO.getSkills());
-            job.setJobid(jobDTO.getjobid()); 
-            job.setUserMadeBy(user);
-//            jobService.saveJob(job);
-        
-            boolean hasApplied = jobService.hasUserAppliedForJob(user.getUseremail(), job.getJobid());
-            
-            if (hasApplied) {
-                return ResponseEntity.badRequest().body("You have already applied for this job.");
+
+            Optional<Job> optionalJob = jobService.getJobById(jobid);
+            if (optionalJob.isPresent()) {
+                Job job = optionalJob.get();
+
+                boolean hasApplied = jobService.hasUserAppliedForJob(user.getUseremail(), jobid);
+                if (hasApplied) {
+                    return ResponseEntity.badRequest().body("You have already applied for this job.");
+                }
+
+                job.getApplicants().add(user);
+                job.setTitle(jobDTO.getTitle());
+                job.setDescription(jobDTO.getDescription());
+                job.setLocation(jobDTO.getLocation());
+                job.setSkills(jobDTO.getSkills());
+                job.setStatus(RequestStatus.APPLIED);
+                job.setUserMadeBy(user);
+                
+                jobService.saveJob(job);
+
+                return ResponseEntity.ok("Applied for job successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Job not found");
             }
- 
-           jobService.saveJob(job);
-           
-            
-            return ResponseEntity.ok("Applied for job successfully");
         } else {
-            throw new UserNotFoundException("User not found");
+            return ResponseEntity.badRequest().body("User not found");
         }
     }
 
-//    @GetMapping("applicants/{jobid}")
-//    public ResponseEntity<?> getJobApplicants(@PathVariable Long jobid) {
-//        List<User> applicants = jobService.getJobApplicants(jobid);
-//        return ResponseEntity.ok(applicants);
-//    }
 
-//    @GetMapping("/in/{userid}/recommended-jobs")
-//    public ResponseEntity<?> getRecommendedJobs(@PathVariable Long userid) {
-//        List<Job> recommendedJobs = jobService.getRecommendedJobs(userid);
-//        List<JobDTO> recommendedJobDTOs = recommendedJobs.stream()
-//                .map(job -> new JobDTO(job.getJobid(), job.getTitle(), job.getDescription(), job.getSkills(), job.getLocation()))
-//                .collect(Collectors.toList());
-//        return ResponseEntity.ok(recommendedJobDTOs);
-//    }
+  
+
 }
