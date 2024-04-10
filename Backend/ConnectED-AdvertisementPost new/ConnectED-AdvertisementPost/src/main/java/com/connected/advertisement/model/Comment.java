@@ -1,112 +1,136 @@
 package com.connected.advertisement.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 
-@Embeddable
+@Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Comment {
 
-	 private String comment;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	    @ManyToOne
-	    @JoinColumn(name = "receiver_email", referencedColumnName = "email")
-	    private Advertiser receiverUser;
+	@Column(name = "parent_comment_id")
+	private Long parentCommentId;
 
-	    @ManyToOne
-	    @JoinColumn(name = "sender_email", referencedColumnName = "email") // Changed sender_email to user_email
-	    private User senderUser; // Changed to senderUser
+	private String comment;
 
-	   
-	    
-	    @ManyToOne
-	    @JoinColumn(name = "post_date", referencedColumnName = "postDate")
-	    private AdvertisementPost post;
+	@ManyToOne
+	@JoinColumn(name = "receiver_email", referencedColumnName = "email")
+	private Advertiser receiverUser;
 
-	    // Add commenterEmail to store the commenter's email
-	    @NotBlank
-	    @Email
-	    @Column(nullable = false)
-	    private String commenterEmail;
+	@ManyToOne
+	@JoinColumn(name = "sender_email", referencedColumnName = "email")
+	private User senderUser;
 
-		public String getComment() {
-			return comment;
-		}
+	@ManyToOne
+	@JoinColumn(name = "post_date", referencedColumnName = "postDate")
+	private AdvertisementPost post;
 
-		public void setComment(String comment) {
-			this.comment = comment;
-		}
+	@ManyToOne
+	@JoinColumn(name = "post_id", referencedColumnName = "id")
 
-		public Advertiser getReceiverUser() {
-			return receiverUser;
-		}
+	private AdvertisementPost postId;
 
-		public void setReceiverUser(Advertiser receiverUser) {
-			this.receiverUser = receiverUser;
-		}
+	@Column
+	private String commenterEmail;
 
-		public User getSenderUser() {
-			return senderUser;
-		}
+	public Long getId() {
+		return id;
+	}
 
-		public void setSenderUser(User senderUser) {
-			this.senderUser = senderUser;
-		}
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-		
-		public AdvertisementPost getPost() {
-			return post;
-		}
+	public Long getParentCommentId() {
+		return parentCommentId;
+	}
 
-		public void setPost(AdvertisementPost post) {
-			this.post = post;
-		}
+	public void setParentCommentId(Long parentCommentId) {
+		this.parentCommentId = parentCommentId;
+	}
 
-		public String getCommenterEmail() {
-			return commenterEmail;
-		}
+	public String getComment() {
+		return comment;
+	}
 
-		public void setCommenterEmail(String commenterEmail) {
-			this.commenterEmail = commenterEmail;
-		}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
-		
+	public Advertiser getReceiverUser() {
+		return receiverUser;
+	}
 
-		
+	public void setReceiverUser(Advertiser receiverUser) {
+		this.receiverUser = receiverUser;
+	}
 
-		public Comment(String comment, Advertiser receiverUser, User senderUser, AdvertisementPost post,
-				@NotBlank @Email String commenterEmail) {
-			super();
-			this.comment = comment;
-			this.receiverUser = receiverUser;
-			this.senderUser = senderUser;
-			this.post = post;
-			this.commenterEmail = commenterEmail;
-		}
-		
+	public User getSenderUser() {
+		return senderUser;
+	}
 
-		@Override
-		public String toString() {
-			return "Comment [comment=" + comment + ", receiverUser=" + receiverUser + ", senderUser=" + senderUser
-					+ ", post=" + post + ", commenterEmail=" + commenterEmail + "]";
-		}
+	public void setSenderUser(User senderUser) {
+		this.senderUser = senderUser;
+	}
 
-		public Comment() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
+	public AdvertisementPost getPost() {
+		return post;
+	}
 
-  
+	public void setPost(AdvertisementPost post) {
+		this.post = post;
+	}
 
-	
+	public String getCommenterEmail() {
+		return commenterEmail;
+	}
 
-    
-    
-	
-	
+	public void setCommenterEmail(String commenterEmail) {
+		this.commenterEmail = commenterEmail;
+	}
 
-    
+	public AdvertisementPost getPostId() {
+		return postId;
+	}
+
+	public void setPostId(AdvertisementPost postId) {
+		this.postId = postId;
+	}
+
+	public Comment(Long id, Long parentCommentId, String comment, Advertiser receiverUser, User senderUser,
+			AdvertisementPost post, AdvertisementPost postId, String commenterEmail) {
+		super();
+		this.id = id;
+		this.parentCommentId = parentCommentId;
+		this.comment = comment;
+		this.receiverUser = receiverUser;
+		this.senderUser = senderUser;
+		this.post = post;
+		this.postId = postId;
+		this.commenterEmail = commenterEmail;
+	}
+
+	public Comment() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "Comment [id=" + id + ", parentCommentId=" + parentCommentId + ", comment=" + comment + ", receiverUser="
+				+ receiverUser + ", senderUser=" + senderUser + ", post=" + post + ", postId=" + postId
+				+ ", commenterEmail=" + commenterEmail + "]";
+	}
+
 }

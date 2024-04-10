@@ -32,22 +32,22 @@ import com.connected.advertisement.repo.UserRepository;
 import com.connected.advertisement.service.AdvertisementService;
 
 import jakarta.validation.Valid;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/advertisements")
 @Validated
 public class AdvertisementController {
-    
+
     @Autowired
     private AdvertisementService advertisementService;
-    
+
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private AdvertiserRepository advertiserRepository;
-    
-   
+
     @GetMapping
     public List<AdvertisementPost> getAllPosts() {
         return advertisementService.getAllPosts();
@@ -65,7 +65,8 @@ public class AdvertisementController {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(postDate, formatter);
-            Optional<AdvertisementPost> post = advertisementService.getPostByAdvertiserEmailAndDate(advertiserEmail, date);
+            Optional<AdvertisementPost> post = advertisementService.getPostByAdvertiserEmailAndDate(advertiserEmail,
+                    date);
             return post.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
         } catch (DateTimeParseException ex) {
             throw new NotFoundException("Invalid email or post date format");
@@ -73,7 +74,8 @@ public class AdvertisementController {
     }
 
     @DeleteMapping("/advertiser/{advertiserEmail}/{postDate}")
-    public ResponseEntity<?> deletePostByAdvertiserEmailAndDate(@PathVariable String advertiserEmail, @PathVariable String postDate) {
+    public ResponseEntity<?> deletePostByAdvertiserEmailAndDate(@PathVariable String advertiserEmail,
+            @PathVariable String postDate) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(postDate, formatter);
@@ -104,6 +106,7 @@ public class AdvertisementController {
             throw new NotFoundException("Invalid post date format");
         }
     }
+
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/advertiser")
     public ResponseEntity<?> createAdvertisementPost(
@@ -115,59 +118,36 @@ public class AdvertisementController {
             long imageSize = image.getSize();
             // Check image size and perform other validations
             byte[] imageBytes = image.getBytes();
-            AdvertisementPost createdPost = advertisementService.createAdvertisementPost(advertiserEmail, caption, link, imageBytes);
+            AdvertisementPost createdPost = advertisementService.createAdvertisementPost(advertiserEmail, caption, link,
+                    imageBytes);
             System.out.print("hittinng method");
             return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
         } catch (Exception ex) {
-        	System.out.print("hittinng error");
+            System.out.print("hittinng error");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    
     @PostMapping("/like")
-    public ResponseEntity<?> likePost(
-            @RequestParam String userEmail,
-            @RequestParam String advertiserEmail,
-            @RequestParam String postDate,
-            @RequestParam Long postId) {
+    public ResponseEntity<?> likePost(@RequestParam String userEmail, @RequestParam String advertiserEmail,
+            @RequestParam String postDate, @RequestParam Long postId) {
         try {
-           
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(postDate, formatter);
 
-           
             User user = userRepository.findByEmail(userEmail)
                     .orElseThrow(() -> new NotFoundException("User not found"));
 
-            
             Advertiser advertiser = advertiserRepository.findByEmail(advertiserEmail)
                     .orElseThrow(() -> new NotFoundException("Advertiser not found"));
 
-           
             advertisementService.likePostByUserAndDate(user, advertiser, date, postId);
             return ResponseEntity.noContent().build();
         } catch (DateTimeParseException e) {
-            
             return ResponseEntity.badRequest().body("Invalid date format");
         }
     }
-//    @PostMapping("/like")
-//    public ResponseEntity<?> likePost(
-//            @RequestParam String userEmail,
-//            @RequestParam String advertiserEmail,
-//            @RequestParam String postDate,
-//            @RequestParam Long postId) {
-//        try {
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//            LocalDate date = LocalDate.parse(postDate, formatter);
-//            advertisementService.likePostByUserAndDate(userEmail, advertiserEmail, date, postId);
-//            return ResponseEntity.noContent().build();
-//        } catch (DateTimeParseException e) {
-//            throw new NotFoundException("Invalid date format");
-//        }
-//    }
-    
+
     @GetMapping("/like/{postId}")
     public ResponseEntity<List<String>> getLikedUsersByPostId(@PathVariable Long postId) {
         try {
@@ -178,30 +158,35 @@ public class AdvertisementController {
         }
     }
 
-    
- 
+    @GetMapping("/liked-posts")
+    public ResponseEntity<?> getLikedPostsByUserEmail(@RequestParam String userEmail) {
+        try {
+            List<Long> likedPostIds = advertisementService.getLikedPostsByUserEmail(userEmail);
+            return ResponseEntity.ok(likedPostIds);
+        } catch (NotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/comment")
-    public ResponseEntity<?> addComment(@RequestParam String receiverEmail, 
-                                        @RequestParam String senderEmail,
-                                        @RequestParam String commenterEmail,
-                                       
-                                        @RequestParam String postDate,
-                                        @RequestBody Comment comment) {
+    public ResponseEntity<?> addComment(@RequestParam String receiverEmail, @RequestParam String senderEmail,
+            @RequestParam(required = false) String commenterEmail, @RequestParam String postDate,
+            @RequestParam String commentText, @RequestParam(required = false) Long parentCommentId) {
         LocalDate parsedPostDate;
         try {
             parsedPostDate = LocalDate.parse(postDate);
         } catch (DateTimeParseException e) {
             return ResponseEntity.badRequest().body("Invalid post date format");
         }
-        
-        advertisementService.addCommentToPost(receiverEmail, senderEmail, commenterEmail,  parsedPostDate, comment.getComment());
+
+        advertisementService.addCommentToPost(receiverEmail, senderEmail, commenterEmail, parsedPostDate, commentText,
+                parentCommentId);
         return ResponseEntity.noContent().build();
     }
+
     @DeleteMapping("/comment")
-    public ResponseEntity<?> deleteComment(@RequestParam String receiverEmail,
-                                           @RequestParam String senderEmail,
-                                           @RequestParam String postDate,
-                                           @RequestParam String comment) {
+    public ResponseEntity<?> deleteComment(@RequestParam String receiverEmail, @RequestParam String senderEmail,
+            @RequestParam String postDate, @RequestParam String comment) {
         LocalDate parsedPostDate;
         try {
             parsedPostDate = LocalDate.parse(postDate);
@@ -212,7 +197,7 @@ public class AdvertisementController {
         advertisementService.deleteComment(receiverEmail, senderEmail, parsedPostDate, comment);
         return ResponseEntity.noContent().build();
     }
-    
+
     @GetMapping("/posts/{postId}/comments")
     public ResponseEntity<List<Comment>> getAllCommentsByPostId(@PathVariable Long postId) {
         try {
@@ -223,16 +208,26 @@ public class AdvertisementController {
         }
     }
 
-    
-    
-    
+    @GetMapping("/posts/{postId}/comments/{commentId}/replies")
+    public ResponseEntity<List<Comment>> getRepliesToComment(@PathVariable Long postId, @PathVariable Long commentId) {
+        try {
+            List<Comment> replies = advertisementService.getRepliesToComment(postId, commentId);
+            return ResponseEntity.ok(replies);
+        } catch (NotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-
-
-
-
-
-   
-
+    @PostMapping("/comment/parent")
+    public ResponseEntity<?> addParentComment(@RequestParam String receiverEmail, @RequestParam String senderEmail,
+            @RequestParam Long postId, @RequestParam String postDate, @RequestParam String commentText) {
+        try {
+            LocalDate parsedPostDate = LocalDate.parse(postDate);
+            advertisementService.addParentComment(receiverEmail, senderEmail, postId, parsedPostDate, commentText);
+            return ResponseEntity.ok("Parent comment added successfully");
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body("Invalid post date format");
+        }
+    }
 
 }

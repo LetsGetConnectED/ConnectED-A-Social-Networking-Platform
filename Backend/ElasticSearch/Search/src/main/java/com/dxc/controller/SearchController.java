@@ -2,6 +2,7 @@ package com.dxc.controller;
 
 import com.dxc.model.Search;
 import com.dxc.model.SearchCriteria;
+import com.dxc.repository.SearchRepository;
 import com.dxc.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,18 @@ public class SearchController {
 
     @Autowired
     private SearchService searchService;
+    
+    @Autowired
+    private SearchRepository searchRepository;
 
     @PostMapping("/search")
-    public List<Search> searchUsers(@RequestBody SearchCriteria criteria) {
-        return searchService.searchUsers(criteria);
+    public Object save(@RequestBody SearchCriteria criteria) {
+        return searchService.save(criteria);
+    }
+    
+    @GetMapping
+    public List<Search> findAll() {
+        return searchRepository.findAll();
     }
 
     @GetMapping("/jobs/{jobTitle}")

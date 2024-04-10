@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,53 +21,44 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(indexes = @Index(name = "idx_post_date", columnList = "postDate"))
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class AdvertisementPost {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String caption;
-    private String link;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "advertiser_email", referencedColumnName = "email")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String caption;
+	private String link;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "advertiser_email", referencedColumnName = "email")
 	private Advertiser advertiser;
-    
 
-//    @NotBlank
-//    
-//    @Column(nullable = false)
-//    private String email; // assuming advertiser's email
+	@NotNull
+	@Column(nullable = false)
+	private LocalDate postDate;
 
-    @NotNull
-    @Column(nullable = false)
-    private LocalDate postDate;
+	@Lob
+	@Column(nullable = false, length = 10485760)
+	private byte[] image;
 
-   
-    @Lob
-    @Column(nullable = false, length = 10485760)
-    private byte[] image;
+	private int likes;
+	private int shares;
 
-    private int likes;
-    private int shares;
-    
-//    @ManyToOne
-//    @JoinColumn(name = "user_email", referencedColumnName = "email")
-//    private User likedBy;
+	// @ElementCollection
 
-    @ElementCollection
-    private List<Comment> comments = new ArrayList<>();
-    
-//    @Embedded
-//    private PostLike postLike;
-    @ElementCollection
-    private List<PostLike> postLikes = new ArrayList<>();
-    
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+	private List<Comment> comments = new ArrayList<>();
+
+	@ElementCollection
+	private List<PostLike> postLikes = new ArrayList<>();
+
 	public Long getId() {
 		return id;
 	}
@@ -135,11 +130,6 @@ public class AdvertisementPost {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
-	
-	
-
-	
-
 
 	public List<PostLike> getPostLikes() {
 		return postLikes;
@@ -151,7 +141,6 @@ public class AdvertisementPost {
 
 	public AdvertisementPost() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public AdvertisementPost(Long id, String caption, String link, Advertiser advertiser, @NotNull LocalDate postDate,
@@ -176,22 +165,4 @@ public class AdvertisementPost {
 				+ shares + ", comments=" + comments + ", postLikes=" + postLikes + "]";
 	}
 
-	
-
-	
-
-	
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-    
 }

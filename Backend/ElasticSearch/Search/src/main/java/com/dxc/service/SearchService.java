@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SearchService {
     List<Search> searchUsers(SearchCriteria criteria);
+    Object save(SearchCriteria criteria);
 }

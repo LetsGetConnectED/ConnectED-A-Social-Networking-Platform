@@ -1,9 +1,11 @@
 package com.dxc.service;
 
 import com.dxc.model.Search;
+
 import com.dxc.model.SearchCriteria;
 import com.dxc.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +15,10 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     private SearchRepository searchRepository;
-
+    
+    @Autowired
+    
+    private ElasticsearchRepository elasticsearchrepository;
     @Override
     public List<Search> searchUsers(SearchCriteria criteria) {
         if (criteria.getSearchTerm() != null && !criteria.getSearchTerm().isEmpty()) {
@@ -35,5 +40,17 @@ public class SearchServiceImpl implements SearchService {
             // Default search (can handle additional cases or return all users)
             return (List<Search>) searchRepository.findAll();
         }
-    }
+        
+      
+        	
+        
+        	
+        }
+    
+
+	@Override
+	public Object save(SearchCriteria criteria) {
+		
+		return elasticsearchrepository.save(criteria);
+	}
 }
