@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +14,7 @@ import com.connected.advertisement.model.AdvertisementPost;
 import com.connected.advertisement.model.Advertiser;
 import com.connected.advertisement.model.Comment;
 import com.connected.advertisement.model.PostLike;
+import com.connected.advertisement.model.PostLikeStatus;
 import com.connected.advertisement.model.User;
 import com.connected.advertisement.repo.AdvertisementPostRepository;
 import com.connected.advertisement.repo.AdvertiserRepository;
@@ -24,14 +24,17 @@ import com.connected.advertisement.repo.UserRepository;
 @Transactional
 public class AdvertisementServiceImpl implements AdvertisementService {
 
-    @Autowired
-    private AdvertisementPostRepository postRepository;
+    private final AdvertisementPostRepository postRepository;
+    private final AdvertiserRepository advertiserRepository;
+    private final UserRepository userRepository;
+    private static final String error = "Post Not Found";
 
-    @Autowired
-    private AdvertiserRepository advertiserRepository;
-    
-    @Autowired
-    private UserRepository userRepository;
+    public AdvertisementServiceImpl(AdvertisementPostRepository postRepository,
+            AdvertiserRepository advertiserRepository, UserRepository userRepository) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.advertiserRepository = advertiserRepository;
+    }
 
     @Override
     public List<AdvertisementPost> getAllPosts() {
@@ -60,7 +63,8 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public void updatePost(String advertiserEmail, LocalDate postDate, AdvertisementPost updatedPost) {
-        Optional<AdvertisementPost> existingPost = postRepository.findByAdvertiserEmailAndPostDate(advertiserEmail, postDate);
+        Optional<AdvertisementPost> existingPost = postRepository.findByAdvertiserEmailAndPostDate(advertiserEmail,
+                postDate);
         if (existingPost.isPresent()) {
             AdvertisementPost post = existingPost.get();
             // Update fields here as needed
@@ -68,22 +72,14 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
     }
 
-
-
-
-
     @Override
     public void likePostByUserAndDate(User user, Advertiser advertiser, LocalDate postDate, Long postId) {
-        
         Optional<AdvertisementPost> optionalPost = postRepository.findById(postId);
 
-      
         if (optionalPost.isPresent()) {
             AdvertisementPost post = optionalPost.get();
 
-           
             if (Objects.equals(post.getAdvertiser(), advertiser) && post.getPostDate().isEqual(postDate)) {
-               
                 List<PostLike> postLikes = post.getPostLikes();
                 if (postLikes == null) {
                     postLikes = new ArrayList<>();
@@ -91,29 +87,30 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 }
 
                 Optional<PostLike> existingLike = postLikes.stream()
-                    .filter(like -> Objects.equals(like.getUser().getEmail(), user.getEmail()))
-                    .findFirst();
+                        .filter(like -> Objects.equals(like.getUser().getEmail(), user.getEmail()))
+                        .findFirst();
 
                 if (existingLike.isPresent()) {
-                   
-                    post.setLikes(post.getLikes() - 1); 
+                    // If already liked, set status as UNLIKED
+                    post.setLikes(post.getLikes() - 1);
                     postLikes.remove(existingLike.get());
+                    existingLike.get().setLikeStatus(PostLikeStatus.UNLIKED);
                 } else {
-                   
-                    PostLike newLike = new PostLike(user);
+                    // If not liked, set status as LIKED
+                    PostLike newLike = new PostLike(user, post, PostLikeStatus.LIKED);
                     postLikes.add(newLike);
                     post.setLikes(post.getLikes() + 1);
                 }
 
-               
                 postRepository.save(post);
             } else {
                 throw new NotFoundException("Post not found for the specified advertiser and date");
             }
         } else {
-            throw new NotFoundException("Post not found");
+            throw new NotFoundException(error);
         }
     }
+
     @Override
     public List<String> getLikedUsersByPostId(Long postId) {
         Optional<AdvertisementPost> optionalPost = postRepository.findById(postId);
@@ -121,27 +118,45 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         if (optionalPost.isPresent()) {
             AdvertisementPost post = optionalPost.get();
             List<String> likedUsers = new ArrayList<>();
-            
+
             List<PostLike> postLikes = post.getPostLikes();
             if (postLikes != null) {
                 for (PostLike like : postLikes) {
                     likedUsers.add(like.getUser().getEmail());
                 }
             }
-            
+
             return likedUsers;
         } else {
             throw new NotFoundException("Post not found");
         }
     }
 
+    @Override
+    public List<Long> getLikedPostsByUserEmail(String userEmail) {
+        List<Long> likedPostIds = new ArrayList<>();
 
+        List<AdvertisementPost> posts = postRepository.findAll();
 
+        for (AdvertisementPost post : posts) {
+            List<PostLike> postLikes = post.getPostLikes();
+            if (postLikes != null) {
+                for (PostLike like : postLikes) {
+                    if (like.getUser().getEmail().equals(userEmail) && like.getLikeStatus() == PostLikeStatus.LIKED) {
+                        likedPostIds.add(post.getId());
+                        break;
+                    }
+                }
+            }
+        }
 
+        return likedPostIds;
+    }
 
     @Override
     public void sharePostByAdvertiserEmailAndDate(String advertiserEmail, LocalDate postDate) {
-        Optional<AdvertisementPost> optionalPost = postRepository.findByAdvertiserEmailAndPostDate(advertiserEmail, postDate);
+        Optional<AdvertisementPost> optionalPost = postRepository.findByAdvertiserEmailAndPostDate(advertiserEmail,
+                postDate);
         if (optionalPost.isPresent()) {
             AdvertisementPost post = optionalPost.get();
             post.setShares(post.getShares() + 1);
@@ -151,10 +166,10 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
     }
 
-
     @Override
-    public AdvertisementPost createAdvertisementPost(String advertiserEmail, String caption, String link, byte[] image) {
-    	System.out.print("hittinng adver");
+    public AdvertisementPost createAdvertisementPost(String advertiserEmail, String caption, String link,
+            byte[] image) {
+        System.out.print("hittinng adver");
         Advertiser advertiser = advertiserRepository.findByEmail(advertiserEmail)
                 .orElseThrow(() -> new NotFoundException("Advertiser not found"));
 
@@ -163,21 +178,18 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         post.setLink(link);
         post.setImage(image);
         post.setPostDate(LocalDate.now());
-        post.setLikes(0); 
+        post.setLikes(0);
         post.setShares(0);
-        post.setAdvertiser(advertiser); 
-
-
+        post.setAdvertiser(advertiser);
 
         return postRepository.save(post);
     }
-    
- 
+
     @Override
-    public AdvertisementPost addCommentToPost(String receiverEmail, String senderEmail, String commenterEmail, LocalDate postDate,
-            String commentText) {
+    public AdvertisementPost addCommentToPost(String receiverEmail, String senderEmail, String commenterEmail,
+            LocalDate postDate, String commentText, Long parentCommentId) {
         AdvertisementPost post = postRepository.findByAdvertiserEmailAndPostDate(receiverEmail, postDate)
-                .orElseThrow(() -> new NotFoundException("Advertisement post not found"));
+                .orElseThrow(() -> new NotFoundException(error));
 
         User sender = userRepository.findByEmail(senderEmail)
                 .orElseThrow(() -> new NotFoundException("Sender user not found"));
@@ -185,31 +197,24 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         Advertiser receiver = advertiserRepository.findByEmail(receiverEmail)
                 .orElseThrow(() -> new NotFoundException("Receiver advertiser not found"));
 
-       
-
-        
         Comment comment = new Comment();
         comment.setComment(commentText);
-        comment.setSenderUser(sender); 
+        comment.setSenderUser(sender);
         comment.setReceiverUser(receiver);
         comment.setPost(post);
         comment.setCommenterEmail(commenterEmail);
+        comment.setParentCommentId(parentCommentId); // Set parent comment ID for nested comments
 
-       
         post.getComments().add(comment);
 
-        
         return postRepository.save(post);
     }
-    
-   
+
     @Override
     public void deleteComment(String receiverEmail, String senderEmail, LocalDate postDate, String comment) {
-
         AdvertisementPost post = postRepository.findByAdvertiserEmailAndPostDate(receiverEmail, postDate)
                 .orElseThrow(() -> new NotFoundException("Advertisement post not found"));
 
-        
         Optional<Comment> commentToDelete = post.getComments().stream()
                 .filter(c -> c.getSenderUser().getEmail().equals(senderEmail) &&
                         c.getComment().equals(comment))
@@ -222,7 +227,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             throw new NotFoundException("Comment not found");
         }
     }
-    
+
     @Override
     public List<Comment> getAllCommentsByPostId(Long postId) {
         Optional<AdvertisementPost> optionalPost = postRepository.findById(postId);
@@ -234,13 +239,44 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             throw new NotFoundException("Post not found");
         }
     }
-    
-    
 
+    @Override
+    public List<Comment> getRepliesToComment(Long postId, Long commentId) {
+        Optional<AdvertisementPost> optionalPost = postRepository.findById(postId);
 
+        if (optionalPost.isPresent()) {
+            AdvertisementPost post = optionalPost.get();
+            return post.getComments().stream()
+                    .filter(c -> c.getParentCommentId() != null && c.getParentCommentId().equals(commentId))
+                    .toList(); // Using Stream.toList() instead of Collectors.toList()
+        } else {
+            throw new NotFoundException("Post not found");
+        }
+    }
 
+    @Override
+    public void addParentComment(String receiverEmail, String senderEmail, Long postId, LocalDate postDate,
+            String commentText) {
 
+        AdvertisementPost post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Advertisement post not found"));
 
+        User sender = userRepository.findByEmail(senderEmail)
+                .orElseThrow(() -> new NotFoundException("Sender user not found"));
+
+        Advertiser receiver = advertiserRepository.findByEmail(receiverEmail)
+                .orElseThrow(() -> new NotFoundException("Receiver advertiser not found"));
+
+        Comment comment = new Comment();
+        comment.setComment(commentText);
+        comment.setSenderUser(sender);
+        comment.setReceiverUser(receiver);
+        comment.setPost(post);
+        comment.setPostId(post);
+        comment.setCommenterEmail(senderEmail);
+
+        postRepository.save(comment);
+    }
 
     @Override
     public void deletePostByIdAndAdvertiserEmail(Long postId, String advertiserEmail) {

@@ -26,10 +26,16 @@ public interface AdvertisementService {
 	//void likePostByUserAndDate(User user, Advertiser advertiser, LocalDate postDate);
 	void likePostByUserAndDate(User user, Advertiser advertiser, LocalDate postDate, Long postId);
 	 List<String> getLikedUsersByPostId(Long postId);
-	AdvertisementPost addCommentToPost(String receiverEmail, String senderEmail, String commenterEmail, 
-			LocalDate postDate, String commentText);
-	
-	
+	AdvertisementPost addCommentToPost(String receiverEmail, String senderEmail, String commenterEmail,
+			LocalDate postDate, String commentText, Long parentCommentId);
+
 	void deleteComment(String receiverEmail, String senderEmail, LocalDate postDate, String comment);
-	 List<Comment> getAllCommentsByPostId(Long postId);
+
+	List<Comment> getAllCommentsByPostId(Long postId);
+
+	List<Comment> getRepliesToComment(Long postId, Long commentId);
+
+	void addParentComment(String receiverEmail, String senderEmail, Long postId, LocalDate postDate,
+			String commentText);
+	 List<Long> getLikedPostsByUserEmail(String userEmail);
 }
