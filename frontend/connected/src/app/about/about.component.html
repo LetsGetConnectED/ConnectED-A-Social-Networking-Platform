@@ -34,41 +34,41 @@
           <div class="col-md-4">
             <label for="country" class="form-label">Country</label>
             <select class="form-select rounded_field" id="country" formControlName="country">
-              <option value="india">India</option>
+              <option value="India" selected>India</option>
             </select>
           </div>
           <div class="col-md-4">
             <label for="state" class="form-label">State</label>
             <select class="form-select rounded_field" id="state" formControlName="state">
-              <option value="andhra_pradesh">Andhra Pradesh</option>
-              <option value="arunachal_pradesh">Arunachal Pradesh</option>
-              <option value="assam">Assam</option>
-              <option value="bihar">Bihar</option>
-              <option value="chhattisgarh">Chhattisgarh</option>
-              <option value="goa">Goa</option>
-              <option value="gujarat">Gujarat</option>
-              <option value="haryana">Haryana</option>
-              <option value="himachal_pradesh">Himachal Pradesh</option>
-              <option value="jammu_kashmir">Jammu and Kashmir</option>
-              <option value="jharkhand">Jharkhand</option>
-              <option value="karnataka">Karnataka</option>
-              <option value="kerala">Kerala</option>
-              <option value="madhya_pradesh">Madhya Pradesh</option>
-              <option value="maharashtra">Maharashtra</option>
-              <option value="manipur">Manipur</option>
-              <option value="meghalaya">Meghalaya</option>
-              <option value="mizoram">Mizoram</option>
-              <option value="nagaland">Nagaland</option>
-              <option value="odisha">Odisha</option>
-              <option value="punjab">Punjab</option>
-              <option value="rajasthan">Rajasthan</option>
-              <option value="sikkim">Sikkim</option>
-              <option value="tamil Nadu">Tamil Nadu</option>
-              <option value="telangana">Telangana</option>
-              <option value="tripura">Tripura</option>
-              <option value="uttar Pradesh">Uttar Pradesh</option>
-              <option value="uttarakhand">Uttarakhand</option>
-              <option value="west Bengal">West Bengal</option>
+              <option value="Andhra Pradesh ">Andhra Pradesh</option>
+              <option value="Arunachal Pradesh ">Arunachal Pradesh</option>
+              <option value="Assam ">Assam</option>
+              <option value="Bihar ">Bihar</option>
+              <option value="Chhattisgarh ">Chhattisgarh</option>
+              <option value="Goa ">Goa</option>
+              <option value="Gujarat ">Gujarat</option>
+              <option value="Haryana ">Haryana</option>
+              <option value="Himachal Pradesh ">Himachal Pradesh</option>
+              <option value="Jammu Kashmir ">Jammu and Kashmir</option>
+              <option value="Jharkhand ">Jharkhand</option>
+              <option value="Karnataka ">Karnataka</option>
+              <option value="Kerala ">Kerala</option>
+              <option value="Madhya Pradesh ">Madhya Pradesh</option>
+              <option value="Maharashtra ">Maharashtra</option>
+              <option value="Manipur ">Manipur</option>
+              <option value="Meghalaya ">Meghalaya</option>
+              <option value="Mizoram ">Mizoram</option>
+              <option value="Nagaland ">Nagaland</option>
+              <option value="Odisha ">Odisha</option>
+              <option value="Punjab ">Punjab</option>
+              <option value="Rajasthan ">Rajasthan</option>
+              <option value="Sikkim ">Sikkim</option>
+              <option value="Tamil Nadu ">Tamil Nadu</option>
+              <option value="Telangana ">Telangana</option>
+              <option value="Tripura ">Tripura</option>
+              <option value="Uttar Pradesh ">Uttar Pradesh</option>
+              <option value="Uttarakhand ">Uttarakhand</option>
+              <option value="West Bengal ">West Bengal</option>
             </select>
           </div>
           <div class="col-md-4">
@@ -93,12 +93,23 @@
         </div>
         <div class="row mb-3">
           <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
-            <label class="form-label">Skills</label>
+            <label for="gender" class="form-label">Skills</label>
+            <select class="form-select rounded_field" id="Skills" formControlName="Skills">
+              <option value="C">C</option>
+              <option value="C++">C++</option>
+              <option value="C#">C#</option>
+              <option value="Angular">Angular</option>
+              <option value="Java">Java</option>
+              <option value="Presentation">Presentation</option>
+              <option value="Other">Other</option>
+            </select>
+            </div>
+            <!-- <label class="form-label">Skills</label>
             <select multiple class="form-select rounded_field" formControlName="skills">
               <option *ngFor="let skill of skills" [value]="skill">{{ skill }}</option>
             </select>
             <span class="ms-2 fs-6" style="color: grey">ctrl + click to choose more than one</span>
-          </div>
+          </div> -->
           <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
             <label for="occupation" class="form-label">Occupation</label>
             <input type="text" class="form-control rounded_field" id="occupation" formControlName="occupation">
@@ -115,9 +126,9 @@
           <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
             <label for="education" class="form-label">Education</label>
             <select class="form-select rounded_field" id="education" formControlName="education">
-              <option value="ug">UG</option>
-              <option value="pg">PG</option>
-              <option value="masters">Masters</option>
+              <option value="Under Graduate">Under Graduate</option>
+              <option value="Post Graduate">Post Graduate</option>
+              <option value="Doctor of Philosophy">Doctor of Philosophy</option>
             </select>
             <div *ngIf="aboutForm.get('education')?.errors as educationErrors">
               <div
@@ -129,10 +140,10 @@
           <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
             <label for="experience" class="form-label">Experience</label>
             <select class="form-select rounded_field" id="experience" formControlName="experience">
-              <option value="0-2">0-2Years</option>
-              <option value="5-10">5-10Years</option>
-              <option value="11-15">11-15Years</option>
-              <option value="16-20">16-20Years</option>
+              <option value="0-2 Years">0-2 Years</option>
+              <option value="5-10 Years">5-10 Years</option>
+              <option value="11-15 Years">11-15 Years</option>
+              <option value="16-20 Years">16-20 Years</option>
             </select>
             <div *ngIf="aboutForm.get('experience')?.errors as experienceErrors">
               <div

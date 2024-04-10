@@ -17,7 +17,7 @@ export class AboutComponent implements OnInit {
   Role: any;
   experienceErrors: any;
   emailOfEmployee: any;
-  skills = ['C', 'AngularJS', 'Java', 'UI', 'Presentation', 'C++', 'C#'];
+  skills = ['C', 'C++', 'C#' , 'Angular' , 'Java' , 'Presentation' , 'Other'];
   firstname: any;
   lastname: any;
   workexp: any;
@@ -42,7 +42,7 @@ export class AboutComponent implements OnInit {
     private roleService: RoleService
   ) {
     this.aboutForm = this.formBuilder.group({
-      firstName: ['', [Validators.required]],
+      firstName: ['', [Validators.required , Validators.pattern(/^[A-Za-z]+$/)]],
       lastName: [''],
       skills: [],
       gender: ['', [Validators.required]],
@@ -203,7 +203,7 @@ export class AboutComponent implements OnInit {
         gender: this.aboutForm.value.gender,
         bio: this.aboutForm.value.about,
         edu: this.aboutForm.value.education,
-        skill: this.aboutForm.value.skills.join(','),
+        skill: this.aboutForm.value.skills,
         work_exp: this.aboutForm.value.experience,
         city: this.aboutForm.value.city,
         mob: this.aboutForm.value.mobile,
@@ -312,7 +312,7 @@ export class AboutComponent implements OnInit {
             gender: this.aboutForm.value.gender,
             bio: this.aboutForm.value.about,
             edu: this.aboutForm.value.education,
-            skill: this.aboutForm.value.skills.join(','),
+            skill: this.aboutForm.value.skills,
             work_exp: this.aboutForm.value.experience,
             city: this.aboutForm.value.city,
             mob: this.aboutForm.value.mobile,
