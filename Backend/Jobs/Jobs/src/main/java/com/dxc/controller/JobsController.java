@@ -58,7 +58,7 @@ public class JobsController {
     public ResponseEntity<?> getAllJobs() {
         List<Job> jobs = jobService.getAllJobs();
         List<JobDTO> jobDTOs = jobs.stream()
-                .map(job -> new JobDTO(job.getJobid(), job.getTitle(), job.getDescription(), job.getSkills(), job.getLocation()))
+                .map(job -> new JobDTO(job.getJobid(), job.getTitle(), job.getDescription(), job.getSkills(), job.getLocation(), job.getStatus()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(jobDTOs);
     }

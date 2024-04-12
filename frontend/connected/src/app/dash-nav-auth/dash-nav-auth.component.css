@@ -1,12 +1,19 @@
-.navbar{
-  background-color: #ffffff;
+
+.navbarContainer{
   width: 100%;
+  background-color: #b7c6b1;
+}
+.navbar{
+  background-color: #D3EACB;
+  width: 93%;
+  border-radius: 30px;
 }
 img{
   display: block; /* Ensure the image behaves like a block element */
   width: 7rem; /* Ensure the image spans the full width of its container */
   height: 3rem; /* Allow the browser to calculate the height while maintaining aspect ratio */
-  background-color: #25371b
+  background-color: #25371b;
+  mix-blend-mode: color-burn
 }
 
 .navbar .nav-link {

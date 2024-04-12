@@ -1,177 +1,178 @@
 <app-dash-nav-auth></app-dash-nav-auth>
 <div class="main_context ">
-  <div class="info_context">
-    <div class="about_info p-3">
-      <h1 class="">About Me</h1>
-      <br>
-      <form [formGroup]="aboutForm" (ngSubmit)="onSubmit()">
-        <div class="img-container ">
-        <label for="imageInput">
-          <input type="file" id="imageInput" (change)="onImageSelected($event)" accept=".jpg, .jpeg">
-          <img src="assets/avatar.jpg" alt="" class="col-12">
-      </label>
+  <div class="pageContainer row">
+    <div class="info_context col-7 mx-5">
+      <div class="about_info p-3">
+        <h1 class="">About Me</h1>
+        <br>
+        <form [formGroup]="aboutForm" (ngSubmit)="onSubmit()">
+          <div class="img-container " *ngIf="display">
+
+            <label for="imageInput">
+              <input type="file" id="imageInput" (change)="onImageSelected($event)" accept=".jpg, .jpeg">
+                <img [src]="selectedImage ? selectedImage : 'assets/avatar.jpg'" alt="" class="col-12 dp" >
+            </label>
+            <p class="mt-4 ms-5 tag">{{Role}}</p>
+        </div>
+          <div class="img-container " *ngIf="!display">
+            <label for="imageInput">
+              <input type="file" id="imageInput" (change)="onImageSelected($event)" accept=".jpg, .jpeg">
+              <img src="assets/avatar.jpg" alt="" class="col-12 dp">
+            </label>
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="firstName" class="form-label">First Name</label>
+              <input type="text" class="form-control rounded_field" id="firstName" formControlName="firstName">
+              <div *ngIf="aboutForm.get('firstName')?.errors as firstNameErrors">
+                <div
+                  *ngIf="firstNameErrors && (aboutForm.get('firstName')?.dirty || aboutForm.get('firstName')?.touched)">
+                  <p class="text-danger" *ngIf="firstNameErrors['required']">First Name is required</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input type="text" class="form-control rounded_field" id="lastName" formControlName="lastName">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="country" class="form-label">Country</label>
+              <select class="form-select rounded_field" id="country" formControlName="country">
+                <option value="india">India</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="state" class="form-label">State</label>
+              <select class="form-select rounded_field" id="state" formControlName="state">
+                <option value="andhra_pradesh">Andhra Pradesh</option>
+                <option value="arunachal_pradesh">Arunachal Pradesh</option>
+                <option value="assam">Assam</option>
+                <option value="bihar">Bihar</option>
+                <option value="chhattisgarh">Chhattisgarh</option>
+                <option value="goa">Goa</option>
+                <option value="gujarat">Gujarat</option>
+                <option value="haryana">Haryana</option>
+                <option value="himachal_pradesh">Himachal Pradesh</option>
+                <option value="jammu_kashmir">Jammu and Kashmir</option>
+                <option value="jharkhand">Jharkhand</option>
+                <option value="karnataka">Karnataka</option>
+                <option value="kerala">Kerala</option>
+                <option value="madhya_pradesh">Madhya Pradesh</option>
+                <option value="maharashtra">Maharashtra</option>
+                <option value="manipur">Manipur</option>
+                <option value="meghalaya">Meghalaya</option>
+                <option value="mizoram">Mizoram</option>
+                <option value="nagaland">Nagaland</option>
+                <option value="odisha">Odisha</option>
+                <option value="punjab">Punjab</option>
+                <option value="rajasthan">Rajasthan</option>
+                <option value="sikkim">Sikkim</option>
+                <option value="tamil Nadu">Tamil Nadu</option>
+                <option value="telangana">Telangana</option>
+                <option value="tripura">Tripura</option>
+                <option value="uttar Pradesh">Uttar Pradesh</option>
+                <option value="uttarakhand">Uttarakhand</option>
+                <option value="west Bengal">West Bengal</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="city" class="form-label">City</label>
+              <input type="text" class="form-control rounded_field" id="city" formControlName="city">
+            </div>
+          </div>
+          <br>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="gender" class="form-label">Gender</label>
+              <select class="form-select rounded_field" id="gender" formControlName="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="mobile" class="form-label">Mobile Number</label>
+              <input type="tel" class="form-control rounded_field" id="mobile" formControlName="mobile">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
+              <label class="form-label">Skills</label>
+              <select multiple class="form-select rounded_field" formControlName="skills">
+                <option *ngFor="let skill of skills" [value]="skill">{{ skill }}</option>
+              </select>
+              <span class="ms-2 fs-6" style="color: grey">ctrl + click to choose more than one</span>
+            </div>
+            <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
+              <label for="occupation" class="form-label">Occupation</label>
+              <input type="text" class="form-control rounded_field" id="occupation" formControlName="occupation">
+              <div *ngIf="aboutForm.get('occupation')?.errors as occupationErrors">
+                <div
+                  *ngIf="occupationErrors && (aboutForm.get('occupation')?.dirty || aboutForm.get('occupation')?.touched)">
+                  <p class="text-danger" *ngIf="occupationErrors['required']">Occupation is required</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row mb-3">
+            <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
+              <label for="education" class="form-label">Education</label>
+              <select class="form-select rounded_field" id="education" formControlName="education">
+                <option value="ug">UG</option>
+                <option value="pg">PG</option>
+                <option value="masters">Masters</option>
+              </select>
+              <div *ngIf="aboutForm.get('education')?.errors as educationErrors">
+                <div
+                  *ngIf="educationErrors && (aboutForm.get('education')?.dirty || aboutForm.get('education')?.touched)">
+                  <p class="text-danger" *ngIf="educationErrors['required']">Education is required</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
+              <label for="experience" class="form-label">Experience</label>
+              <select class="form-select rounded_field" id="experience" formControlName="experience">
+                <option value="0-2">0-2Years</option>
+                <option value="5-10">5-10Years</option>
+                <option value="11-15">11-15Years</option>
+                <option value="16-20">16-20Years</option>
+              </select>
+              <div *ngIf="aboutForm.get('experience')?.errors as experienceErrors">
+                <div
+                  *ngIf="experienceErrors && (aboutForm.get('experience')?.dirty || aboutForm.get('experience')?.touched)">
+                  <p class="text-danger" *ngIf="experienceErrors['required']">Experience is required</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="md-3" *ngIf="Role === 'ADVERTISER'">
+            <label for="companyName" class="form-label">Company Name</label>
+            <input type="text" class="form-control rounded_field" id="companyName" formControlName="companyName">
+            <div *ngIf="aboutForm.get('companyName')?.errors as companyNameErrors">
+              <div
+                *ngIf="companyNameErrors && (aboutForm.get('companyName')?.dirty || aboutForm.get('companyName')?.touched)">
+                <p class="text-danger" *ngIf="companyNameErrors['required']">CompanyName is required</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="about" class="form-label" *ngIf="Role === 'ADVERTISER'">Product Discription</label>
+            <label for="about" class="form-label" *ngIf="Role !== 'ADVERTISER'">Bio</label>
+            <textarea class="form-control rounded_field" id="about" formControlName="about"></textarea>
+          </div>
+          <button type="submit" class="form-control rounded_field" [disabled]="aboutForm.invalid">Submit</button>
+        </form>
+
+      </div>
     </div>
-        <div class="row mb-3">
-          <div class="col-6">
-            <label for="firstName" class="form-label">First Name</label>
-            <input type="text" class="form-control rounded_field" id="firstName" formControlName="firstName">
-            <div *ngIf="aboutForm.get('firstName')?.errors as firstNameErrors">
-              <div
-                *ngIf="firstNameErrors && (aboutForm.get('firstName')?.dirty || aboutForm.get('firstName')?.touched)">
-                <p class="text-danger" *ngIf="firstNameErrors['required']">First Name is required</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" class="form-control rounded_field" id="lastName" formControlName="lastName">
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="address" class="form-label">Address</label>
-        </div>
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label for="country" class="form-label">Country</label>
-            <select class="form-select rounded_field" id="country" formControlName="country">
-              <option value="India" selected>India</option>
-            </select>
-          </div>
-          <div class="col-md-4">
-            <label for="state" class="form-label">State</label>
-            <select class="form-select rounded_field" id="state" formControlName="state">
-              <option value="Andhra Pradesh ">Andhra Pradesh</option>
-              <option value="Arunachal Pradesh ">Arunachal Pradesh</option>
-              <option value="Assam ">Assam</option>
-              <option value="Bihar ">Bihar</option>
-              <option value="Chhattisgarh ">Chhattisgarh</option>
-              <option value="Goa ">Goa</option>
-              <option value="Gujarat ">Gujarat</option>
-              <option value="Haryana ">Haryana</option>
-              <option value="Himachal Pradesh ">Himachal Pradesh</option>
-              <option value="Jammu Kashmir ">Jammu and Kashmir</option>
-              <option value="Jharkhand ">Jharkhand</option>
-              <option value="Karnataka ">Karnataka</option>
-              <option value="Kerala ">Kerala</option>
-              <option value="Madhya Pradesh ">Madhya Pradesh</option>
-              <option value="Maharashtra ">Maharashtra</option>
-              <option value="Manipur ">Manipur</option>
-              <option value="Meghalaya ">Meghalaya</option>
-              <option value="Mizoram ">Mizoram</option>
-              <option value="Nagaland ">Nagaland</option>
-              <option value="Odisha ">Odisha</option>
-              <option value="Punjab ">Punjab</option>
-              <option value="Rajasthan ">Rajasthan</option>
-              <option value="Sikkim ">Sikkim</option>
-              <option value="Tamil Nadu ">Tamil Nadu</option>
-              <option value="Telangana ">Telangana</option>
-              <option value="Tripura ">Tripura</option>
-              <option value="Uttar Pradesh ">Uttar Pradesh</option>
-              <option value="Uttarakhand ">Uttarakhand</option>
-              <option value="West Bengal ">West Bengal</option>
-            </select>
-          </div>
-          <div class="col-md-4">
-            <label for="city" class="form-label">City</label>
-            <input type="text" class="form-control rounded_field" id="city" formControlName="city">
-          </div>
-        </div>
-        <br>
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="gender" class="form-label">Gender</label>
-            <select class="form-select rounded_field" id="gender" formControlName="gender">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="mobile" class="form-label">Mobile Number</label>
-            <input type="tel" class="form-control rounded_field" id="mobile" formControlName="mobile">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
-            <label for="gender" class="form-label">Skills</label>
-            <select class="form-select rounded_field" id="Skills" formControlName="Skills">
-              <option value="C">C</option>
-              <option value="C++">C++</option>
-              <option value="C#">C#</option>
-              <option value="Angular">Angular</option>
-              <option value="Java">Java</option>
-              <option value="Presentation">Presentation</option>
-              <option value="Other">Other</option>
-            </select>
-            </div>
-            <!-- <label class="form-label">Skills</label>
-            <select multiple class="form-select rounded_field" formControlName="skills">
-              <option *ngFor="let skill of skills" [value]="skill">{{ skill }}</option>
-            </select>
-            <span class="ms-2 fs-6" style="color: grey">ctrl + click to choose more than one</span>
-          </div> -->
-          <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
-            <label for="occupation" class="form-label">Occupation</label>
-            <input type="text" class="form-control rounded_field" id="occupation" formControlName="occupation">
-            <div *ngIf="aboutForm.get('occupation')?.errors as occupationErrors">
-              <div
-                *ngIf="occupationErrors && (aboutForm.get('occupation')?.dirty || aboutForm.get('occupation')?.touched)">
-                <p class="text-danger" *ngIf="occupationErrors['required']">Occupation is required</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br>
-        <div class="row mb-3">
-          <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
-            <label for="education" class="form-label">Education</label>
-            <select class="form-select rounded_field" id="education" formControlName="education">
-              <option value="Under Graduate">Under Graduate</option>
-              <option value="Post Graduate">Post Graduate</option>
-              <option value="Doctor of Philosophy">Doctor of Philosophy</option>
-            </select>
-            <div *ngIf="aboutForm.get('education')?.errors as educationErrors">
-              <div
-                *ngIf="educationErrors && (aboutForm.get('education')?.dirty || aboutForm.get('education')?.touched)">
-                <p class="text-danger" *ngIf="educationErrors['required']">Education is required</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
-            <label for="experience" class="form-label">Experience</label>
-            <select class="form-select rounded_field" id="experience" formControlName="experience">
-              <option value="0-2 Years">0-2 Years</option>
-              <option value="5-10 Years">5-10 Years</option>
-              <option value="11-15 Years">11-15 Years</option>
-              <option value="16-20 Years">16-20 Years</option>
-            </select>
-            <div *ngIf="aboutForm.get('experience')?.errors as experienceErrors">
-              <div
-                *ngIf="experienceErrors && (aboutForm.get('experience')?.dirty || aboutForm.get('experience')?.touched)">
-                <p class="text-danger" *ngIf="experienceErrors['required']">Experience is required</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="md-3" *ngIf="Role === 'ADVERTISER'">
-          <label for="companyName" class="form-label">Company Name</label>
-          <input type="text" class="form-control rounded_field" id="companyName" formControlName="companyName">
-          <div *ngIf="aboutForm.get('companyName')?.errors as companyNameErrors">
-            <div
-              *ngIf="companyNameErrors && (aboutForm.get('companyName')?.dirty || aboutForm.get('companyName')?.touched)">
-              <p class="text-danger" *ngIf="companyNameErrors['required']">CompanyName is required</p>
-            </div>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="about" class="form-label" *ngIf="Role === 'ADVERTISER'">Product Discription</label>
-          <label for="about" class="form-label" *ngIf="Role !== 'ADVERTISER'">Bio</label>
-          <textarea class="form-control rounded_field" id="about" formControlName="about"></textarea>
-        </div>
-        <button type="submit" class="form-control rounded_field"
-          [disabled]="aboutForm.invalid">Submit</button>
-      </form>
-      
+    <div class="picHolder col-3 ms-5 p-0">
+      <img src="assets/proflie.jpg" alt="" class="profileImg">
     </div>
   </div>
 </div>

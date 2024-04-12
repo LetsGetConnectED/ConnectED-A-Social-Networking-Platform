@@ -21,6 +21,7 @@ export class AboutComponent implements OnInit {
   firstname: any;
   lastname: any;
   workexp: any;
+  fetchImage:any;
   state: any;
   updateKey: boolean = false;
   country: any;
@@ -32,6 +33,7 @@ export class AboutComponent implements OnInit {
   city: any;
   mobile: any;
   userType: string | undefined;
+  display: boolean=false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -106,6 +108,18 @@ export class AboutComponent implements OnInit {
           this.aboutForm.get('about')?.setValue(data.bio);
           this.aboutForm.get('gender')?.setValue(data.gender);
           this.aboutForm.get('education')?.setValue(data.edu);
+          if(data.image)
+       {
+        this.display=true
+        this.fetchImage=data.image
+        console.log("fetch imaeg is",this.fetchImage)
+       }
+       else if(data.image==null||data.image=='')
+       {
+        this.display=false
+       }
+          const imageUrl = 'data:image/png;base64,' + data.image
+       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
         }});
     }
     else if(this.Role=="ADVERTISER")
@@ -203,7 +217,7 @@ export class AboutComponent implements OnInit {
         gender: this.aboutForm.value.gender,
         bio: this.aboutForm.value.about,
         edu: this.aboutForm.value.education,
-        skill: this.aboutForm.value.skills,
+        skill: this.aboutForm.value.skills.join(','),
         work_exp: this.aboutForm.value.experience,
         city: this.aboutForm.value.city,
         mob: this.aboutForm.value.mobile,
@@ -214,7 +228,11 @@ export class AboutComponent implements OnInit {
       };
       
       formdata.append('profile',JSON.stringify(reqBody));
-      formdata.append('image',this.imageFile);
+   
+        formdata.append('image',this.imageFile)
+      
+ 
+      
       
       
       
