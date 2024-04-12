@@ -1,18 +1,13 @@
 package com.dxc.service;
 
 import com.dxc.model.Job;
-
-import com.dxc.model.User;
+import com.dxc.model.RequestStatus;
 import com.dxc.repository.JobsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class JobServiceImpl implements JobService {
@@ -22,6 +17,9 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void saveJob(Job job) {
+        if (job.getStatus() == RequestStatus.APPLY) {
+            job.setStatus(RequestStatus.APPLIED);
+        }
         jobsRepository.save(job);
     }
 
@@ -35,42 +33,21 @@ public class JobServiceImpl implements JobService {
         return jobsRepository.findById(id);
     }
 
+//    @Override
+//    public boolean hasUserAppliedForJob(String useremail, Long jobid) {
+//        return jobsRepository.existsByUserMadeByUseremailAndJobid(useremail, jobid);
+//    }
+    
     @Override
-    public List<User> getJobApplicants(Long jobid) {
+    public boolean hasUserAppliedForJob(String useremail, Long jobid) {
         Optional<Job> optionalJob = jobsRepository.findById(jobid);
         if (optionalJob.isPresent()) {
             Job job = optionalJob.get();
-            return new ArrayList<>(job.getUsersApplied());
-        } else {
-            return new ArrayList<>();
+            return job.getApplicants().stream()
+                    .anyMatch(applicant -> applicant.getUseremail().equals(useremail));
         }
-    }
-
-   
-    @Override
-    public List<Job> getRecommendedJobs(Long userId) {
-
-        List<Job> recommendedJobs = new ArrayList<>();
-
-        List<Job> jobsByLocation = jobsRepository.findJobsByLocation("user_location");
-        List<Job> jobsBySkills = jobsRepository.findJobsBySkills("user_skills");
-        Set<Job> combinedJobs = new HashSet<>(jobsByLocation);
-        combinedJobs.addAll(jobsBySkills);
-        Set<Long> appliedJobIds = Set.of(1L, 2L, 3L);
-        combinedJobs.removeIf(job -> appliedJobIds.contains(job.getJobid()));
-        recommendedJobs.addAll(combinedJobs);
-
-        return recommendedJobs;
-    }
-
-	@Override
-	public boolean hasUserAppliedForJob(String useremail, Long jobid) {
-		
-		
-		return jobsRepository.existsByUserMadeByUseremailAndJobid(useremail, jobid);
-	
-
+        return false;
+}
     
-	}
 
 }

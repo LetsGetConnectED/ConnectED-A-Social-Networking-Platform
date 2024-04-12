@@ -10,11 +10,17 @@
   }
 
   .main_context{
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     padding: 20px;
     background-color:#B7C6B1;
+  }
+  .picHolder{
+    background-color: white;
+    border-radius: 30px;
+    overflow: hidden;
+    height: fit-content;
   }
   
   body {
@@ -50,7 +56,7 @@
   }
   
   .info_context {
-    width: 80%;
+   
     height: auto;
     background-color: white;
     border-radius: 20px;
@@ -80,7 +86,10 @@
   .skill input[type="checkbox"] {
     display: none; /* Hide the checkbox */
   }
-  
+  input,select,option,textarea{
+    background-color: #B7C6B1;
+    
+  }
   .skill label {
     display: block;
     background-color: #fff;
@@ -95,7 +104,9 @@
     background-color: #25371B;
     color: #fff;
   }
-  
+  .label{
+    color: #25371B;
+  }
   
   
   .form-label {
@@ -143,10 +154,13 @@
     }
   }
   
-  img{
+.dp{
     width: 14rem;
     border-radius: 7rem;
     height: 14rem;
+}
+.profileImg{
+  width: 110%;
 }
 #imageInput {
   position: absolute;

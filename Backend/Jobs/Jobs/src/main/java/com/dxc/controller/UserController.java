@@ -2,6 +2,7 @@ package com.dxc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +31,11 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
         User user = new User();
-         Job job  = new Job();
+        Job job  = new Job();
         user.setUsername(userDTO.getUsername());
         user.setUseremail(userDTO.getUseremail());
         user.setUserpassword(userDTO.getUserpassword());
-        Optional<User> existingUser = userService.getUserByEmail(user.getUseremail(), job.getJobid());
+        Optional<User> existingUser = userService.getUserByEmail(user.getUseremail(),job.getJobid());
         if (existingUser.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("User with this email already exists");
@@ -55,23 +56,6 @@ public class UserController {
                     .body("User not found");
         }
     }
-
-//    @GetMapping("/email/{useremail}")
-//    public ResponseEntity<?> getUserByEmail(@PathVariable String useremail) {
-//        Optional<User> userOptional = userService.getUserByEmail(useremail);
-//        if (userOptional.isPresent()) {
-//            return ResponseEntity.ok(userOptional.get());
-//        } else {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                    .body("User not found");
-//        }
-//    }
-    
-//    @GetMapping("applicants/{userid}")
-//  public ResponseEntity<?> getJobApplicants(@PathVariable Long userid) {
-//      List<User> applicants = jobService.getJobApplicants(userid);
-//      return ResponseEntity.ok(applicants);
-//  }
 
 
 }

@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserByEmail(String useremail, Long jobid) {
+    public Optional<User> getUserByEmail(String useremail,Long jobid) {
         return userRepository.findByUseremail(useremail);
        
         	
@@ -39,17 +39,17 @@ public class UserServiceImpl implements UserService {
     
     
 
-    @Override
-    public List<User> getJobApplicants(Long jobid) {
-        Optional<Job> optionalJob = jobsRepository.findById(jobid);
-        if (optionalJob.isPresent()) {
-         
-            Job job = optionalJob.get();
-            
-            System.out.println("got it");
-            return new ArrayList<>(job.getUsersApplied());
-        } else {
-            return new ArrayList<>();
-        }
-    }
+//    @Override
+//    public List<User> getJobApplicants(Long jobid) {
+//        Optional<Job> optionalJob = jobsRepository.findById(jobid);
+//        if (optionalJob.isPresent()) {
+//         
+//            Job job = optionalJob.get();
+//            
+//            System.out.println("got it");
+//            return new ArrayList<>(job.getUsersApplied());
+//        } else {
+//            return new ArrayList<>();
+//        }
+//    }
 }
