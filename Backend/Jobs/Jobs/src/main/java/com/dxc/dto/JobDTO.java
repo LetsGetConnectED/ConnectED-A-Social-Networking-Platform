@@ -5,12 +5,11 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 
 import com.dxc.model.RequestStatus;
-
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class JobDTO {
     private Long jobid;
     
