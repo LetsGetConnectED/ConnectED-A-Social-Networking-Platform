@@ -14,4 +14,5 @@ public interface JobService {
     Optional<Job> getJobById(Long id);
 
 	boolean hasUserAppliedForJob(String useremail, Long jobid);
+
 }

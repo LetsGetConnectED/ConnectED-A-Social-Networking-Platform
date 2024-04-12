@@ -158,6 +158,19 @@ public class Job {
         this.userMadeBy = userMadeBy;
     }
 
+	@Override
+	public String toString() {
+		return "Job [jobid=" + jobid + ", title=" + title + ", status=" + status + ", description=" + description
+				+ ", location=" + location + ", skills=" + skills + ", timestamp=" + timestamp + ", userMadeBy="
+				+ userMadeBy + ", applicants=" + applicants + "]";
+	}
+
+	public Job() {
+		super();
+	}
+	
+	
+
 //    public Set<User> getRecommendedTo() {
 //        return recommendedTo;
 //    }
@@ -173,4 +186,6 @@ public class Job {
 //    public void setUsersApplied(Set<User> usersApplied) {
 //        this.usersApplied = usersApplied;
 //    }
+    
+    
 }

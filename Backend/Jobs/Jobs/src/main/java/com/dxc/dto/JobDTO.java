@@ -1,6 +1,10 @@
 package com.dxc.dto;
 
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
+
+import com.dxc.model.RequestStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,15 +26,19 @@ public class JobDTO {
     @NotBlank(message = "Location is required")
     private String location;
     
+    private RequestStatus status;
+    private List<String> applicants;
     public JobDTO() {
     }
     
-    public JobDTO(Long jobid, String title, String description, String skills, String location) {
+    public JobDTO(Long jobid, String title, String description, String skills, String location, RequestStatus status, List<String> applicants) {
         this.jobid = jobid;
         this.title = title;
         this.description = description;
         this.skills = skills;
         this.location = location;
+        this.status = status;
+        this.applicants=applicants;
     }
 
 	public Long getJobid() {
@@ -73,5 +81,20 @@ public class JobDTO {
 		this.location = location;
 	}
 
+	  public RequestStatus getStatus() {
+	        return status;
+	    }
+
+	    public void setStatus(RequestStatus status) {
+	        this.status = status;
+	    }
+
+		public List<String> getApplicants() {
+			return applicants;
+		}
+
+		public void setApplicants(List<String> applicants) {
+			this.applicants = applicants;
+		}
     
 }
