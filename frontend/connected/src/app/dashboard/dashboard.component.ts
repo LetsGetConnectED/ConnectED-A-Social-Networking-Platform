@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit{
 
  firstname :any
  lastname: any;
+ showAllComments: boolean = false;
  uploadedImage:any;
   isLiked: boolean=false;
   selectedImage: any;
@@ -36,7 +37,7 @@ export class DashboardComponent implements OnInit{
     this.http.get<any>(`http://localhost:6060/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
       
     
-      this.posts = data; // Assign the received data to the posts array
+      this.posts = data.reverse(); // Assign the received data to the posts array
    
       if(!data.imageBytes)
       {
@@ -56,7 +57,7 @@ export class DashboardComponent implements OnInit{
   }
   else if(sessionStorage.getItem('role')==="ADVERTISER")
   { console.log("advertiser hitting")
-    this.http.get<any>(`http://localhost:5050/api/advertisements/advertiser/${sessionStorage.getItem("email")}`).subscribe((data)=>{
+    this.http.get<any>(`http://localhost:6789/api/advertisements/advertiser/${sessionStorage.getItem("email")}`).subscribe((data)=>{
       
       
       this.posts = data.reverse(); // Assign the received data to the posts array
@@ -94,7 +95,9 @@ export class DashboardComponent implements OnInit{
   getPostUserImage(post: any): string {
     return `data:image/png;base64,${post.user.imageBytes}`;
   }
-
+  toggleCommentDisplay() {
+    this.showAllComments = !this.showAllComments;
+  }
   // Function to get the post image
   getPostImage(post: any): string {
     return `data:image/png;base64,${post.imageBytes}`;
@@ -111,8 +114,43 @@ export class DashboardComponent implements OnInit{
 
     window.open(link, '_blank');
 }
+postComment(id: any, email: any, date: any, message: any) {
+  const httpOptions = {
+    headers: new HttpHeaders({
+      // Specify any headers you need
+    }),
+    responseType: 'text' as 'json'  // Cast 'text' to 'json' to satisfy the method signature
+  };
+
+  this.http.post<any>(
+    `http://localhost:6789/api/advertisements/comment/parent?senderEmail=${sessionStorage.getItem("email")}&postDate=${date}&receiverEmail=${email}&postId=${id}&commentText=${message}`,
+    null,
+    httpOptions
+  ).subscribe(
+    (response: string) => {  // Handle response as plain text
+      console.log("Response is:", response);
+      this.fetchPosts();
+    },
+    (error) => {
+      console.error("An error occurred:", error);
+    }
+  );
+}
 
 
+toggleReply(comment: any) {
+  comment.showReply = !comment.showReply;
+}
+
+// Define a method to send the reply
+sendReply(comment: any) {
+  // Perform the action to send the reply here
+  console.log('Reply sent:', comment.replyText);
+  // Clear the reply input
+  comment.replyText = '';
+  // Hide the reply input
+  comment.showReply = false;
+}
 
 }
 

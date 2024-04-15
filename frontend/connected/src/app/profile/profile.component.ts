@@ -175,7 +175,7 @@ export class ProfileComponent implements OnInit {
    console.log("advertiser is sending")
     formdata.append("advertiserEmail",this.email);
   formdata.append("link",this.link)
-   this.http.post(`http://localhost:5050/api/advertisements/advertiser`,formdata ).subscribe((response: any) => {
+   this.http.post(`http://localhost:6789/api/advertisements/advertiser`,formdata ).subscribe((response: any) => {
   
 
   },

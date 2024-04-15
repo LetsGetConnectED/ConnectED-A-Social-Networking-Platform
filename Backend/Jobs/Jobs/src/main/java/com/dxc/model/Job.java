@@ -32,7 +32,7 @@ import java.util.Set;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @Table(name = "job")
 public class Job {
 

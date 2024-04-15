@@ -27,7 +27,7 @@ const routes: Routes = [
   {path:'otp',component:OtpVerifyComponent},
   {path:'profile',component:ProfileComponent,canActivate: [AuthGuard]},
   {path:'job-creation',component:JobCreationComponent},
-  {path:'user/:id',component:SearchedUserComponent},
+  {path:'user',component:SearchedUserComponent},
   {path:'jobwall',component:JobwallComponent},
   {path:'req',component:FriendReqComponent}
   // Add more routes here if needed

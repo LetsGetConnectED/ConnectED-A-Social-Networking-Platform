@@ -30,14 +30,15 @@ export class SearchedUserComponent implements OnInit {
   email:any;
   requestFlag:boolean=true;
 
-
+  searchedUser:any;
   caption: string = ''; // Define the 'caption' property here
 
   ngOnInit(): void {
 
   
-   
-      this.http.get<any>(`http://localhost:7070/user/${this.activeRoute.snapshot.params['id']}`).subscribe((data)=>{
+      console.log("service user is",this.shared.getUser())
+      this.searchedUser=this.shared.getUser()
+      this.http.get<any>(`http://localhost:7070/user/${this.searchedUser}`).subscribe((data)=>{
       
        this.firstname=data.firstName
        this.lastname=data.lastName
@@ -61,7 +62,7 @@ export class SearchedUserComponent implements OnInit {
       })
 
       this.http.get(
-        `http://localhost:8088/friend/request/check?senderUsername=${sessionStorage.getItem("email")}&receiverUsername=${this.activeRoute.snapshot.params['id']}`
+        `http://localhost:8088/friend/request/check?senderUsername=${sessionStorage.getItem("email")}&receiverUsername=${this.searchedUser}`
       ).subscribe(
         (data: any) => {
         
@@ -89,7 +90,7 @@ export class SearchedUserComponent implements OnInit {
   popupVisible: boolean = false;
   addfriend(){
     this.http.post(
-      `http://localhost:8088/friend/request/send?senderUsername=${sessionStorage.getItem("email")}&receiverUsername=${this.activeRoute.snapshot.params['id']}`,
+      `http://localhost:8088/friend/request/send?senderUsername=${sessionStorage.getItem("email")}&receiverUsername=${this.searchedUser}`,
       null, // Provide null as the request body if no data needs to be sent
       { responseType: 'text' } // Specify the response type as 'text'
     ).subscribe(
@@ -111,7 +112,7 @@ export class SearchedUserComponent implements OnInit {
   }
   removefriend(){
     this.http.delete(
-      `http://localhost:8088/friend/request/cancel?senderUsername=${sessionStorage.getItem("email")}&receiverUsername=${this.activeRoute.snapshot.params['id']}`
+      `http://localhost:8088/friend/request/cancel?senderUsername=${sessionStorage.getItem("email")}&receiverUsername=${this.searchedUser}`
     ).subscribe(
       (data) => {
         this.requestFlag = false;

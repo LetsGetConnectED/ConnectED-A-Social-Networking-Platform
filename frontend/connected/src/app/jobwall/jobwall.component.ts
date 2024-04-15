@@ -7,15 +7,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./jobwall.component.css']
 })
 export class JobwallComponent implements OnInit {
-
+ applied:any;
   constructor(private http: HttpClient) { }
+  applicantEmail:any;
   jobs: any[] = [];
   ngOnInit(): void {
-
+  this.applicantEmail=sessionStorage.getItem("email")
+   
+    this.fetchJobs();
+  }
+  fetchJobs(){
     this.http.get<any>(` http://localhost:8083/api/jobs/list`)
     .subscribe((data)=>{
       
       this.jobs = data.reverse();
+     
 
     })
   }
@@ -24,7 +30,7 @@ export class JobwallComponent implements OnInit {
     this.http.post(`http://localhost:8083/api/jobs/apply/${id}/${sessionStorage.getItem("email")}`, job, { responseType: 'text' }).subscribe(
       (data) => {
        
-        
+        this.fetchJobs()
       },
       (error) => {
         console.error('Error:', error);

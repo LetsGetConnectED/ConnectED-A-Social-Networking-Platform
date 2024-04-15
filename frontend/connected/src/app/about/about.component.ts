@@ -141,6 +141,19 @@ export class AboutComponent implements OnInit {
         this.aboutForm.get('about')?.setValue(data.bio);
         this.aboutForm.get('gender')?.setValue(data.gender);
         this.aboutForm.get('companyName')?.setValue(data.companyName)
+        if(data.image)
+       {
+        this.display=true
+        this.fetchImage=data.image
+        console.log("fetch imaeg is",this.fetchImage)
+       }
+       else if(data.image==null||data.image=='')
+       {
+        this.display=false
+       }
+          const imageUrl = 'data:image/png;base64,' + data.image
+       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+        
         
     
     })
@@ -171,6 +184,18 @@ export class AboutComponent implements OnInit {
           this.aboutForm.get('about')?.setValue(data.bio);
           this.aboutForm.get('gender')?.setValue(data.gender);
           this.aboutForm.get('education')?.setValue(data.edu);
+          if(data.image)
+       {
+        this.display=true
+        this.fetchImage=data.image
+        console.log("fetch imaeg is",this.fetchImage)
+       }
+       else if(data.image==null||data.image=='')
+       {
+        this.display=false
+       }
+          const imageUrl = 'data:image/png;base64,' + data.image
+       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
         }});
     }
   }
@@ -330,7 +355,7 @@ export class AboutComponent implements OnInit {
             gender: this.aboutForm.value.gender,
             bio: this.aboutForm.value.about,
             edu: this.aboutForm.value.education,
-            skill: this.aboutForm.value.skills,
+            skill: this.aboutForm.value.skills.join(','),
             work_exp: this.aboutForm.value.experience,
             city: this.aboutForm.value.city,
             mob: this.aboutForm.value.mobile,

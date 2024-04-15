@@ -6,7 +6,12 @@
       <p class="ms-2">Description: {{ job.description }}</p>
       <p class="ms-2">Location: {{ job.location }}</p>
       <p class="ms-2">Skills: {{ job.skills }}</p>
+      <div *ngIf="job.applicants.includes(applicantEmail)">
+      <button class="rounded_field m-2" > Applied !</button>
+    </div>
+    <div *ngIf="!job.applicants.includes(applicantEmail)">
       <button class="rounded_field m-2" (click)="applyJob(job.jobid,job)"> Apply <i class="bi bi-arrow-right" style="color: white"></i></button>
+    </div>
     </div>
   </div>
 </div>

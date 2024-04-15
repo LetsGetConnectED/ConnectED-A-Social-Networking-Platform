@@ -46,7 +46,7 @@
 }
 .post-body-cmmnt{
   width: auto;
-  height: 3.5rem;
+  height: auto;
   background-color: #25371B;
 }
 .post-body-caption,.link_body{
@@ -54,9 +54,14 @@
   height: 3.5rem;
   background-color: #25371B;
 }
+.post-body-cmmnt{
+  color: white;
+  height: auto;
+  background-color: #25371B;
+}
 .cmmnt{
   width: 85%;
-  height: 70%;
+  height: 2.4rem;
   border-radius: 20px;
 }
 

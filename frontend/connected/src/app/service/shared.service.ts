@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class SharedService {
 message:string=''
+user:string=''
   constructor() { }
   setMessage(data:string)
   {
@@ -12,5 +13,12 @@ message:string=''
   }
   getMessage(){
     return this.message
+  }
+  setUser(data:string)
+  {
+    this.user=data
+  }
+  getUser(){
+    return this.user
   }
 }
