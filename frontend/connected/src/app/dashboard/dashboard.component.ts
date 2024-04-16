@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit{
   selectedImage: any;
   emailOfEmployee:any;
   role:any;
+  userComment:any;
   showPost:boolean=true;
   email: string='';
   posts: any[] = []; // Define an array to store the posts
@@ -34,7 +35,7 @@ export class DashboardComponent implements OnInit{
   fetchPosts() {
     if(sessionStorage.getItem('role')==="USER")
     {
-    this.http.get<any>(`http://localhost:6060/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
+    this.http.get<any>(`http://localhost:6789/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
       
     
       this.posts = data.reverse(); // Assign the received data to the posts array
@@ -45,22 +46,20 @@ export class DashboardComponent implements OnInit{
       }
 
     })
-    this.email=this.shared.getMessage();
-    if(this.email)
-    {
+  
     this.http.get<any>(`http://localhost:7070/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
       
      
        const imageUrl = 'data:image/png;base64,' + data.image
        this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-      })}
+      })
   }
   else if(sessionStorage.getItem('role')==="ADVERTISER")
   { console.log("advertiser hitting")
     this.http.get<any>(`http://localhost:6789/api/advertisements/advertiser/${sessionStorage.getItem("email")}`).subscribe((data)=>{
       
       
-      this.posts = data.reverse(); // Assign the received data to the posts array
+      this.posts = data.reverse(); 
       console.log("data is",data)
    
       if(!data.imageBytes)
@@ -69,20 +68,18 @@ export class DashboardComponent implements OnInit{
       }
 
     })
-    this.email=this.shared.getMessage();
-    if(this.email)
-    {
+    
     this.http.get<any>(`http://localhost:7070/advertiser/${sessionStorage.getItem("email")}`).subscribe((data)=>{
       
      
        const imageUrl = 'data:image/png;base64,' + data.image
        this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-      })}
+      })
   }
   }
   toggleLike(id:any,email:any,date:any): void {
     console.log("arguments are",id,email,date)
-    this.isLiked = !this.isLiked; // Toggle the like status
+    this.isLiked = !this.isLiked; 
     this.http.post<any>(`http://localhost:5050/api/advertisements/like?userEmail=${sessionStorage.getItem("email")}&postDate=${date}&advertiserEmail=${email}&postId=${id}`,null).subscribe((response: any) => {
     this.fetchPosts();
   },
@@ -98,7 +95,6 @@ export class DashboardComponent implements OnInit{
   toggleCommentDisplay() {
     this.showAllComments = !this.showAllComments;
   }
-  // Function to get the post image
   getPostImage(post: any): string {
     return `data:image/png;base64,${post.imageBytes}`;
   }
@@ -114,12 +110,34 @@ export class DashboardComponent implements OnInit{
 
     window.open(link, '_blank');
 }
+postUserComment(id: any, email: any, date: any, message: any) {
+  const httpOptions = {
+    headers: new HttpHeaders({
+      
+    }),
+    responseType: 'text' as 'json'  
+  };
+
+  this.http.post<any>(
+    `http://localhost:6789/comments/parent?senderEmail=${sessionStorage.getItem("email")}&postDate=${date}&receiverEmail=${email}&postId=${id}&commentText=${message}`,
+    null,
+    httpOptions
+  ).subscribe(
+    (response: string) => {  // Handle response as plain text
+      console.log("Response for user is:", response);
+      this.fetchPosts();
+    },
+    (error) => {
+      console.error("An error occurred:", error);
+    }
+  );
+}
 postComment(id: any, email: any, date: any, message: any) {
   const httpOptions = {
     headers: new HttpHeaders({
-      // Specify any headers you need
+      
     }),
-    responseType: 'text' as 'json'  // Cast 'text' to 'json' to satisfy the method signature
+    responseType: 'text' as 'json'  
   };
 
   this.http.post<any>(
@@ -140,16 +158,59 @@ postComment(id: any, email: any, date: any, message: any) {
 
 toggleReply(comment: any) {
   comment.showReply = !comment.showReply;
+  console.log("comment is",comment);
+  
+
 }
 
-// Define a method to send the reply
+sendUserReply(post: any,comment:any) {
+  // Perform the action to send the reply here
+console.log("post is",post)
+console.log("comment is", comment)
+  const httpOptions = {
+    headers: new HttpHeaders({
+      
+    }),
+    responseType: 'text' as 'json'  
+  };
+  this.http.post<any>(
+    `http://localhost:6789/comments?senderEmail=${comment.senderUser.email}&postDate=${post.date}&receiverEmail=${comment.receiverUser.email}&postId=${post.id}&&commenterEmail=${sessionStorage.getItem("email")}&commentText=${this.userComment}&parentCommentId=${comment.id}`,
+    null,
+    httpOptions
+  ).subscribe(
+    (response: string) => {  
+      console.log("Response is:", response);
+      this.fetchPosts();
+    },
+    (error) => {
+      console.error("An error occurred:", error);
+    })
+    
+}
+
 sendReply(comment: any) {
   // Perform the action to send the reply here
   console.log('Reply sent:', comment.replyText);
-  // Clear the reply input
-  comment.replyText = '';
-  // Hide the reply input
-  comment.showReply = false;
+  const httpOptions = {
+    headers: new HttpHeaders({
+      
+    }),
+    responseType: 'text' as 'json'  
+  };
+  this.http.post<any>(
+    `http://localhost:6789/api/advertisements/comment?senderEmail=${comment.senderUser.email}&postDate=${comment.postDate}&receiverEmail=${comment.receiverUser.email}&postId=${comment.post}&&commenterEmail=${sessionStorage.getItem("email")}&commentText=${comment.replyText}&parentCommentId=${comment.id}`,
+    null,
+    httpOptions
+  ).subscribe(
+    (response: string) => {  
+      console.log("Response is:", response);
+      this.fetchPosts();
+    },
+    (error) => {
+      console.error("An error occurred:", error);
+    })
+    comment.replyText = '';
+    comment.showReply = false;
 }
 
 }

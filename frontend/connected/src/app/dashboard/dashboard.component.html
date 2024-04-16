@@ -25,8 +25,21 @@
          </div>
 
          <div class="post-body-cmmnt">
-            <input class="cmmnt mx-3">
-            <span class="share mx-3 "><i class="bi bi-arrow-right-circle-fill  "></i></span>
+            <input class="cmmnt mx-3 ps-2" #comment>
+            <span class="share mx-3 "><i class="bi bi-arrow-right-circle-fill" (click)="postUserComment(post.id,post.user.email,post.date,comment.value)"></i></span>
+            <div *ngFor="let comment of post.comments.slice(0, showAllComments ? undefined : 1)" class="text-start">
+               <div class="d-flex justify-content-between">
+               <div class="py-3 ms-3">{{comment.senderUser.firstName}} {{comment.senderUser.lastName}}: {{ comment.comments }}</div>
+               <div class="py-3 me-3"><i class="bi bi-reply-fill" (click)="toggleReply(comment)"></i></div>
+            </div>
+            <div *ngIf="comment.showReply" class="d-flex align-items-center">
+               <input class="form-control mx-3" [(ngModel)]="userComment">
+               <button class="btn btn-primary mx-2" (click)="sendUserReply(post,comment)">Send</button>
+           </div>
+           </div>
+           <button class="btn btn-link" (click)="toggleCommentDisplay()">
+               {{ showAllComments ? 'Hide comments' : 'Show all comments' }}
+           </button>
 
          </div>
       </div>
@@ -63,7 +76,7 @@
             <span class="share mx-3 "><i class="bi bi-arrow-right-circle-fill" (click)="postComment(post.id,post.advertiser.email,post.postDate,comment.value)"></i></span>
             <div *ngFor="let comment of post.comments.slice(0, showAllComments ? undefined : 1)" class="text-start">
                <div class="d-flex justify-content-between">
-               <div class="py-3 ms-3">{{comment.senderUser.email}}: {{ comment.comment }}</div>
+               <div class="py-3 ms-3">{{comment.senderUser.firstName}} {{comment.senderUser.lastName}}: {{ comment.comment }}</div>
                <div class="py-3 me-3"><i class="bi bi-reply-fill" (click)="toggleReply(comment)"></i></div>
             </div>
             <div *ngIf="comment.showReply" class="d-flex align-items-center">
