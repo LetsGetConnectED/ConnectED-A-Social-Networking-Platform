@@ -1,9 +1,10 @@
+<p>register-recruiter works!</p>
 <div class="container-fluid main_background">
     <app-header-auth></app-header-auth>
     <div class="main_context mt-3">
         <div class="info_context">
             <div class="register_info p-3">
-                <h1 class="">Create your account</h1>
+                <h1 class="">Create your account as a recruiter</h1>
                 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                   <br>
                     <!-- Username Input -->
@@ -59,18 +60,17 @@
                         </div>
                     </div>
 
-             
+  
+                    <!-- Submit Button -->
                     <button type="submit" class="form-control rounded_field"  [disabled]="registerForm.invalid">Submit</button>
                 </form>
   
                 <br>
   
                 <p>Already have an account? <a class="link" routerLink="/login">Login</a></p>
-                <p>Want to be an recrutier ? <a class="link" routerLink="/register/recruit">Register</a></p>
-                <p>Want to be a advertiser ? <a class="link" routerLink="/register/advertiser">Register</a></p>
             </div>
             <div class="register_pic">
-                <img src="assets/grp.jpeg" alt="">
+                <img src="assets/recruit.jpg" alt="">
             </div>
         </div>
     </div>

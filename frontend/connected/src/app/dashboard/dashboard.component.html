@@ -1,11 +1,28 @@
 <app-dash-nav-auth></app-dash-nav-auth>
 <div class="main_context">
+
+   <div class="originalPostBody mx-auto row mb-3">
+      <div class="post_dp col-1 mt-2 pe-0 me-0">
+         <img [src]="selectedImage" alt="" class="dp_post" routerLink="/profile">
+      </div>
+      <div class="post_body col-10 mt-2 ms-5">
+         <div class="upload_body " (click)="togglePopup()">
+            <span class=" ps-3 add_span d-flex align-items-center">
+               Start a post, advertisement...
+            </span>
+         </div>
+      </div>
+   </div>
+
+
+
+
    <div class="info_context" *ngIf="role==='USER'">
-      <div class="post-body m-auto my-5" *ngFor="let post of posts">
-         <div class="post-body-header p-3 ">
+      <div class="post-body m-auto mb-5" *ngFor="let post of posts">
+         <div class="post-body-header p-3 " (click)="visitProfile(post.user.email)">
             <img [src]="selectedImage" alt="" class="dp"> {{ post.user.firstName }} {{ post.user.lastName }}
          </div>
-         <div class="post-body-content" >
+         <div class="post-body-content">
             <img [src]="getPostImage(post)" alt="" class="col-12">
          </div>
          <div class="post-body-caption pt-3 ps-3">
@@ -14,32 +31,33 @@
          </div>
          <div class="post-body-function pt-2">
             <div>
-            <label class="likeCounter ms-3">{{post.likes}} like</label>
-         </div>
-         <div>
-            <span class="like mx-3 mt-5" (click)="toggleLike(post.id,post.user.email,post.postDate)"> <i class="bi bi-heart-fill mt-5"
-                  [style.color]="isLiked ? 'red' : 'white'"></i></span>
-            <span class="comment mx-3 mt-5"><i class="bi bi-chat-left-fill"></i></span>
-            <span class="share mx-3 mt-5"><i class="bi bi-share-fill"></i></span>
-         </div>
+               <label class="likeCounter ms-3">{{post.likes}} like</label>
+            </div>
+            <div>
+               <span class="like mx-3 mt-5" (click)="toggleLike(post.id,post.user.email,post.date)"> <i
+                     class="bi bi-heart-fill mt-5" [style.color]="isLiked ? 'red' : 'white'"></i></span>
+               <span class="comment mx-3 mt-5"><i class="bi bi-chat-left-fill"></i></span>
+               <span class="share mx-3 mt-5"><i class="bi bi-share-fill"></i></span>
+            </div>
          </div>
 
          <div class="post-body-cmmnt">
             <input class="cmmnt mx-3 ps-2" #comment>
-            <span class="share mx-3 "><i class="bi bi-arrow-right-circle-fill" (click)="postUserComment(post.id,post.user.email,post.date,comment.value)"></i></span>
+            <span class="share mx-3 "><i class="bi bi-arrow-right-circle-fill"
+                  (click)="postUserComment(post.id,post.user.email,post.date,comment.value)"></i></span>
             <div *ngFor="let comment of post.comments.slice(0, showAllComments ? undefined : 1)" class="text-start">
                <div class="d-flex justify-content-between">
-               <div class="py-3 ms-3">{{comment.senderUser.firstName}} {{comment.senderUser.lastName}}: {{ comment.comments }}</div>
-               <div class="py-3 me-3"><i class="bi bi-reply-fill" (click)="toggleReply(comment)"></i></div>
+                  <div class="py-3 ms-3">{{comment.senderUser.email}}: {{ comment.comments }}</div>
+                  <div class="py-3 me-3"><i class="bi bi-reply-fill" (click)="toggleReply(comment)"></i></div>
+               </div>
+               <div *ngIf="comment.showReply" class="d-flex align-items-center">
+                  <input class="form-control mx-3" [(ngModel)]="comment.replyText">
+                  <button class="btn btn-primary mx-2" (click)="sendReply(comment)">Send</button>
+               </div>
             </div>
-            <div *ngIf="comment.showReply" class="d-flex align-items-center">
-               <input class="form-control mx-3" [(ngModel)]="userComment">
-               <button class="btn btn-primary mx-2" (click)="sendUserReply(post,comment)">Send</button>
-           </div>
-           </div>
-           <button class="btn btn-link" (click)="toggleCommentDisplay()">
+            <button class="btn btn-link" (click)="toggleCommentDisplay()">
                {{ showAllComments ? 'Hide comments' : 'Show all comments' }}
-           </button>
+            </button>
 
          </div>
       </div>
@@ -49,46 +67,78 @@
          <div class="post-body-header p-3 ">
             <img [src]="selectedImage" alt="" class="dp"> {{ post.advertiser.firstName }} {{ post.advertiser.lastName }}
          </div>
-         <div class="post-body-content" (click)="redirectToLink(post.link)" >
+         <div class="post-body-content" (click)="redirectToLink(post.link)">
             <img [src]="getPostImageAdvertiser(post)" alt="" class="col-12">
          </div>
          <div class="post-body-caption pt-3 ps-3">
-            <img [src]="selectedImage" alt="" class="dp"> {{ post.advertiser.firstName }} {{ post.advertiser.lastName }} : {{
-            post.caption }}  
+            <img [src]="selectedImage" alt="" class="dp"> {{ post.advertiser.firstName }} {{ post.advertiser.lastName }}
+            : {{
+            post.caption }}
          </div>
          <div class="link_body pt-2" (click)="redirectToLink(post.link)">
-          <label class="buylink ms-3">Buy it at : {{post.link}}</label>
+            <label class="buylink ms-3">Buy it at : {{post.link}}</label>
          </div>
          <div class="post-body-function pt-2">
             <div>
-            <label class="likeCounter ms-3">{{post.likes}} like</label>
-         </div>
+               <label class="likeCounter ms-3">{{post.likes}} like</label>
+            </div>
             <div>
-            <span class="like mx-3 mt-5" (click)="toggleLike(post.id,post.advertiser.email,post.postDate)"> <i class="bi bi-heart-fill mt-5"
-                  [style.color]="isLiked ? 'red' : 'white'"></i></span>
-            <span class="comment mx-3 mt-5"><i class="bi bi-chat-left-fill"></i></span>
-            <span class="share mx-3 mt-5"><i class="bi bi-share-fill"></i></span>
-         </div>
+               <span class="like mx-3 mt-5" (click)="toggleAddLike(post.id,post.advertiser.email,post.postDate)"> <i
+                     class="bi bi-heart-fill mt-5" [style.color]="isLiked ? 'red' : 'white'"></i></span>
+               <span class="comment mx-3 mt-5"><i class="bi bi-chat-left-fill"></i></span>
+               <span class="share mx-3 mt-5"><i class="bi bi-share-fill"></i></span>
+            </div>
          </div>
 
          <div class="post-body-cmmnt">
             <input class="cmmnt mx-3 ps-2" #comment>
-            <span class="share mx-3 "><i class="bi bi-arrow-right-circle-fill" (click)="postComment(post.id,post.advertiser.email,post.postDate,comment.value)"></i></span>
+            <span class="share mx-3 "><i class="bi bi-arrow-right-circle-fill"
+                  (click)="postComment(post.id,post.advertiser.email,post.postDate,comment.value)"></i></span>
             <div *ngFor="let comment of post.comments.slice(0, showAllComments ? undefined : 1)" class="text-start">
                <div class="d-flex justify-content-between">
-               <div class="py-3 ms-3">{{comment.senderUser.firstName}} {{comment.senderUser.lastName}}: {{ comment.comment }}</div>
-               <div class="py-3 me-3"><i class="bi bi-reply-fill" (click)="toggleReply(comment)"></i></div>
+                  <div class="py-3 ms-3">{{comment.senderUser.email}}: {{ comment.comment }}</div>
+                  <div class="py-3 me-3"><i class="bi bi-reply-fill" (click)="toggleReply(comment)"></i></div>
+               </div>
+               <div *ngIf="comment.showReply" class="d-flex align-items-center">
+                  <input class="form-control mx-3" [(ngModel)]="comment.replyText">
+                  <button class="btn btn-primary mx-2" (click)="sendReply(comment)">Send</button>
+               </div>
             </div>
-            <div *ngIf="comment.showReply" class="d-flex align-items-center">
-               <input class="form-control mx-3" [(ngModel)]="comment.replyText">
-               <button class="btn btn-primary mx-2" (click)="sendReply(comment)">Send</button>
-           </div>
-           </div>
-           <button class="btn btn-link" (click)="toggleCommentDisplay()">
+            <button class="btn btn-link" (click)="toggleCommentDisplay()">
                {{ showAllComments ? 'Hide comments' : 'Show all comments' }}
-           </button>
+            </button>
 
          </div>
       </div>
    </div>
+   
+   <div class="popup-wrapper" *ngIf="popupVisible">
+      <div class="popup-background"></div> <!-- Backdrop -->
+      <div class="popup">
+         <!-- Popup content -->
+         <div class="text-end d-flex  justify-content-between">
+            <img [src]="selectedImage" alt="" class="dp_post mt-2">
+            <i class="bi bi-x-circle-fill" style="font-size: 20px;" (click)="hidePopup()"></i>
+         </div>
+         <div class="m-3">
+            <div class="row">
+               <div class="col-12">
+                  <input type="text" class="form-control " placeholder="Enter caption" [(ngModel)]="caption">
+                  <input type="text" class="form-control mt-3" placeholder="Enter link" [(ngModel)]="link" *ngIf="role==='ADVERTISER'">
+               </div>
+               
+            </div>
+            <div class="my-3">
+               <input type="file" (change)="onFileSelected($event)" accept=".jpg, .jpeg">
+               <div class="mt-3" *ngIf="uploadingImage">
+                  <img [src]="uploadingImage" alt="upload your post" class="img-fluid">
+               </div>
+            </div>
+            <div class="text-end">
+               <button class="btn" (click)="submitAndClose()">Post</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <app-footer></app-footer>
 </div>

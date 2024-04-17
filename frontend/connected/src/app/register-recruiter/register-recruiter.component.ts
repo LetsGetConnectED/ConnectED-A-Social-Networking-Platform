@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { RoleService } from '../role.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-register-recruiter',
+  templateUrl: './register-recruiter.component.html',
+  styleUrls: ['./register-recruiter.component.css']
 })
-export class RegisterComponent {
+export class RegisterRecruiterComponent {
+
   registerForm: FormGroup;
   mismatch:boolean=false
   constructor(private formBuilder: FormBuilder,private http: HttpClient,private router: Router , private roleService: RoleService) {
@@ -48,7 +49,7 @@ export class RegisterComponent {
       username:formData.username,
       useremail:formData.email,
       userpassword:formData.password,
-      role:"USER"
+      role:"RECRUITER"
     }
     this.http.post('http://localhost:8080/api/v1/auth/signup', reqBody)
     .subscribe(
@@ -64,3 +65,5 @@ export class RegisterComponent {
     
   }
 }
+
+

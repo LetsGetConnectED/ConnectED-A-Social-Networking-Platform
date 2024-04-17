@@ -1,6 +1,6 @@
 <app-dash-nav-auth></app-dash-nav-auth>
 <div class="main_context ">
-  <div class="pageContainer row">
+  <div class="pageContainer row mb-5">
     <div class="info_context col-7 mx-5">
       <div class="about_info p-3">
         <h1 class="">About Me</h1>
@@ -8,16 +8,18 @@
         <form [formGroup]="aboutForm" (ngSubmit)="onSubmit()">
           <div class="img-container " *ngIf="display">
 
-            <label for="imageInput">
+            <label for="imageInput" class="imageInput">
               <input type="file" id="imageInput" (change)="onImageSelected($event)" accept=".jpg, .jpeg">
                 <img [src]="selectedImage ? selectedImage : 'assets/avatar.jpg'" alt="" class="col-12 dp" >
+                <i class="fa-solid fa-plus plus"></i>
             </label>
             <p class="mt-4 ms-5 tag">{{Role}}</p>
         </div>
           <div class="img-container " *ngIf="!display">
-            <label for="imageInput">
+            <label for="imageInput" class="imageInput">
               <input type="file" id="imageInput" (change)="onImageSelected($event)" accept=".jpg, .jpeg">
               <img src="assets/avatar.jpg" alt="" class="col-12 dp">
+              <i class="fa-solid fa-plus plus"></i>
             </label>
           </div>
           <div class="row mb-3">
@@ -126,7 +128,8 @@
               <select class="form-select rounded_field" id="education" formControlName="education">
                 <option value="ug">UG</option>
                 <option value="pg">PG</option>
-                <option value="masters">Masters</option>
+                <option value="Phd">Phd</option>
+                <option value="Schooling">schooling</option>
               </select>
               <div *ngIf="aboutForm.get('education')?.errors as educationErrors">
                 <div
@@ -138,7 +141,7 @@
             <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
               <label for="experience" class="form-label">Experience</label>
               <select class="form-select rounded_field" id="experience" formControlName="experience">
-                <option value="0-2">0-2 Years</option>
+                <option value="0-5">0-5 Years</option>
                 <option value="5-10">5-10 Years</option>
                 <option value="11-15">11-15 Years</option>
                 <option value="16-20">16-20 Years</option>
@@ -175,4 +178,6 @@
       <img src="assets/proflie.jpg" alt="" class="profileImg">
     </div>
   </div>
+  <app-footer></app-footer>
 </div>
+
