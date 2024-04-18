@@ -10,11 +10,9 @@
   }
 
   .main_context{
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
     padding: 20px;
     background-color:#B7C6B1;
+    position: relative;
   }
   .picHolder{
     background-color: white;
@@ -169,4 +167,14 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+}
+.imageInput{
+  position:relative ;
+}
+.plus{
+  position: absolute;
+  font-size: 27px;
+  right: 27px;
+    top: 19px;
+    color: #25371B;
 }

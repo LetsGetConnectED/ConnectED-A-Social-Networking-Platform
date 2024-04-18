@@ -59,23 +59,15 @@
                         </div>
                     </div>
 
-                    
-                <div class="mb-3">
-                    <label for="role" class="form-label ">Role</label>
-                    <select class="form-select rounded_field" id="role" formControlName="role">
-                      <option value="USER">User</option>
-                      <option value="ADVERTISER">Advertiser</option>
-                      <option value="RECRUITER">Recruiter</option>
-                    </select>
-                  </div>
-  
-                    <!-- Submit Button -->
+             
                     <button type="submit" class="form-control rounded_field"  [disabled]="registerForm.invalid">Submit</button>
                 </form>
   
                 <br>
   
                 <p>Already have an account? <a class="link" routerLink="/login">Login</a></p>
+                <p>Want to be an recrutier ? <a class="link" routerLink="/register/recruit">Register</a></p>
+                <p>Want to be a advertiser ? <a class="link" routerLink="/register/advertiser">Register</a></p>
             </div>
             <div class="register_pic">
                 <img src="assets/grp.jpeg" alt="">
@@ -83,4 +75,4 @@
         </div>
     </div>
   </div>
-  
+  <app-footer></app-footer>

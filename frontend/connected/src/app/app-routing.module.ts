@@ -13,7 +13,8 @@ import { JobCreationComponent } from './job-creation/job-creation.component';
 import { SearchedUserComponent } from './searched-user/searched-user.component';
 import { JobwallComponent } from './jobwall/jobwall.component';
 import { FriendReqComponent } from './friend-req/friend-req.component';
-
+import { RegisterAdvertiserComponent } from './register-advertiser/register-advertiser.component';
+import { RegisterRecruiterComponent } from './register-recruiter/register-recruiter.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login page
@@ -27,9 +28,11 @@ const routes: Routes = [
   {path:'otp',component:OtpVerifyComponent},
   {path:'profile',component:ProfileComponent,canActivate: [AuthGuard]},
   {path:'job-creation',component:JobCreationComponent},
-  {path:'user/:id',component:SearchedUserComponent},
+  {path:'user',component:SearchedUserComponent},
   {path:'jobwall',component:JobwallComponent},
-  {path:'req',component:FriendReqComponent}
+  {path:'req',component:FriendReqComponent},
+  { path: 'register/advertiser', component: RegisterAdvertiserComponent },
+  { path: 'register/recruit', component: RegisterRecruiterComponent },
   // Add more routes here if needed
 ];
 

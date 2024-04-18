@@ -1,6 +1,6 @@
 <div class="container-fluid main_background  p-0">
     <app-dash-nav-auth></app-dash-nav-auth>
-    <div class="main_context mt-5">
+    <div class="main_context ">
         <div class="info_context ps-5 pt-5 row">
             <div class="img-container  ms-2 col-8" *ngIf="display">
 
@@ -40,7 +40,7 @@
             </div>
             <div class="name-education row fw-semibold">
                 <div class="col-6"><i class="bi bi-file-person-fill p-3"></i>{{bio}}</div>
-                <div class="col-6 text-center ps-5" (click)="togglePopup()">
+                <div class="col-6 text-center ps-5" (click)="togglePopup()" *ngIf="occupationFlag!=='RECRUITER'">
                     <div class="toggle ms-5">
                         <i class="bi bi-folder-plus"></i>
                     </div>
@@ -60,8 +60,8 @@
                     <input type="text" class="form-control " placeholder="Enter caption" [(ngModel)]="caption">
                     <input type="text" class="form-control mt-3" placeholder="Enter link" [(ngModel)]="link" *ngIf="Role==='ADVERTISER'">
                 </div>
-                <div class="col-3">
-                    <button class="upload" (click)="submitAndClose()">Submit</button>
+                <div class="col-2">
+                    <button class="btn btn-primary" (click)="submitAndClose()">Submit</button>
                 </div>
             </div>
             <div class="my-3">

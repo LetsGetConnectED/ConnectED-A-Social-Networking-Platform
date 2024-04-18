@@ -17,6 +17,7 @@ export class JobCreationComponent  {
       jobtitle: ['', [Validators.required]],
       jobdiscreption: ['', [Validators.required]],
       location: ['', [Validators.required]],
+      Salary: ['', [Validators.required]],
    })
   }
  

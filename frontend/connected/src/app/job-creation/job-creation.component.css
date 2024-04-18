@@ -109,7 +109,13 @@
   
   .rounded_field {
     border-radius: 50px;
+   
   }
+  .rounded_fields{
+    border-radius: 50px;
+    height: 3rem;
+  }
+
   
   button {
     background-color: #25371B;
@@ -124,19 +130,10 @@
     text-decoration: none;
   }
   
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .info_context {
-      flex-direction: column;
-      height: auto;
-    }
-  
-    .about_info,
-    .about_pic {
-      width: 100%;
-    }
-  }
-  
+input,select{
+
+  background-color: #B7C6B1;
+}
   img{
     width: 14rem;
     border-radius: 7rem;

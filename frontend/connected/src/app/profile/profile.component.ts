@@ -160,7 +160,7 @@ export class ProfileComponent implements OnInit {
      
     if(sessionStorage.getItem("role")=="USER")
     { console.log("user is sending")
-     this.http.post(`http://localhost:6060/${this.email}`,formdata ).subscribe((response: any) => {
+     this.http.post(`http://localhost:6789/${this.email}`,formdata ).subscribe((response: any) => {
       
    
     },
@@ -175,7 +175,7 @@ export class ProfileComponent implements OnInit {
    console.log("advertiser is sending")
     formdata.append("advertiserEmail",this.email);
   formdata.append("link",this.link)
-   this.http.post(`http://localhost:5050/api/advertisements/advertiser`,formdata ).subscribe((response: any) => {
+   this.http.post(`http://localhost:6789/api/advertisements/advertiser`,formdata ).subscribe((response: any) => {
   
 
   },
@@ -185,20 +185,7 @@ export class ProfileComponent implements OnInit {
   }
    )
 }
-else if(sessionStorage.getItem("role")=="RECRUITER")
-{
-  console.log("recruiter is sending")
-  this.http.post(`http://localhost:6060/${this.email}`,formdata ).subscribe((response: any) => {
-    console.log('image posted successfully');
 
-  },
-  (error) => {
-    console.error('Error occurred during registration:', error);
-  
-  }
-   )
-  
-}
 
     this.popupVisible = false;
   }

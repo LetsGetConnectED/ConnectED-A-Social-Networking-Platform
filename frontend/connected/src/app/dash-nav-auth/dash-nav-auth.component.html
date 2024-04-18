@@ -1,16 +1,17 @@
 <div class=" navbarContainer py-3">
 <div class="navbar row p-0 m-0 mx-auto">
   <div class="col-4">
-    <img src="assets/image.png" alt="" routerLink="/dashboard" />
+    <img src="assets/newlogo1.png" alt="" routerLink="/dashboard" />
   </div>
   <div class="col-4 text-center">
-    <input >
-    <i class="bi bi-search ms-3"></i>
+    <input  #searchInput>
+    <i class="bi bi-search ms-3" (click)="search(searchInput.value)"></i>
   </div>
   <div class="col-4 p-3 d-flex">
-    <a class="nav-link active d-flex flex-column text-center me-1" aria-current="page" href="#"><i
-        class="bi bi-chat-text"></i>Messages</a>
-
+    <div class="notification_holder">
+    <a class="nav-link active d-flex flex-column text-center me-1" routerLink="/req"><i class="bi bi-bell-fill"></i>Notification</a>
+    <i class="bi bi-exclamation-circle bell" *ngIf="notDisplay"></i>
+  </div>
         <div *ngIf="roleFlag">
         <a class="nav-link active d-flex flex-column text-center me-1" routerLink="/job-creation">
         <i class="bi bi-bag-check-fill"></i>posting</a>
@@ -24,10 +25,9 @@
     <a class="nav-link active d-flex flex-column text-center me-1" routerLink="/profile"><i
         class="bi bi-person"></i>Profile</a>
 
-    <a class="nav-link active d-flex flex-column text-center me-1" aria-current="page" href="#"><i
-        class="bi bi-gear"></i>Settings</a>
     <a class="nav-link active d-flex flex-column text-center me-1" aria-current="page" href="#" routerLink="/login"><i
         class="bi bi-door-closed-fill"></i>Log Out</a>
+        
   </div>
 </div>
 

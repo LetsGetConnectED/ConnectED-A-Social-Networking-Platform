@@ -1,11 +1,13 @@
 <app-dash-nav-auth></app-dash-nav-auth>
 <div class="main_context">
-    <div class="info_context">
-        <div *ngFor="let request of pendingRequests" class="job my-3 ms-3 py-2 ps-2">
+    <div class="info_context ps-3">
+        <div *ngFor="let request of pendingRequests" class="job my-3 ms-5 py-2 ps-2">
+            <span class="dpSpan" (click)="visitProfile(request.sender.username) " *ngIf="displayImage"> <img [src]="request.image" alt="" class="dp mx-3"></span>
+            <span class="dpSpan" (click)="visitProfile(request.sender.username) " *ngIf="!displayImage"> <img src="assets/avatar.jpg" alt="" class="dp mx-3"></span>
             {{ request.sender.name }} wants to be your friend  
             <span class="ms-3" (click)="acceptRequest(request.sender.username)"><i class="bi bi-check-lg"></i></span> 
             <span class="mx-3" (click)="rejectRequest(request.sender.username)"><i class="bi bi-ban"></i></span>
         </div>
     </div>
-
+    <app-footer></app-footer>
 </div>
