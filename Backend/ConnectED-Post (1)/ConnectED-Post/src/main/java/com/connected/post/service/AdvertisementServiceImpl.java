@@ -235,21 +235,43 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public void likePostByUserAndDate(User user, Advertiser advertiser, LocalDate date, Long postId) {
-        AdvertisementPost post = postRepository.findById(postId)
-                                               .orElseThrow(() -> new NotFoundException("Post not found"));
-
-        PostLike postLike = new PostLike(user, post, PostLikeStatus.LIKED);
-
-       
-        post.getPostLikes().add(postLike);
-
-      
-        post.setLikes(post.getLikes() + 1);
-
-       
-        likedUsersMap.computeIfAbsent(postId, k -> new ArrayList<>()).add(user.getEmail());
-        likedPostsMap.computeIfAbsent(user.getEmail(), k -> new ArrayList<>()).add(postId);
+    AdvertisementPost post = postRepository.findById(postId)
+    .orElseThrow(() -> new NotFoundException("Post not found"));
+    List<PostLike> postLikes = post.getPostLikes();
+    Optional<PostLike> existingLike = postLikes.stream()
+    .filter(like -> like.getUser().equals(user))
+    .findFirst();
+    if (existingLike.isPresent()) {
+    post.setLikes(post.getLikes() - 1);
+    postLikes.remove(existingLike.get());
+    } else {
+    post.setLikes(post.getLikes() + 1);
+    PostLike postLike = new PostLike(user, post, PostLikeStatus.LIKED);
+    postLikes.add(postLike);
     }
+    postRepository.save(post);
+    updateLikedUsersMap(postId, user.getEmail(), existingLike.isPresent());
+    updateLikedPostsMap(user.getEmail(), postId, existingLike.isPresent());
+    }
+    private void updateLikedUsersMap(Long postId, String userEmail, boolean isLiked) {
+    List<String> likedUsers = likedUsersMap.getOrDefault(postId, new ArrayList<>());
+    if (isLiked) {
+    likedUsers.remove(userEmail);
+    } else {
+    likedUsers.add(userEmail);
+    }
+    likedUsersMap.put(postId, likedUsers);
+    }
+    private void updateLikedPostsMap(String userEmail, Long postId, boolean isLiked) {
+    List<Long> likedPosts = likedPostsMap.getOrDefault(userEmail, new ArrayList<>());
+    if (isLiked) {
+    likedPosts.remove(postId);
+    } else {
+    likedPosts.add(postId);
+    }
+    likedPostsMap.put(userEmail, likedPosts);
+    }
+
 
     
    

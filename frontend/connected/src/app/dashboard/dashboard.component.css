@@ -1,8 +1,16 @@
 .post-body{
-  width: 40%;
+  width: 70%;
   height: auto;
   background-color: white;
 }
+.post-body-new{
+  width: 95%;
+  height: auto;
+  background-color: white;
+ 
+}
+
+
 .info_context{
   display: flex;
   justify-content: center;
@@ -53,6 +61,11 @@
   border-radius: 10px;
   z-index: 1; /* Above the backdrop */
 }
+.dptop{
+  width: 2rem;
+  height: 2rem;
+  border-radius: 30px;
+}
 .post-body-header{
   width: auto;
   height: 3.5rem;
@@ -98,7 +111,11 @@
   height: 2.4rem;
   border-radius: 20px;
 }
-
+.cmmnt-add{
+  width: 60%;
+  height: 2.4rem;
+  border-radius: 20px;
+}
 img{
   width: 100%;
   height: 100%;

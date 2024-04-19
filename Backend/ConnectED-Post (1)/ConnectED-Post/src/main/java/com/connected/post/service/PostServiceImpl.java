@@ -111,26 +111,53 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void likeOrUnlikePost(String user_email, Long postId, LocalDate postDate, String email) {
-        // Increment likes count in the UserPost entity
-        UserPost post = repo.findById(postId)
-                            .orElseThrow(() -> new NotFoundException("Post not found"));
-        post.setLikes(post.getLikes() + 1);
-        
-        // Create and add a new UserPostLike object
-        UserPostLike userPostLike = new UserPostLike();
-        userPostLike.setUserEmail(user_email);
-        userPostLike.setLikeStatus(PostLikeStatus.LIKED);
-        post.getPostLikes().add(userPostLike);
-        
-        // Save the changes to the database
-        repo.save(post);
-        
-        // Update likedUsersMap
-        likedUsersMap.computeIfAbsent(postId, k -> new ArrayList<>()).add(user_email);
-        
-        // Update likedPostsMap
-        likedPostsMap.computeIfAbsent(user_email, k -> new ArrayList<>()).add(postId);
+    UserPost post = repo.findById(postId)
+    .orElseThrow(() -> new NotFoundException("Post not found"));
+    List<UserPostLike> postLikes = post.getPostLikes();
+    // Check if the user has already liked the post
+    Optional<UserPostLike> existingLike = postLikes.stream()
+    .filter(like -> like.getUserEmail().equals(user_email))
+    .findFirst();
+    if (existingLike.isPresent()) {
+    // Unlike the post
+    post.setLikes(post.getLikes() - 1);
+    postLikes.remove(existingLike.get());
+    } else {
+    // Like the post
+    post.setLikes(post.getLikes() + 1);
+    // Create and add a new UserPostLike object
+    UserPostLike userPostLike = new UserPostLike();
+    userPostLike.setUserEmail(user_email);
+    userPostLike.setLikeStatus(PostLikeStatus.LIKED);
+    postLikes.add(userPostLike);
     }
+    // Save the changes to the database
+    repo.save(post);
+    // Update likedUsersMap
+    updateLikedUsersMap(postId, user_email, existingLike.isPresent());
+    // Update likedPostsMap
+    updateLikedPostsMap(user_email, postId, existingLike.isPresent());
+    }
+    private void updateLikedUsersMap(Long postId, String userEmail, boolean isLiked) {
+    List<String> likedUsers = likedUsersMap.getOrDefault(postId, new ArrayList<>());
+    if (isLiked) {
+    likedUsers.remove(userEmail);
+    } else {
+    likedUsers.add(userEmail);
+    }
+    likedUsersMap.put(postId, likedUsers);
+    }
+    private void updateLikedPostsMap(String userEmail, Long postId, boolean isLiked) {
+    List<Long> likedPosts = likedPostsMap.getOrDefault(userEmail, new ArrayList<>());
+    if (isLiked) {
+    likedPosts.remove(postId);
+    } else {
+    likedPosts.add(postId);
+    }
+    likedPostsMap.put(userEmail, likedPosts);
+    }
+
+
 
 
     @Override

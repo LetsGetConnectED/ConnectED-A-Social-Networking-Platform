@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SharedService } from '../service/shared.service';
-
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -16,8 +16,10 @@ export class DashboardComponent implements OnInit{
  showAllComments: boolean = false;
  link:any;
  Role:any
+ userData:[]=[];
  uploadedImage:any;
   isLiked: boolean=false;
+  advertismentFlag:boolean=false;
   selectedImage: any;
   emailOfEmployee:any;
   uploadingImage:any;
@@ -25,6 +27,7 @@ export class DashboardComponent implements OnInit{
   userLiked:boolean=false;
   file:any;
   role:any;
+  advertisingPost:any;
   popupVisible: boolean = false;
   userEmail:any;
   userComment:any;
@@ -37,19 +40,65 @@ export class DashboardComponent implements OnInit{
   }
   ngOnInit(): void {
     this.role=sessionStorage.getItem('role');
+    if(this.role=="USER")
+    {
+      this.http.get<any>(`http://localhost:7070/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
+      const imageUrl = 'data:image/png;base64,' + data.image
+      this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+     })
+    }
+    if(this.role=="ADVERTISER")
+    {
+      
+    this.http.get<any>(`http://localhost:7070/advertiser/${sessionStorage.getItem("email")}`).subscribe((data)=>{
+      
+     
+       const imageUrl = 'data:image/png;base64,' + data.image
+       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+      })
+    }
    this.fetchPosts();
     this.userEmail=sessionStorage.getItem('email');
     this.email=sessionStorage.getItem('email');
   }
   fetchPosts() {
-    if(sessionStorage.getItem('role')==="USER")
-    {
-    this.http.get<any>(`http://localhost:6789/details`).subscribe((data)=>{
-      
-       console.log("user info is",data);
+   
+    this.http.get<any>(`http://localhost:6789/details`).subscribe((data) => {
+  console.log("original data is", data)
+  if (data && data.length > 0) { // Assuming data is an array
+    console.log("entering");
+    const requests = data.map((element: any) => {
+      const senderEmail = element.user.email;
+      return this.http.get<any>(`http://localhost:7070/user/${senderEmail}`);
+    });
 
-       
-      this.posts = data.reverse(); // Assign the received data to the posts array
+    forkJoin(requests).subscribe((userDataArray:any) => {
+      userDataArray.forEach((userData:any, index:any) => {
+        const imageBase64 = userData.image;
+        const imageUrl = 'data:image/png;base64,' + imageBase64;
+        const displayImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+        if (imageBase64) {
+          data[index].profilePic = displayImage;
+        } else {
+          console.error('Image data not found in userData:', userData);
+        }
+      });
+      this.userData = data;
+   
+      this.posts=this.userData.reverse()
+      console.log("user info is for dp posts", this.posts);
+      this.posts.forEach(post => {
+        if (post.likedUsersTransient.includes(this.userEmail)) {
+          post.isLiked = true;
+        } else {
+          post.isLiked = false;
+        }
+      }   )
+      console.log("user info is for dp posts for liking", this.posts);
+    });
+  } else {
+    console.error('Data array is empty or undefined:', data);
+  }
    
       if(!data.imageBytes)
       {
@@ -58,35 +107,56 @@ export class DashboardComponent implements OnInit{
 
     })
   
-    this.http.get<any>(`http://localhost:7070/user/${sessionStorage.getItem("email")}`).subscribe((data)=>{
-      
-     
-       const imageUrl = 'data:image/png;base64,' + data.image
-       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-      })
-  }
-  else if(sessionStorage.getItem('role')==="ADVERTISER")
-  { console.log("advertiser hitting")
-    this.http.get<any>(`http://localhost:6789/api/advertisements/advertiser/${sessionStorage.getItem("email")}`).subscribe((data)=>{
-      
-      
-      this.posts = data.reverse(); 
-      console.log("data is",data)
    
-      if(!data.imageBytes)
-      {
-        this.showPost=false
-      }
 
-    })
-    
-    this.http.get<any>(`http://localhost:7070/advertiser/${sessionStorage.getItem("email")}`).subscribe((data)=>{
+  
+    this.http.get<any>(`http://localhost:6789/api/advertisements`).subscribe((data)=>{
       
+    console.log("original data is", data)
+    if (data && data.length > 0) { // Assuming data is an array
+      console.log("entering");
+      const requests = data.map((element: any) => {
+        const senderEmail = element.advertiser.email;
+        return this.http.get<any>(`http://localhost:7070/advertiser/${senderEmail}`);
+      });
+  
+      forkJoin(requests).subscribe((userDataArray:any) => {
+        userDataArray.forEach((userData:any, index:any) => {
+          const imageBase64 = userData.image;
+          const imageUrl = 'data:image/png;base64,' + imageBase64;
+          const displayImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+          if (imageBase64) {
+            data[index].profilePic = displayImage;
+          } else {
+            console.error('Image data not found in userData:', userData);
+          }
+        });
+        this.userData = data;
      
-       const imageUrl = 'data:image/png;base64,' + data.image
-       this.selectedImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+        this.advertisingPost=this.userData.reverse()
+        this.advertisingPost.forEach((post: any) => {
+          if (post.likedUsersTransient.includes(this.userEmail)) {
+            post.isLiked = true;
+          } else {
+            post.isLiked = false;
+          }
+        });
+        
+        console.log("user info is for dp posts for advertisment", this.advertisingPost);
+      });
+    } else {
+      console.error('Data array is empty or undefined:', data);
+    }
+     
+        if(!data.imageBytes)
+        {
+          this.showPost=false
+        }
+  
       })
-  }
+    
+   
+  
   }
   toggleLike(id:any,email:any,date:any): void {
     console.log("arguments are",id,email,date)
@@ -103,7 +173,7 @@ export class DashboardComponent implements OnInit{
   toggleAddLike(id:any,email:any,date:any): void {
     console.log("advertisments are",id,email,date)
     this.isLiked = !this.isLiked; 
-    this.http.post<any>(`http://localhost:6789/api/advertisements/like?user_email=${sessionStorage.getItem("email")}&postDate=${date}&advertiserEmail=${email}&postId=${id}`,null).subscribe((response: any) => {
+    this.http.post<any>(`http://localhost:6789/api/advertisements/like?userEmail=${sessionStorage.getItem("email")}&postDate=${date}&advertiserEmail=${email}&postId=${id}`,null).subscribe((response: any) => {
     this.fetchPosts();
   },
   (error) => {
@@ -112,6 +182,7 @@ export class DashboardComponent implements OnInit{
   }
    )
   }
+  
   getPostUserImage(post: any): string {
     return `data:image/png;base64,${post.user.imageBytes}`;
   }
@@ -142,9 +213,8 @@ postUserComment(id: any, email: any, date: any, message: any) {
     }),
     responseType: 'text' as 'json'  
   };
-
   this.http.post<any>(
-    `http://localhost:6789/comments/parent?senderEmail=${sessionStorage.getItem("email")}&postDate=${date}&receiverEmail=${email}&postId=${id}&commentText=${message}`,
+    `http://localhost:6789/comments?senderEmail=${sessionStorage.getItem("email")}&receiverEmail=${email}&postId=${id}&commentText=${message}`,
     null,
     httpOptions
   ).subscribe(
@@ -166,7 +236,7 @@ postComment(id: any, email: any, date: any, message: any) {
   };
 
   this.http.post<any>(
-    `http://localhost:6789/api/advertisements/comment/parent?senderEmail=${sessionStorage.getItem("email")}&postDate=${date}&receiverEmail=${email}&postId=${id}&commentText=${message}`,
+    `http://localhost:6789/api/advertisements/comments?senderEmail=${sessionStorage.getItem("email")}&receiverEmail=${email}&postId=${id}&commentText=${message}`,
     null,
     httpOptions
   ).subscribe(
@@ -179,14 +249,134 @@ postComment(id: any, email: any, date: any, message: any) {
     }
   );
 }
+DeleteAdvertiserPost(post:any)
+{
+  const options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+    responseType: 'text' as 'json' // Specify responseType as text
+  };
 
+  this.http.delete(
+    `http://localhost:6789/api/advertisements/advertisement-post/${post.id}`,
+    options
+  ).subscribe(
+    (response: any) => {
+      console.log("Response is:", response);
+      this.fetchPosts();
+      if (response) {
+        console.log("Deletion successful");
+        this.fetchPosts();
+      } else {
+        console.error("Unexpected response:", response);
+      }
+    },
+    (error) => {
+      console.error("An error occurred:", error);
+    }
+  );
 
-toggleReply(comment: any) {
-  comment.showReply = !comment.showReply;
+  
+}
+DeletePost(post:any)
+{
+  const options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+    responseType: 'text' as 'json' // Specify responseType as text
+  };
+
+  this.http.delete(
+    `http://localhost:6789/user/post/${post.id}`,
+    options
+  ).subscribe(
+    (response: any) => {
+      console.log("Response is:", response);
+      if (response) {
+        console.log("Deletion successful");
+        this.fetchPosts();
+      } else {
+        console.error("Unexpected response:", response);
+      }
+    },
+    (error) => {
+      console.error("An error occurred:", error);
+    }
+  );
+
+  
+}
+
+DeleteReply(comment: any) {;
   console.log("comment is",comment);
   
+  const options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+    responseType: 'text' as 'json' // Specify responseType as text
+  };
 
+  this.http.delete(
+    `http://localhost:6789/comments/${comment.id}`,
+    options
+  ).subscribe(
+    (response: any) => {
+      console.log("Response is:", response);
+      if (response) {
+        console.log("Deletion successful");
+        this.fetchPosts();
+      } else {
+        console.error("Unexpected response:", response);
+      }
+    },
+    (error) => {
+      console.error("An error occurred:", error);
+    }
+  );
+
+  
+  
+  
 }
+
+DeleteAdvertiserReply(post: any,comment:any) {;
+  console.log("comment is",post);
+  console.log("comment is",comment);
+  
+  const options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+    responseType: 'text' as 'json' // Specify responseType as text
+  };
+
+  this.http.delete(
+    `http://localhost:6789/api/advertisements/comments/${post.id}?senderEmail=${comment.senderUser.email}&commentId=${comment.id}`,
+    options
+  ).subscribe(
+    (response: any) => {
+      console.log("Response is:", response);
+      this.fetchPosts();
+      if (response) {
+        console.log("Deletion successful");
+      
+      } else {
+        console.error("Unexpected response:", response);
+      }
+    },
+    (error) => {
+      console.error("An error occurred:", error);
+    }
+  );
+
+  
+  
+  
+}
+
 
 // sendUserReply(post: any,comment:any) {
 //   // Perform the action to send the reply here
@@ -279,7 +469,11 @@ console.log("advertiser is sending")
 formdata.append("link",this.link)
 this.http.post(`http://localhost:6789/api/advertisements/advertiser`,formdata ).subscribe((response: any) => {
 
-
+this.fetchPosts()
+this.dashboardImage="";
+this.caption="";
+this.uploadingImage="";
+this.link="";
 },
 (error) => {
  console.error('Error occurred during registration:', error);

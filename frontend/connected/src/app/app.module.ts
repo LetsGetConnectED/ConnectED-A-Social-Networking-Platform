@@ -22,6 +22,7 @@ import { FriendReqComponent } from './friend-req/friend-req.component';
 import { FooterComponent } from './footer/footer.component';
 import { RegisterAdvertiserComponent } from './register-advertiser/register-advertiser.component';
 import { RegisterRecruiterComponent } from './register-recruiter/register-recruiter.component';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -54,7 +55,7 @@ import { RegisterRecruiterComponent } from './register-recruiter/register-recrui
     BrowserAnimationsModule
     
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
