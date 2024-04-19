@@ -4,49 +4,44 @@
     justify-content: center;
     align-items: center;
 }
+span{
+    color: black;
+}
 .info_context{
-    width:60%;
-    height: 85vh;
+    width: 60%;
+    height: auto;
     background: rgb(173,215,155);
-    background: linear-gradient(180deg, rgba(173,215,155,1) 10%, rgba(255,255,255,1) 100%);
-    border-radius: 20px;
+    background-color: #e4e7e0;
+    color: white;
     display: flex;
     overflow: hidden;
+    border-radius: 7px;
 }
-/* .toggle{
-    width: 4rem;
-    height: 4rem;
-    background-color: #25371B;
-    position: relative; /* Required for absolute positioning */
-    /* border-radius: 4rem; */
- */
+.margin{
+    margin-left: 3.3rem;
+}
+.bio_context{
+    width: 60%;
+    background-color: #e4e7e0;
+    color: white;
+    border-radius: 7px;
+}
+.name{
+    font-size: 3rem;
 
-
-/* .plus-sign {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px;
-    height: 3px;
-    background-color: white; /* White color for the plus sign */
-*/
-
-
-/* .plus-sign::after {
-    content: "";
-    position: absolute;
-    top: -11px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 3px;
-    height: 30px;
-    background-color: white; /* White color for the plus sign */
-*/
-.bi{
+}
+.bi ,.fa-solid,.fa-brands{
     font-size: 2rem;
 }
-
+.picHolder{
+    position: relative;
+}
+.fa-pen{
+    position: absolute;
+    right: 4px;
+    top: 6px;
+    font-size: 24px;
+}
 .bi-folder-plus{
     color: #25371B;
     background-color: none;
@@ -57,17 +52,14 @@
 }
 
 img{
-    width: 14rem;
+    width: 8rem;
     border-radius: 7rem;
-    height: 14rem;
+    height: 8rem;
 }
-/* div{
-    color: #25371B;
-} */
+
 .upload{
     color: white;
-    /* background-color: #25371B; */
-    /* border-radius: 3px; */
+  
 }
 .name-education {
     height: auto; /* Set height to auto */
@@ -98,12 +90,7 @@ img{
     background-color: none;
     left: 10px;
 }
-/* .pencil-holder{
-   background-color: #25371B;
-   width:5rem;
-   height:5rem;
-   border-radius: 36px;
-} */
+
 .tag{
     font-weight: 700;
 }

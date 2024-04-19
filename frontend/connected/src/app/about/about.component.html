@@ -126,9 +126,9 @@
             <div class="col-md-6" *ngIf="Role !== 'ADVERTISER'">
               <label for="education" class="form-label">Education</label>
               <select class="form-select rounded_field" id="education" formControlName="education">
-                <option value="ug">UG</option>
-                <option value="pg">PG</option>
-                <option value="Phd">Phd</option>
+                <option value="Under Graduate">UG</option>
+                <option value="Post Graduate">PG</option>
+                <option value="Doctor of Philosophy">Phd</option>
                 <option value="Schooling">schooling</option>
               </select>
               <div *ngIf="aboutForm.get('education')?.errors as educationErrors">
