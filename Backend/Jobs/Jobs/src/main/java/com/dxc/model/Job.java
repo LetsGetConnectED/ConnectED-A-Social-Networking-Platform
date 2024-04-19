@@ -58,7 +58,11 @@ public class Job {
 //    @Column(nullable = false)
     @NotBlank(message = "Skills are required")
     private String skills;
-
+    // @NotBlank(message = "experience is required")
+    // private String Experience;
+    
+	//  @NotBlank(message = "Salary is required")
+    // private String Salary;
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Timestamp timestamp;

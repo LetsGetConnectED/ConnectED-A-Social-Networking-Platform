@@ -136,3 +136,37 @@ export class SearchedUserComponent implements OnInit {
   
 }
 
+// my-component.component.ts
+
+// import { Component } from '@angular/core';
+// import { ElasticSearchService } from './elastic-search.service';
+
+// @Component({
+//   selector: 'app-my-component',
+//   templateUrl: './my-component.component.html',
+//   styleUrls: ['./my-component.component.css']
+// })
+// export class MyComponent {
+//   constructor(private elasticSearchService: ElasticSearchService) {}
+
+//   search() {
+//     const index = 'your_index_name';
+//     const query = {
+//       match: {
+//         // Your search query here
+//         // Example: title: 'Angular'
+//       }
+//     };
+
+//     this.elasticSearchService.search(index, query)
+//       .then(response => {
+//         console.log('Search Response:', response);
+//         // Handle search response
+//       })
+//       .catch(error => {
+//         console.error('Search Error:', error);
+//         // Handle search error
+//       });
+//   }
+// }
+

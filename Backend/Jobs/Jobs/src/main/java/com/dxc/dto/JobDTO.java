@@ -22,15 +22,20 @@ public class JobDTO {
     @NotBlank(message = "Skills is required")
     private String skills;
     
-    @NotBlank(message = "Location is required")
-    private String location;
+    @NotBlank(message = "experience is required")
+    private String Experience;
     
+	 @NotBlank(message = "Salary is required")
+    private String Salary;
+	 @NotBlank(message = "Location is required")
+    private String location;
+
     private RequestStatus status;
     private List<String> applicants;
     public JobDTO() {
     }
     
-    public JobDTO(Long jobid, String title, String description, String skills, String location, RequestStatus status, List<String> applicants) {
+    public JobDTO(Long jobid, String title, String description, String skills, String location, RequestStatus status, List<String> applicants,String Experience,String Salary) {
         this.jobid = jobid;
         this.title = title;
         this.description = description;
@@ -38,6 +43,8 @@ public class JobDTO {
         this.location = location;
         this.status = status;
         this.applicants=applicants;
+		this.Experience=Experience;
+		this.Salary=Salary;
     }
 
 	public Long getJobid() {
