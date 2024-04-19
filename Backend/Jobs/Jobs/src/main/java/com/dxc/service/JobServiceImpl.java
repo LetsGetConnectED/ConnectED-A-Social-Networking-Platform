@@ -15,13 +15,26 @@ public class JobServiceImpl implements JobService {
     @Autowired
     private JobsRepository jobsRepository;
 
-    @Override
+    // @Override
+    // public void saveJob(Job job) {
+    //     if (job.getStatus() == RequestStatus.APPLY) {
+    //         job.setStatus(RequestStatus.APPLIED);
+    //     }
+    //     jobsRepository.save(job);
+    // }
     public void saveJob(Job job) {
         if (job.getStatus() == RequestStatus.APPLY) {
             job.setStatus(RequestStatus.APPLIED);
         }
+
+        // Generate recruiterId
+        Long recruiterid = recruiterIdGenerationService.generateRecruiterId();
+        job.setRecruiterid(recruiterid);
+
+        // Save job
         jobsRepository.save(job);
     }
+
 
     @Override
     public List<Job> getAllJobs() {
@@ -48,6 +61,26 @@ public class JobServiceImpl implements JobService {
         }
         return false;
 }
-    
+@Override
+public List<Job> getJobsByRecruiter(Long recruiterid) {
+	
+	  return jobsRepository.findByRecruiterid(recruiterid);
+}
+
+
+
+@Override
+@Transactional
+public void deletejob(Long jobid) {
+  
+    if (jobsRepository.existsById(jobid)) {
+     
+           jobsRepository.deleteById(jobid);
+        System.out.println("Job with ID " + jobid + " has been deleted.");
+    } else {
+      
+        System.out.println("Job with ID " + jobid + " does not exist.");
+    }
+}
 
 }

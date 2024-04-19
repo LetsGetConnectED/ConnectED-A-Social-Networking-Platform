@@ -167,6 +167,40 @@ public class JobsController {
             return ResponseEntity.badRequest().body("User not found");
         }
     }
+    @GetMapping("/list/{recruiterid}")
+    public ResponseEntity<?> getJobsByRecruiter(@PathVariable Long recruiterid) {
+        List<Job> jobs = jobService.getJobsByRecruiter(recruiterid); 
+        if (jobs.isEmpty()) {
+            return ResponseEntity.notFound().build(); 
+        }
+
+        List<JobDTO> jobDTOs = jobs.stream()
+                .map(job -> {
+                    RequestStatus status = determineStatusForJob(job);
+                    List<String> applicants = job.getApplicants().stream()
+                            .map(User::getUseremail)
+                            .collect(Collectors.toList());
+                    return new JobDTO(job.getJobid(), job.getTitle(), job.getDescription(), job.getSkills(), job.getLocation(), status, applicants, job.getExperience(), job.getSalary());
+                })
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(jobDTOs);
+    }
+    
+    @DeleteMapping("/jobs/{jobid}")
+    public ResponseEntity<String> deleteJobById(@PathVariable Long jobid) {
+        try {
+            // Attempt to delete the job
+            jobService.deletejob(jobid);
+            
+            // If no exception is thrown, job deletion was successful
+            return new ResponseEntity<>("Job with ID " + jobid + " has been deleted.", HttpStatus.OK);
+            
+        } catch (Exception e) {
+            // If an exception occurs during deletion, return an error response
+            return new ResponseEntity<>("Failed to delete job with ID " + jobid, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
 
 
 }

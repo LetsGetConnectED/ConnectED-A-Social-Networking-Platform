@@ -26,5 +26,7 @@ public interface JobsRepository extends JpaRepository<Job, Long> {
 	  
 	   @Query("SELECT DISTINCT j FROM Job j LEFT JOIN FETCH j.applicants WHERE j.jobid = :jobId")
 	    Optional<Job> findByIdWithApplicants(@Param("jobId") Long jobId);
+
+		List<Job> findByRecruiterid(Long recruiterid);
 	
 }
