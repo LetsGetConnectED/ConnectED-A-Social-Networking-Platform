@@ -19,6 +19,10 @@ import { JobCreationComponent } from './job-creation/job-creation.component';
 import { SearchedUserComponent } from './searched-user/searched-user.component';
 import { JobwallComponent } from './jobwall/jobwall.component';
 import { FriendReqComponent } from './friend-req/friend-req.component';
+import { FooterComponent } from './footer/footer.component';
+import { RegisterAdvertiserComponent } from './register-advertiser/register-advertiser.component';
+import { RegisterRecruiterComponent } from './register-recruiter/register-recruiter.component';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -36,7 +40,10 @@ import { FriendReqComponent } from './friend-req/friend-req.component';
     JobCreationComponent,
     SearchedUserComponent,
     JobwallComponent,
-    FriendReqComponent
+    FriendReqComponent,
+    FooterComponent,
+    RegisterAdvertiserComponent,
+    RegisterRecruiterComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +55,7 @@ import { FriendReqComponent } from './friend-req/friend-req.component';
     BrowserAnimationsModule
     
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -169,10 +169,6 @@ public class Job {
 				+ userMadeBy + ", applicants=" + applicants + "]";
 	}
 
-	public Job() {
-		super();
-	}
-	
 	
 
 //    public Set<User> getRecommendedTo() {

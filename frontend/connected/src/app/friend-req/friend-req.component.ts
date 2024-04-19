@@ -1,5 +1,7 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SharedService } from '../service/shared.service';
 
 @Component({
   selector: 'app-friend-req',
@@ -8,35 +10,48 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FriendReqComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private sanitizer: DomSanitizer,private shared:SharedService) { }
   pendingRequests: any[] = []; // Define a variable to store pending requests
+  selectedImage: any;
+  displayImage:boolean=false;
   ngOnInit(): void {
     this.fetch()
   }
   fetch() {
-    this.http.get<any>(
+    this.http.get<any[]>(
       `http://localhost:8088/friend/${sessionStorage.getItem("email")}/pending-requests`
     ).subscribe(
-      (data: any) => {
-      
-        if (data) {
-          this.pendingRequests = data;
+      (pendingRequests: any[]) => {
+        if (pendingRequests && pendingRequests.length > 0) {
+          pendingRequests.forEach((request: any) => {
+            const senderUsername = request.sender.username;
+            this.http.get<any>(`http://localhost:7070/user/${senderUsername}`).subscribe((userData) => {
+              const imageBase64 = userData.image;
+              const imageUrl = 'data:image/png;base64,' + imageBase64;
+              const displayImage = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+              if (imageBase64) {
+                this.displayImage=true;
+                request.image = displayImage;
+              } else {
+                console.error('Image data not found in userData:', userData);
+                this.displayImage=false;
+              }
+            });
+          });
+          this.pendingRequests = pendingRequests;
+          console.log(this.pendingRequests);
         } else {
           this.pendingRequests = []; // Set to empty array if data is empty or undefined
         }
       },
       (error) => {
-        if (error instanceof HttpErrorResponse && error.status === 200) {
-          // Handle the case where the response is plain text
-          
-          this.pendingRequests = [];
-        } else {
-          // Handle other errors
-          console.error('An error occurred:', error);
-          this.pendingRequests = [];
-        }
+        // Handle errors
+        console.error('An error occurred while fetching pending requests:', error);
+        this.pendingRequests = [];
       }
     );
+    
+    
   }
   
   acceptRequest(name: string): void {
@@ -67,6 +82,9 @@ export class FriendReqComponent implements OnInit {
       }
     ); 
   }
-  
+  visitProfile(profile:any)
+  {
+    this.shared.visitProfile(profile)
+  }
 
 }

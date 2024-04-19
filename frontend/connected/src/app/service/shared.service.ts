@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -6,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class SharedService {
 message:string=''
 user:string=''
-  constructor() { }
+  constructor(private router:Router) { }
   setMessage(data:string)
   {
     this.message=data
@@ -20,5 +21,10 @@ user:string=''
   }
   getUser(){
     return this.user
+  }
+  visitProfile(profile:any){
+    console.log(profile)
+    this.setUser(profile)
+    this.router.navigate(['/user'])
   }
 }

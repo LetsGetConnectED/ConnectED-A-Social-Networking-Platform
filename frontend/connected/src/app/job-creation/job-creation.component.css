@@ -11,6 +11,7 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+    position: relative;
   }
 
  
@@ -34,7 +35,17 @@
     background-color: #25371B;
     color: white;
   }
-  
+  .footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #25371B; /* Adjust as needed */
+    color: white; /* Adjust text color as needed */
+    text-align: center;
+    padding: 10px 0; /* Adjust padding as needed */
+}
+
   .heading_btn {
     background-color: #25371B;
     color: white;
@@ -109,7 +120,13 @@
   
   .rounded_field {
     border-radius: 50px;
+   
   }
+  .rounded_fields{
+    border-radius: 50px;
+    height: 3rem;
+  }
+
   
   button {
     background-color: #25371B;
@@ -124,19 +141,10 @@
     text-decoration: none;
   }
   
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .info_context {
-      flex-direction: column;
-      height: auto;
-    }
-  
-    .about_info,
-    .about_pic {
-      width: 100%;
-    }
-  }
-  
+input,select{
+
+  background-color: #B7C6B1;
+}
   img{
     width: 14rem;
     border-radius: 7rem;

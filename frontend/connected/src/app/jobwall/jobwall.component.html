@@ -1,17 +1,44 @@
 <app-dash-nav-auth></app-dash-nav-auth>
-<div class="main_context">
-  <div class="info_context">
+
+<div class="main_context pb-5" [ngClass]="{'blur-background': isPopupOpen}">
+  <div class="info_context mb-5">
     <div *ngFor="let job of jobs" class="job">
       <h2 class="ms-2">{{ job.title }}</h2>
       <p class="ms-2">Description: {{ job.description }}</p>
       <p class="ms-2">Location: {{ job.location }}</p>
       <p class="ms-2">Skills: {{ job.skills }}</p>
       <div *ngIf="job.applicants.includes(applicantEmail)">
-      <button class="rounded_field m-2" > Applied !</button>
-    </div>
-    <div *ngIf="!job.applicants.includes(applicantEmail)">
-      <button class="rounded_field m-2" (click)="applyJob(job.jobid,job)"> Apply <i class="bi bi-arrow-right" style="color: white"></i></button>
-    </div>
+        <button class="rounded_field m-2"> Applied !</button>
+      </div>
+      <div *ngIf="!job.applicants.includes(applicantEmail)">
+        <button class="rounded_field m-2" (click)="openApplyForm(job)"> Apply <i class="bi bi-arrow-right" style="color: white"></i></button>
+      </div>
     </div>
   </div>
+  <app-footer></app-footer>
+
+  <!-- Popup form -->
+  <div class="popup-form-container"  *ngIf="isPopupOpen">
+  <div class="popup-form">
+    <div class="form-container">
+      <h3>Apply for the job</h3>
+      <form #applyForm="ngForm" (ngSubmit)="applyJob(selectedJob.jobid, applyForm.value)">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" ngModel required>
+
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" ngModel required>
+
+        <label for="experience">Experience</label>
+        <input type="text" id="experience" name="experience" ngModel required>
+
+        <label for="joiningDate">Joining Date</label>
+        <input type="date" id="joiningDate" name="joiningDate" ngModel required [min]="getTodayDate()">
+
+        <button type="submit">Apply</button>
+      </form>
+      <button class="close-btn" (click)="closeApplyForm()">Close</button>
+    </div>
+  </div>
+</div>
 </div>

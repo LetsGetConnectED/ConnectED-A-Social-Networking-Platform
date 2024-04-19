@@ -1,8 +1,16 @@
 .post-body{
-  width: 40%;
+  width: 70%;
   height: auto;
   background-color: white;
 }
+.post-body-new{
+  width: 95%;
+  height: auto;
+  background-color: white;
+ 
+}
+
+
 .info_context{
   display: flex;
   justify-content: center;
@@ -18,6 +26,45 @@
   margin: 0;
   height: auto;
   padding: 0;
+  position: relative;
+}
+.popup-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.popup-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: -1; /* Behind the popup */
+}
+.img-fluid{
+  width: 100%;
+  height: 25rem;
+}
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #B7C6B1;
+  padding: 20px;
+  width: 40%;
+  border-radius: 10px;
+  z-index: 1; /* Above the backdrop */
+}
+.dptop{
+  width: 2rem;
+  height: 2rem;
+  border-radius: 30px;
 }
 .post-body-header{
   width: auto;
@@ -37,6 +84,9 @@
   color: white;
   font-size: 28px;
 }
+.like_holder{
+  display: inline;
+}
 .post-body-function{
   width: auto;
   height: 3.5rem;
@@ -48,23 +98,24 @@
   width: auto;
   height: auto;
   background-color: #25371B;
+  color: white;
 }
 .post-body-caption,.link_body{
   color: white;
   height: 3.5rem;
   background-color: #25371B;
 }
-.post-body-cmmnt{
-  color: white;
-  height: auto;
-  background-color: #25371B;
-}
+
 .cmmnt{
   width: 85%;
   height: 2.4rem;
   border-radius: 20px;
 }
-
+.cmmnt-add{
+  width: 60%;
+  height: 2.4rem;
+  border-radius: 20px;
+}
 img{
   width: 100%;
   height: 100%;
@@ -88,4 +139,37 @@ span{
 }
 .bi-arrow-right-circle-fill{
   color: white
+}
+.originalPostBody{
+  width: 40%;
+  height: 5rem;
+  background-color: #25371B;
+  border-radius: 7px;
+}
+.dp_post{
+  width: 4rem;
+  height: 4rem;
+  border-radius: 44px;
+}
+.upload_body{
+  height: 80%;
+  width: 100%;
+  border-radius: 10px;
+  font-weight: 200;
+  
+    
+  background-color: white;
+    
+}
+.add_span{
+  background-color: white;
+    height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  font-size: 18px; 
+  opacity: .7;
+}
+.btn{
+  background-color: #25371B;
+  color: white;
 }

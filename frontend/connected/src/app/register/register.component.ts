@@ -48,7 +48,7 @@ export class RegisterComponent {
       username:formData.username,
       useremail:formData.email,
       userpassword:formData.password,
-      role:formData.role
+      role:"USER"
     }
     this.http.post('http://localhost:8080/api/v1/auth/signup', reqBody)
     .subscribe(
